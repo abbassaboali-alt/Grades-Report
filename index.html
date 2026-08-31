@@ -99,29 +99,6 @@ function logout(){
 }
 </script>
 
-<script>
-// حماية الصفحات – التحقق من تسجيل الدخول
-(function(){
-
-  let user = localStorage.getItem("username");
-  let role = localStorage.getItem("role");
-  let last = localStorage.getItem("loginDate");
-
-  if(!user || !role){
-    location.href = "https://www.prudle-education.com/log-in-out";
-    return;
-  }
-
-  let today = new Date().toDateString();
-  if(last !== today){
-    localStorage.clear();
-    location.href = "https://www.prudle-education.com/log-in-out.";
-    return;
-  }
-
-})();
-</script>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1778,11 +1755,3 @@ async function exportPDF(mode="VISIBLE"){
 
 </body>
 </html>
-
-<script>
-let role = localStorage.getItem("role");
-if(role !== "admin"){
-  alert("Access Denied!");
-  location.href = "https://www.prudle-education.com/log-in-out.";
-}
-</script>
