@@ -1,415 +1,161 @@
-<style>
-/* ===============================
-   FULL WIDTH / FULL SCREEN FIX
-   Weebly + Caspio Safe
-=============================== */
-
-/* 1️⃣ الصفحة بكامل العرض */
-html, body{
-  margin:0 !important;
-  padding:0 !important;
-  width:100% !important;
-  max-width:100% !important;
-  overflow-x:hidden !important;
-}
-
-/* 2️⃣ منع أي عنصر من كسر العرض */
-*,
-*::before,
-*::after{
-  box-sizing:border-box !important;
-}
-
-/* 3️⃣ أي حاوية أو قسم يتمدد بعرض الشاشة */
-.container,
-.section,
-.wrapper,
-.content,
-.main-content{
-  width:100% !important;
-  max-width:100% !important;
-  margin:0 auto !important;
-  padding-left:16px;
-  padding-right:16px;
-}
-
-/* 4️⃣ الجداول بكامل العرض */
-table{
-  width:100% !important;
-  max-width:100% !important;
-  table-layout:auto;
-}
-
-/* 5️⃣ منع العناصر من الخروج خارج الشاشة */
-div, section, header, footer{
-  max-width:100% !important;
-}
-
-/* 6️⃣ تحسين العرض للشاشات الكبيرة */
-@media (min-width:1400px){
-  body{
-    font-size:14px;
-  }
-  .table-box{
-    padding:20px;
-  }
-}
-</style>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Prudle – Academic Executive Analytics</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore-compat.js"></script>
-
-<!-- Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
 <style>
 :root{
-  --blue:#164478;
-  --border:#1b4f8a;
-  --light:#eaf1fb;
-  --green:#27ae60;
+  --navy:#0c2f52;--blue:#164478;--blue2:#1e6fa8;--surface:#fff;
+  --soft:#f4f8fc;--ink:#193b59;--muted:#73869a;
+  --border:#d5e2ec;--shadow:0 14px 38px rgba(12,47,82,.10);
 }
+*{box-sizing:border-box}
+html,body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;overflow-x:hidden}
 body{
-  margin:0;
-  font-family:Poppins,sans-serif;
-  background:#f2f6fb;
+  font-family:Poppins,sans-serif;color:var(--ink);
+  background:radial-gradient(circle at 10% 0,#e8f3fb 0,transparent 30%),
+             linear-gradient(180deg,#f7fafd 0,#edf3f8 100%);
+  min-height:100vh;
 }
-
-/* ===== Header ===== */
 header{
-  background:var(--blue);
-  color:#fff;
-  padding:12px 18px;
-  font-weight:900;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:10px;
+  position:sticky;top:0;z-index:1500;padding:15px 22px;
+  color:#fff;background:linear-gradient(120deg,#0b2d4e 0,#164478 52%,#1f6fa8 100%);
+  border-bottom:1px solid rgba(255,255,255,.18);
+  box-shadow:0 10px 30px rgba(7,37,64,.20);
+  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
 }
-header .actions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
+header>div:first-child{font-size:17px;font-weight:900;letter-spacing:.2px;display:flex;align-items:center;gap:10px}
+header>div:first-child:before{
+  content:"P";display:grid;place-items:center;width:37px;height:37px;border-radius:11px;
+  background:#fff;color:#164478;font:900 22px Georgia;box-shadow:0 6px 18px rgba(0,0,0,.18)
 }
-header button{
-  background:#fff;
-  color:var(--blue);
-  border:2px solid var(--blue);
-  padding:6px 10px;
-  border-radius:8px;
-  font-weight:900;
-  cursor:pointer;
-  font-size:12px;
+header .actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+header button,header select{
+  min-height:38px;border:1px solid rgba(255,255,255,.55)!important;border-radius:11px!important;
+  box-shadow:0 3px 10px rgba(0,0,0,.08);transition:.2s ease;font-weight:900;cursor:pointer;
 }
-header button.danger{
-  background:#ffecec;
-  color:#b11;
-  border-color:#b11;
-}
-header button.primary{
-  background:#eaf1fb;
-  color:var(--blue);
-}
+header button{background:#fff;color:var(--blue);padding:7px 11px;font-size:12px}
+header button.primary{background:#eaf1fb;color:var(--blue)}
+header button.danger{background:#ffecec;color:#b11;border-color:#b11!important}
+header button:hover{transform:translateY(-2px);box-shadow:0 7px 16px rgba(0,0,0,.15)}
 
-/* ===== Filters ===== */
 .filters{
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:8px;
-  padding:10px;
-  background:#fff;
-  margin:10px;
-  border:2px solid var(--border);
-  border-radius:12px;
+  display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:11px;
+  margin:18px 14px 12px;padding:17px;background:rgba(255,255,255,.94);
+  border:1px solid #d6e3ed;border-radius:18px;box-shadow:var(--shadow)
 }
-.filters select,
-.filters input{
-  padding:8px;
-  border-radius:10px;
-  border:2px solid var(--border);
-  font-weight:800;
-  font-size:12px;
-  outline:none;
+.filters select,.filters input{
+  height:44px;width:100%;padding:0 13px;border:1px solid #c9d9e6;border-radius:12px;
+  background:#fbfdff;color:#173d5e;font-size:12px;font-weight:800;outline:none;transition:.2s
 }
-.filters select:focus,
-.filters input:focus{
-  box-shadow:0 0 0 3px rgba(22,68,120,.12);
-}
+.filters select:focus,.filters input:focus{border-color:#2c7db4;box-shadow:0 0 0 4px rgba(30,111,168,.12);background:#fff}
 
-/* ===== Card ===== */
 .card{
-  background:#fff;
-  margin:10px;
-  padding:12px;
-  border-radius:14px;
-  border:3px solid var(--border);
+  background:#fff;margin:14px;padding:18px;border:1px solid var(--border);
+  border-radius:20px;box-shadow:var(--shadow);overflow:hidden
 }
-
-/* ===== Table ===== */
-.tableWrap{
-  width:100%;
-  overflow:auto;
-  border-radius:12px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:12px;
-  min-width:1450px;
-}
-th{
-  background:var(--blue);
-  color:#fff;
-  padding:8px;
-  border:2px solid var(--border);
-  cursor:pointer;
-  white-space:nowrap;
-}
-td{
-  padding:6px;
-  text-align:center;
-  border:1.8px solid var(--border);
-  white-space:nowrap;
-}
-tr:nth-child(even){
-  background:var(--light);
-}
-tr:hover{
-  background:#dfeafb;
-}
-.notice{
-  text-align:center;
-  padding:18px;
-  font-weight:900;
-  color:#888;
-}
-
-/* ===== Grade Badge ===== */
-.grade{
-  font-weight:900;
-  border-radius:999px;
-  padding:4px 10px;
-  display:inline-block;
-  min-width:120px;
-  border:2px solid rgba(0,0,0,.06);
-}
-.g-ex{background:#164478;color:#fff;}
-.g-vg{background:#27ae60;color:#fff;}
-.g-gd{background:#f1c40f;color:#1b1b1b;}
-.g-ps{background:#ff8c00;color:#fff;}
-.g-fl{background:#e74c3c;color:#fff;}
-.g-nc{background:#7f8c8d;color:#fff;}
-
-/* ===== Tiny summary ===== */
 .topLine{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-  font-weight:900;
-  color:var(--blue);
-  margin-bottom:8px;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:2px 2px 13px;border-bottom:1px solid #e4ebf1;font-size:15px;font-weight:900
 }
-.badges{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
 .badge{
-  background:#eaf1fb;
-  border:2px solid var(--border);
-  color:var(--blue);
-  padding:6px 12px;
-  border-radius:999px;
-  font-weight:900;
-  font-size:12px;
-}
-.badge strong{
-  font-weight:900;
-}
-
-/* ===== Checkbox ===== */
-.chk{
-  width:18px;
-  height:18px;
-  cursor:pointer;
-  accent-color:var(--blue);
+  border:0;background:#edf5fb;padding:8px 13px;border-radius:999px;
+  box-shadow:inset 0 0 0 1px #d6e6f2;color:var(--blue);font-weight:900;font-size:12px
 }
 .smallBtn{
-  padding:6px 10px;
-  border-radius:10px;
-  border:2px solid var(--border);
-  background:#fff;
-  color:var(--blue);
-  font-weight:900;
-  cursor:pointer;
-  font-size:12px;
+  min-height:38px;border:1px solid #cfdeea;background:#f8fbfd;border-radius:11px;
+  padding:8px 13px;color:var(--blue);font-weight:900;cursor:pointer;transition:.2s
 }
-.smallBtn:hover{
-  transform:translateY(-1px);
+.smallBtn:hover{background:#eaf4fb;border-color:#8bb8d7;transform:translateY(-1px)}
+.tableWrap{width:100%;overflow:auto;border:1px solid #d4e0e9;border-radius:15px;box-shadow:0 5px 18px rgba(12,47,82,.06)}
+table{width:100%;min-width:1450px;border-collapse:collapse;font-size:11px;background:#fff}
+th{
+  position:sticky;top:0;z-index:5;padding:11px 8px;color:#fff;white-space:nowrap;
+  border:0;border-left:1px solid rgba(255,255,255,.12);
+  background:linear-gradient(180deg,#174d7c,#103b64);letter-spacing:.15px;cursor:pointer
 }
-
-/* ===== WhatsApp Button ===== */
+td{height:47px;padding:6px;text-align:center;white-space:nowrap;border:0;border-bottom:1px solid #dfe8ef;border-left:1px solid #e7eef4}
+tr:nth-child(even){background:#f4f8fc}tr:hover{background:#e9f3fa}
+.notice{text-align:center;padding:18px;font-weight:900;color:#888}
+.grade{font-weight:900;border-radius:999px;padding:6px 10px;display:inline-block;min-width:110px;border:0;box-shadow:0 3px 8px rgba(0,0,0,.10)}
+.g-ex{background:#164478;color:#fff}.g-vg{background:#27ae60;color:#fff}.g-gd{background:#f1c40f;color:#1b1b1b}
+.g-ps{background:#ff8c00;color:#fff}.g-fl{background:#e74c3c;color:#fff}.g-nc{background:#7f8c8d;color:#fff}
+.chk{width:18px;height:18px;cursor:pointer;accent-color:var(--blue)}
 .whatsappBtn{
-  width:36px;
-  height:36px;
-  border:none;
-  border-radius:50%;
-  background:#25D366;
-  color:#fff;
-  font-size:19px;
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 3px 8px rgba(0,0,0,.18);
-  transition:.2s;
+  width:36px;height:36px;border:0;border-radius:50%;background:#25D366;color:#fff;font-size:19px;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 8px rgba(0,0,0,.18);transition:.2s
 }
-.whatsappBtn:hover{
-  transform:translateY(-2px) scale(1.05);
-  background:#1ebe5d;
-}
-
-/* ===== Recent Date Styles ===== */
-.recent-date-cell{
-  background:#27ae60 !important;
-  color:#fff !important;
-  font-weight:900 !important;
-}
-
-/* ===== PDF course selector ===== */
+.whatsappBtn:hover{transform:translateY(-2px) scale(1.05);background:#1ebe5d}
+.recent-date-cell{background:linear-gradient(135deg,#169b61,#2fbe7a)!important;color:#fff!important;font-weight:900!important}
+.student-name-cell{min-width:210px;white-space:normal!important}.student-name-cell b,.student-name-cell small{display:block;line-height:1.45}
+.student-name-cell b{color:#143e61;font-size:11px}.student-name-cell small{color:#71869a;font-size:9px;margin-top:2px}
+.student-id-cell{font-family:Arial,sans-serif;font-weight:800;color:#315a7a;direction:ltr}
 .pdf-course-wrap{position:relative;display:inline-block}
 .pdf-course-trigger{min-width:220px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.pdf-course-menu{position:absolute;top:calc(100% + 8px);right:0;width:min(495px,92vw);max-height:72vh;overflow:auto;background:#fff;border:1px solid #d8e4ed;border-radius:22px;box-shadow:0 22px 60px rgba(15,51,82,.24);padding:14px;z-index:2000;text-align:right}
+.pdf-course-menu{
+  position:absolute;top:calc(100% + 8px);right:0;width:min(495px,92vw);max-height:72vh;overflow:auto;
+  background:#fff;border:1px solid #cddde9;border-radius:22px;box-shadow:0 28px 75px rgba(8,38,64,.28);
+  padding:14px;z-index:2000;text-align:right
+}
 .pdf-course-menu.hidden{display:none!important}
 .pdf-course-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 6px 13px;border-bottom:1px solid #e5ebf1;margin-bottom:10px;color:#164478;font-weight:900}
 .pdf-course-close{border:0!important;background:#edf4f9!important;color:#164478!important;border-radius:11px!important;padding:9px 13px!important}
-.pdf-course-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 14px;margin:8px 0;border-radius:14px;cursor:pointer;color:#24445f;font-size:12px;font-weight:900;background:#fff}
-.pdf-course-row:hover{background:#f3f7fa}
-.pdf-course-row.all{background:#eef5fa;color:#164478}
-.pdf-course-row input{width:23px;height:23px;accent-color:#164478;flex:0 0 auto;order:2}
+.pdf-course-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 14px;margin:8px 0;border-radius:14px;cursor:pointer;color:#24445f;font-size:12px;font-weight:900;background:#fff;border:1px solid transparent}
+.pdf-course-row:hover{border-color:#d5e4ef;background:#f3f8fc}
+.pdf-course-row.all{background:#eef5fa;color:#164478}.pdf-course-row input{width:23px;height:23px;accent-color:#164478;flex:0 0 auto;order:2}
 .pdf-course-row span{flex:1;text-align:center;direction:ltr}
-.student-name-cell{min-width:210px;white-space:normal!important}
-.student-name-cell b,.student-name-cell small{display:block;line-height:1.45}
-.student-name-cell b{color:#143e61;font-size:11px}
-.student-name-cell small{color:#71869a;font-size:9px;margin-top:2px}
-.student-id-cell{font-family:Arial,sans-serif;font-weight:800;color:#315a7a;direction:ltr}
-@media(max-width:600px){.pdf-course-menu{position:fixed;top:50%;right:50%;transform:translate(50%,-50%);width:calc(100vw - 20px);max-height:85vh}.pdf-course-trigger{min-width:180px}}
 
-/* ===== 2026 Premium Prudle Interface ===== */
-:root{--navy:#0c2f52;--blue2:#1e6fa8;--surface:#ffffff;--soft:#f4f8fc;--ink:#193b59;--muted:#73869a;--shadow:0 14px 38px rgba(12,47,82,.10)}
-body{color:var(--ink);background:radial-gradient(circle at 10% 0,#e8f3fb 0,transparent 30%),linear-gradient(180deg,#f7fafd 0,#edf3f8 100%);min-height:100vh}
-header{position:sticky;top:0;z-index:1500;padding:15px 22px;background:linear-gradient(120deg,#0b2d4e 0,#164478 52%,#1f6fa8 100%);border-bottom:1px solid rgba(255,255,255,.18);box-shadow:0 10px 30px rgba(7,37,64,.20)}
-header>div:first-child{font-size:17px;letter-spacing:.2px;display:flex;align-items:center;gap:10px}
-header>div:first-child:before{content:"P";display:grid;place-items:center;width:37px;height:37px;border-radius:11px;background:#fff;color:#164478;font:900 22px Georgia;box-shadow:0 6px 18px rgba(0,0,0,.18)}
-header .actions{align-items:center;gap:7px}
-header button,header select{min-height:38px;border:1px solid rgba(255,255,255,.55)!important;border-radius:11px!important;box-shadow:0 3px 10px rgba(0,0,0,.08);transition:.2s ease}
-header button:hover{transform:translateY(-2px);box-shadow:0 7px 16px rgba(0,0,0,.15)}
-.filters{grid-template-columns:repeat(4,minmax(170px,1fr));gap:11px;margin:18px 14px 12px;padding:17px;background:rgba(255,255,255,.94);border:1px solid #d6e3ed;border-radius:18px;box-shadow:var(--shadow)}
-.filters select,.filters input{height:44px;padding:0 13px;border:1px solid #c9d9e6;border-radius:12px;background:#fbfdff;color:#173d5e;font-size:12px;transition:.2s}
-.filters select:focus,.filters input:focus{border-color:#2c7db4;box-shadow:0 0 0 4px rgba(30,111,168,.12);background:#fff}
-.card{margin:14px;padding:18px;border:1px solid #d5e2ec;border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
-.topLine{padding:2px 2px 13px;border-bottom:1px solid #e4ebf1;font-size:15px}
-.badge{border:0;background:#edf5fb;padding:8px 13px;box-shadow:inset 0 0 0 1px #d6e6f2}
-.smallBtn{min-height:38px;border:1px solid #cfdeea;background:#f8fbfd;border-radius:11px;padding:8px 13px;transition:.2s}
-.smallBtn:hover{background:#eaf4fb;border-color:#8bb8d7}
-.tableWrap{border:1px solid #d4e0e9;border-radius:15px;box-shadow:0 5px 18px rgba(12,47,82,.06)}
-table{font-size:11px;background:#fff}
-th{position:sticky;top:0;z-index:5;padding:11px 8px;border:0;border-left:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg,#174d7c,#103b64);letter-spacing:.15px}
-td{height:47px;border:0;border-bottom:1px solid #dfe8ef;border-left:1px solid #e7eef4}
-tr:nth-child(even){background:#f4f8fc}tr:hover{background:#e9f3fa}
-.grade{min-width:110px;border:0;box-shadow:0 3px 8px rgba(0,0,0,.10)}
-.recent-date-cell{background:linear-gradient(135deg,#169b61,#2fbe7a)!important}
-.pdf-course-menu{border:1px solid #cddde9;background:#fff;box-shadow:0 28px 75px rgba(8,38,64,.28)}
-.pdf-course-row{border:1px solid transparent}.pdf-course-row:hover{border-color:#d5e4ef;background:#f3f8fc}
 @media(max-width:1050px){
   .filters{grid-template-columns:repeat(2,minmax(160px,1fr))}
-  header{position:sticky;align-items:flex-start}
+  header{align-items:flex-start}
   header .actions{width:100%;overflow-x:auto;flex-wrap:nowrap;padding:2px 0 7px;scrollbar-width:thin}
   header .actions>*{flex:0 0 auto}
 }
 @media(max-width:600px){
-  body{font-size:13px}
-  header{top:0;padding:10px 11px;gap:8px}
-  header>div:first-child{font-size:14px}
+  body{font-size:13px}header{padding:10px 11px;gap:8px}header>div:first-child{font-size:14px}
   header>div:first-child:before{width:32px;height:32px;font-size:18px}
   header button,header select{min-height:36px;font-size:10px!important;padding:6px 9px!important}
   .filters{grid-template-columns:1fr;margin:9px;padding:11px;gap:8px;border-radius:14px}
-  .filters select,.filters input{height:42px;width:100%;font-size:11px}
-  .card{margin:9px;padding:10px;border-radius:15px}
-  .topLine{align-items:flex-start;font-size:12px}
-  .badges{display:grid;grid-template-columns:repeat(2,1fr);width:100%}
+  .filters select,.filters input{height:42px;font-size:11px}.card{margin:9px;padding:10px;border-radius:15px}
+  .topLine{align-items:flex-start;font-size:12px}.badges{display:grid;grid-template-columns:repeat(2,1fr);width:100%}
   .badge{padding:7px 8px;text-align:center;font-size:10px}
-  .card>div[style*="display:flex"]{overflow-x:auto;flex-wrap:nowrap!important;padding-bottom:5px}
   .smallBtn{flex:0 0 auto;font-size:10px;padding:7px 10px}
-  .tableWrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
-  table{min-width:1320px;font-size:10px}
-  th{padding:9px 6px}
-  td{height:43px;padding:5px}
-  th:first-child,td:first-child{position:sticky;left:0;z-index:7;background:#fff;box-shadow:3px 0 7px rgba(12,47,82,.08)}
-  th:first-child{background:#174d7c;z-index:9}
-  .grade{min-width:96px;font-size:9px}
-  .whatsappBtn{width:31px;height:31px;font-size:16px}
+  .tableWrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{min-width:1320px;font-size:10px}th{padding:9px 6px}td{height:43px;padding:5px}
+  .grade{min-width:96px;font-size:9px}.whatsappBtn{width:31px;height:31px;font-size:16px}
   .pdf-course-menu{position:fixed;top:50%;right:50%;transform:translate(50%,-50%);width:calc(100vw - 18px);max-height:82vh;padding:11px;border-radius:17px}
   .pdf-course-row{padding:12px 9px;font-size:10px}
-  .pdf-course-row input{width:21px;height:21px}
 }
 </style>
 </head>
 
 <body>
-
 <header>
   <div>Prudle – Academic Executive Analytics</div>
   <div class="actions">
     <button class="primary" onclick="setView('ALL')">All</button>
     <button class="danger" onclick="setView('FAILED')">Failed</button>
     <button onclick="setView('NOT')">Not Completed</button>
-<select id="notExamType"
-        style="
-          padding:6px 10px;
-          border-radius:8px;
-          font-weight:900;
-          border:2px solid #164478;
-        ">
-
-  <option value="ALL">
-    All Missing
-  </option>
-
-  <option value="MID">
-    Missing Mid
-  </option>
-
-  <option value="FINAL">
-    Missing Final
-  </option>
-
-</select>
-<button onclick="selectNotExamined()">
-  Select Not Examined
-</button>
-
-<button onclick="exportNotExaminedPDF()">
-  PDF Not Examined
-</button>
+    <select id="notExamType">
+      <option value="ALL">All Missing</option>
+      <option value="MID">Missing Mid</option>
+      <option value="FINAL">Missing Final</option>
+    </select>
+    <button onclick="selectNotExamined()">Select Not Examined</button>
+    <button onclick="exportNotExaminedPDF()">PDF Not Examined</button>
     <button onclick="resetFilters()">Reset</button>
     <div class="pdf-course-wrap" id="pdfCourseWrap">
       <button class="pdf-course-trigger" type="button" onclick="togglePdfCourseMenu(event)">
@@ -418,7 +164,9 @@ tr:nth-child(even){background:#f4f8fc}tr:hover{background:#e9f3fa}
       <div class="pdf-course-menu hidden" id="pdfCourseMenu">
         <div class="pdf-course-head"><b>حدد الدورات المراد طباعتها</b><button class="pdf-course-close" type="button" onclick="closePdfCourseMenu()">إغلاق</button></div>
         <div id="pdfCourseChecks"></div>
-        <button class="primary" style="width:100%;margin-top:10px" type="button" onclick="exportPDF('COURSES')"><i class="fa-solid fa-file-pdf"></i> طباعة الدورات المحددة PDF</button>
+        <button class="primary" style="width:100%;margin-top:10px" type="button" onclick="exportPDF('COURSES')">
+          <i class="fa-solid fa-file-pdf"></i> طباعة الدورات المحددة PDF
+        </button>
       </div>
     </div>
     <button onclick="exportPDF('SELECTED')"><i class="fa-solid fa-file-pdf"></i> PDF (Selected)</button>
@@ -426,8 +174,7 @@ tr:nth-child(even){background:#f4f8fc}tr:hover{background:#e9f3fa}
 </header>
 
 <div class="filters">
-<input id="fStudent"
-       placeholder="Search name AR/EN or Student ID" />
+  <input id="fStudent" placeholder="Search name AR/EN or Student ID">
   <select id="fTrainer"><option value="">Trainer</option></select>
   <select id="fBranch"><option value="">Branch</option></select>
   <select id="fCourse"><option value="">Course</option></select>
@@ -447,7 +194,7 @@ tr:nth-child(even){background:#f4f8fc}tr:hover{background:#e9f3fa}
     </div>
   </div>
 
-  <div style="display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 12px;">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px;">
     <button class="smallBtn" onclick="selectAllVisible(true)"><i class="fa-solid fa-check-double"></i> Select Visible</button>
     <button class="smallBtn" onclick="selectAllVisible(false)"><i class="fa-solid fa-xmark"></i> Unselect Visible</button>
     <button class="smallBtn" onclick="clearSelection()"><i class="fa-regular fa-trash-can"></i> Clear Selection</button>
@@ -457,1234 +204,475 @@ tr:nth-child(even){background:#f4f8fc}tr:hover{background:#e9f3fa}
     <table>
       <thead>
         <tr>
-          <th style="width:52px">
-            <input id="chkAll" class="chk" type="checkbox" onclick="toggleHeaderSelect(this)" title="Select all visible"/>
-          </th>
-          <th>#</th>
-          <th>Name AR / EN</th>
-          <th>Student ID</th>
-          <th>WhatsApp</th>
+          <th style="width:52px"><input id="chkAll" class="chk" type="checkbox" onclick="toggleHeaderSelect(this)" title="Select all visible"></th>
+          <th>#</th><th>Name AR / EN</th><th>Student ID</th><th>WhatsApp</th>
           <th onclick="sortByPeriod()">Period <span id="periodSortArrow">▲▼</span></th>
-          <th onclick="sortByTotal()">Total ▲▼</th>
-          <th>Grade</th>
-          <th>Mid</th>
-          <th>Final</th>
-          <th>Listen</th>
-          <th>Speak</th>
-          <th>HW</th>
-          <th>Attend</th>
+          <th onclick="sortByTotal()">Total <span id="totalSortArrow">▲▼</span></th>
+          <th>Grade</th><th>Mid</th><th>Final</th><th>Listen</th><th>Speak</th><th>HW</th><th>Attend</th>
           <th onclick="sortByCourse()">Course <span id="courseSortArrow">▲▼</span></th>
-          <th>Trainer</th>
-          <th>Branch</th>
-          <th>Section</th>
-          <th onclick="sortByStartDate()">Start ▲▼</th>
+          <th>Trainer</th><th>Branch</th><th>Section</th>
+          <th onclick="sortByStartDate()">Start <span id="startSortArrow">▲▼</span></th>
         </tr>
       </thead>
-      <tbody id="tbody">
-        <tr><td colspan="19" class="notice">Apply at least one filter to load data</td></tr>
-      </tbody>
+      <tbody id="tbody"><tr><td colspan="19" class="notice">Apply at least one filter to load data</td></tr></tbody>
     </table>
   </div>
 </div>
 
 <script>
-/* ================= FIREBASE ================= */
 firebase.initializeApp({
   apiKey:"AIzaSyCCFBvZosI8dwShZjxvZzI-SU5igEbcOKk",
   authDomain:"prudle-system.firebaseapp.com",
   projectId:"prudle-system"
 });
-const db = firebase.firestore();
+const db=firebase.firestore();
+const LOGO="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlEGHcXcelOlihtrBLFCmjumIyuBxqyoWEZM8DgDpBVg&s";
 
-/* ================= LOGO ================= */
-const LOGO = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlEGHcXcelOlihtrBLFCmjumIyuBxqyoWEZM8DgDpBVg&s";
+let COURSES=[],STUDENTS=[],FILTERED=[],VIEW="ALL",VISIBLE=[];
+let PERIOD_DIR=1,TOTAL_DIR=1,START_DIR=-1,COURSE_DIR=1;
+let ACTIVE_SORT={key:"period",dir:1};
+let latestDates=[];
+const SELECTED_IDS=new Set();
+let PDF_SELECTED_COURSES=new Set(),PDF_ALL_COURSES=true;
 
-/* ================= STATE ================= */
-let COURSES = [];
-let STUDENTS = [];
-let FILTERED = [];
-let VIEW = "ALL";
-
-let PERIOD_DIR = 1;
-let TOTAL_DIR = 1;
-let START_DIR = -1; // الأحدث أولاً
-let ACTIVE_SORT = {key:"start", dir:-1};
-
-let VISIBLE = [];
-const SELECTED_IDS = new Set();
-let PDF_SELECTED_COURSES = new Set();
-let PDF_ALL_COURSES = true;
-
-function visiblePdfCourses(){
-  const map = new Map();
-  VISIBLE.forEach(s=>{
-    const c=s.course;
-    if(c && c.id && !map.has(c.id)) map.set(c.id,c);
-  });
-  return [...map.values()];
+function uniq(arr){return [...new Set((arr||[]).filter(v=>v!==null&&v!==undefined&&String(v).trim()!==""))]}
+function getCourseType(c){return String(c?.CourseType||c?.TrainingType||c?.Type||c?.Program||c?.CourseDuration||"").trim()}
+function getDateStamp(val){
+  if(!val)return null;
+  if(typeof val==="object" && val.seconds!=null)return Number(val.seconds);
+  const t=new Date(val).getTime();return isNaN(t)?null:Math.floor(t/1000)
 }
-
-function pdfCourseText(c){
-  return [
-    c.TrainingCourse||"-",
-    c.Trainer||"-",
-    c.Period||"-",
-    `Course Type: ${getCourseType(c)||"-"}`,
-    formatDateValue(c.StartingDate)
-  ].join(" · ");
+function formatDateValue(val){
+  if(!val)return "-";
+  if(typeof val==="object" && val.seconds!=null)return new Date(val.seconds*1000).toLocaleDateString("en-GB");
+  const d=new Date(val);return isNaN(d.getTime())?String(val):d.toLocaleDateString("en-GB")
 }
-
-function buildPdfCourseOptions(){
-  const box=document.getElementById("pdfCourseChecks");
-  if(!box)return;
-  const courses=visiblePdfCourses();
-  const valid=new Set(courses.map(c=>c.id));
-  PDF_SELECTED_COURSES=new Set([...PDF_SELECTED_COURSES].filter(id=>valid.has(id)));
-  box.innerHTML=`
-    <label class="pdf-course-row all">
-      <input type="checkbox" ${PDF_ALL_COURSES?"checked":""} onchange="setPdfAllCourses(this.checked)">
-      <span>كل الدورات حسب الفلترة الحالية (${courses.length})</span>
-    </label>
-    ${courses.map(c=>`
-      <label class="pdf-course-row">
-        <input type="checkbox" ${!PDF_ALL_COURSES&&PDF_SELECTED_COURSES.has(c.id)?"checked":""} onchange="togglePdfCourse('${String(c.id).replace(/'/g,"\\'")}',this.checked)">
-        <span>${pdfCourseText(c)}</span>
-      </label>`).join("")}`;
-  updatePdfCourseLabel();
+function sameDateValue(a,b){
+  const sa=getDateStamp(a),sb=getDateStamp(b);
+  if(sa&&sb)return sa===sb;
+  return String(a)===String(b)
 }
-
-function togglePdfCourseMenu(event){
-  event?.stopPropagation();
-  buildPdfCourseOptions();
-  document.getElementById("pdfCourseMenu")?.classList.toggle("hidden");
-}
-function closePdfCourseMenu(){document.getElementById("pdfCourseMenu")?.classList.add("hidden")}
-function setPdfAllCourses(checked){
-  PDF_ALL_COURSES=checked===true;
-  PDF_SELECTED_COURSES.clear();
-
-  /* ربط اختيار كل الدورات بمربعات الطلاب الظاهرين */
-  VISIBLE.forEach(s=>{
-    if(PDF_ALL_COURSES) SELECTED_IDS.add(s.id);
-    else SELECTED_IDS.delete(s.id);
-  });
-
-  render();
-  buildPdfCourseOptions();
-}
-function togglePdfCourse(id,checked){
-  const wasAllCourses=PDF_ALL_COURSES;
-  PDF_ALL_COURSES=false;
-
-  /* عند الانتقال من "كل الدورات" إلى دورة محددة نبدأ بتحديد جديد */
-  if(wasAllCourses){
-    SELECTED_IDS.clear();
-    PDF_SELECTED_COURSES.clear();
-  }
-
-  checked?PDF_SELECTED_COURSES.add(id):PDF_SELECTED_COURSES.delete(id);
-
-  /* تحديد/إلغاء تحديد جميع طلاب الدورة تلقائيًا */
-  VISIBLE.forEach(s=>{
-    if(s.course?.id !== id) return;
-    if(checked) SELECTED_IDS.add(s.id);
-    else SELECTED_IDS.delete(s.id);
-  });
-
-  render();
-  buildPdfCourseOptions();
-}
-function updatePdfCourseLabel(){
-  const el=document.getElementById("pdfCourseLabel");
-  if(!el)return;
-  const total=visiblePdfCourses().length;
-  el.textContent=PDF_ALL_COURSES?`PDF حسب الفلترة (${total})`:`PDF للدورات المحددة (${PDF_SELECTED_COURSES.size})`;
-}
-document.addEventListener("click",e=>{if(!document.getElementById("pdfCourseWrap")?.contains(e.target))closePdfCourseMenu()});
-
-/* ===== أحدث 5 تواريخ ===== */
-let latestDates = [];
-let COURSE_DIR = 1;
-
-function sortByCourse(){
-  COURSE_DIR *= -1;
-  ACTIVE_SORT = {key:"course", dir:COURSE_DIR};
-
-  FILTERED.sort((a,b)=>{
-    return compareCourse(a,b,COURSE_DIR);
-  });
-
-  updateSortArrows();
-  render();
-}
-
 function periodStartMinutes(value){
   const text=String(value||"").toLowerCase().replace(/\s+/g," ").trim();
   const match=text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
   if(!match)return Number.MAX_SAFE_INTEGER;
-  let hour=Number(match[1]);
-  const minute=Number(match[2]||0);
-  const meridiem=(match[3]||"").toLowerCase();
-  if(meridiem==="pm" && hour<12)hour+=12;
-  if(meridiem==="am" && hour===12)hour=0;
-  return hour*60+minute;
+  let hour=Number(match[1]),minute=Number(match[2]||0),meridiem=(match[3]||"").toLowerCase();
+  if(meridiem==="pm"&&hour<12)hour+=12;if(meridiem==="am"&&hour===12)hour=0;
+  return hour*60+minute
 }
-
-function comparePeriod(a,b,dir){
-  const x=periodStartMinutes(a.course?.Period);
-  const y=periodStartMinutes(b.course?.Period);
-  if(x!==y)return dir*(x-y);
-  return compareCourse(a,b,1);
-}
-
 function compareCourse(a,b,dir){
-  const x=String(a.course?.TrainingCourse||"");
-  const y=String(b.course?.TrainingCourse||"");
-  const result=x.localeCompare(y,"en",{numeric:true,sensitivity:"base"});
-  if(result!==0)return dir*result;
-  const periodDiff=periodStartMinutes(a.course?.Period)-periodStartMinutes(b.course?.Period);
-  if(periodDiff!==0)return periodDiff;
-
-  /* داخل الدورة والفترة نفسها: أعلى درجة تظهر أولاً */
-  const totalA=total(a);
-  const totalB=total(b);
-  const safeA=totalA==null?-1:totalA;
-  const safeB=totalB==null?-1:totalB;
-  return safeB-safeA;
+  const x=String(a.course?.TrainingCourse||""),y=String(b.course?.TrainingCourse||"");
+  const r=x.localeCompare(y,"en",{numeric:true,sensitivity:"base"});
+  if(r!==0)return dir*r;
+  const pd=periodStartMinutes(a.course?.Period)-periodStartMinutes(b.course?.Period);
+  if(pd!==0)return pd;
+  return (total(b)==null?-1:total(b))-(total(a)==null?-1:total(a))
 }
-
+function comparePeriod(a,b,dir){
+  const x=periodStartMinutes(a.course?.Period),y=periodStartMinutes(b.course?.Period);
+  if(x!==y)return dir*(x-y);return compareCourse(a,b,1)
+}
 function updateSortArrows(){
-  const p=document.getElementById("periodSortArrow");
-  const c=document.getElementById("courseSortArrow");
+  const p=document.getElementById("periodSortArrow"),t=document.getElementById("totalSortArrow"),c=document.getElementById("courseSortArrow"),s=document.getElementById("startSortArrow");
   if(p)p.textContent=ACTIVE_SORT.key==="period"?(ACTIVE_SORT.dir===1?"▲":"▼"):"▲▼";
+  if(t)t.textContent=ACTIVE_SORT.key==="total"?(ACTIVE_SORT.dir===1?"▲":"▼"):"▲▼";
   if(c)c.textContent=ACTIVE_SORT.key==="course"?(ACTIVE_SORT.dir===1?"▲":"▼"):"▲▼";
+  if(s)s.textContent=ACTIVE_SORT.key==="start"?(ACTIVE_SORT.dir===1?"▲":"▼"):"▲▼";
 }
 
-/* ================= HELPERS ================= */
-function uniq(arr){
-  return [...new Set((arr || []).filter(Boolean))];
+function hwScore(s){return Math.min(Number(s.hwScore||0),10)}
+function attScore(s){
+  const r=s.records||[];return r.length?Math.floor((r.filter(x=>x.status==="present").length/r.length)*10):0
 }
-
-function getDateStamp(val){
-  if(!val) return null;
-
-  if(typeof val === "object" && val.seconds){
-    return Number(val.seconds);
-  }
-
-  const t = new Date(val).getTime();
-  if(isNaN(t)) return null;
-  return Math.floor(t / 1000);
+function complete(s){return ["midterm","finalExam","listening","speaking"].every(k=>s[k]!=null)}
+function total(s){
+  if(!complete(s))return null;
+  return Math.min(Number(s.midterm||0)+Number(s.finalExam||0)+Number(s.listening||0)+Number(s.speaking||0)+hwScore(s)+attScore(s),100)
 }
-
-function formatDateValue(val){
-  if(!val) return "-";
-
-  if(typeof val === "object" && val.seconds){
-    return new Date(val.seconds * 1000).toLocaleDateString("en-GB");
-  }
-
-  const d = new Date(val);
-  if(!isNaN(d.getTime())){
-    return d.toLocaleDateString("en-GB");
-  }
-
-  return String(val);
+function gradeOf(t){
+  if(t==null)return{text:"Not Completed",cls:"g-nc"};
+  if(t>=90)return{text:"Excellent",cls:"g-ex"};
+  if(t>=80)return{text:"Very Good",cls:"g-vg"};
+  if(t>=70)return{text:"Good",cls:"g-gd"};
+  if(t>=65)return{text:"Pass",cls:"g-ps"};
+  return{text:"Fail",cls:"g-fl"}
 }
-
-function sameDateValue(a,b){
-  const sa = getDateStamp(a);
-  const sb = getDateStamp(b);
-
-  if(sa && sb) return sa === sb;
-  return String(a) === String(b);
+function cleanStudentName(v){return String(v||"").replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g,"").replace(/\s+/g," ").trim()}
+function getArabicName(s){
+  const e=s.name_ar||s.nameAr||s.nameAR||s.arabicName||s.arabic_name||s.nameArabic||s.NameArabic||s.ArabicName||s.studentNameAr||s.fullNameAr||"";
+  const b=s.name||s.fullName||s.studentName||"";return cleanStudentName(e||(/[\u0600-\u06FF]/.test(b)?b:""))
 }
-
-/* ================= LOAD COURSES ================= */
-(async function loadCourses(){
-  COURSES = (await db.collection("Courses").get()).docs.map(d=>({id:d.id, ...d.data()}));
-
-  const dates = COURSES
-    .map(c => getDateStamp(c.StartingDate))
-    .filter(Boolean)
-    .sort((a,b)=>b-a);
-
-  latestDates = [...new Set(dates)].slice(0,5);
-
-  fillFilters();
-})();
-
-/* ================= FILTER OPTIONS ================= */
-function getCourseType(c){
-  return String(
-    c?.CourseType ||
-    c?.TrainingType ||
-    c?.Type ||
-    c?.Program ||
-    c?.CourseDuration ||
-    ""
-  ).trim();
+function getEnglishName(s){
+  const e=s.name_en||s.nameEn||s.nameEN||s.englishName||s.english_name||s.nameEnglish||s.NameEnglish||s.EnglishName||s.studentNameEn||s.fullNameEn||"";
+  const b=s.name||s.fullName||s.studentName||"";return cleanStudentName(e||(!/[\u0600-\u06FF]/.test(b)?b:""))
+}
+function getStudentIdentity(s){return String(s.studentID||s.studentId||s.StudentID||s.iqama||s.Iqama||s.identity||s.identityNumber||s.nationalId||s.NationalID||s.idNumber||s.username||"").trim()}
+function getStudentPhone(s){return s.phone||s.Phone||s.mobile||s.Mobile||s.whatsapp||s.WhatsApp||""}
+function normalizeWhatsAppPhone(phone){
+  let p=String(phone||"").replace(/\D/g,"");if(!p)return "";
+  if(p.startsWith("00"))p=p.slice(2);
+  if(p.startsWith("05")&&p.length===10)p="966"+p.slice(1);
+  else if(p.startsWith("5")&&p.length===9)p="966"+p;
+  return p
 }
 
 function fillFilters(){
-  const map = [
-    ["fTrainer","Trainer"],
-    ["fBranch","Branch"],
-    ["fCourse","TrainingCourse"],
-    ["fPeriod","Period"],
-    ["fStart","StartingDate"],
-    ["fSection","Section"],
-    ["fCourseType","__CourseType"]
-  ];
-
+  const map=[["fTrainer","Trainer"],["fBranch","Branch"],["fCourse","TrainingCourse"],["fPeriod","Period"],["fStart","StartingDate"],["fSection","Section"],["fCourseType","__CourseType"]];
   map.forEach(([id,key])=>{
-    const el = document.getElementById(id);
-    const firstText = el.options[0] ? el.options[0].text : "Select";
-    el.innerHTML = `<option value="">${firstText}</option>`;
-
-    if(id === "fStart"){
-      const sortedDates = uniq(COURSES.map(c=>c[key]))
-        .sort((a,b)=>(getDateStamp(b)||0) - (getDateStamp(a)||0));
-
-      sortedDates.forEach(v=>{
-        const raw = getDateStamp(v);
-        const isRecent = latestDates.includes(raw);
-
-        el.innerHTML += `
-          <option value="${String(v).replace(/"/g,'&quot;')}" style="${isRecent ? 'background:#27ae60;color:#fff;font-weight:bold' : ''}">
-            ${formatDateValue(v)}
-          </option>`;
-      });
-    } else {
-      uniq(COURSES.map(c=>key==="__CourseType" ? getCourseType(c) : c[key])).forEach(v=>{
-        el.innerHTML += `<option value="${String(v).replace(/"/g,'&quot;')}">${v}</option>`;
-      });
+    const el=document.getElementById(id),first=el.options[0]?.text||"Select";el.innerHTML=`<option value="">${first}</option>`;
+    if(id==="fStart"){
+      uniq(COURSES.map(c=>c[key])).sort((a,b)=>(getDateStamp(b)||0)-(getDateStamp(a)||0)).forEach(v=>{
+        const recent=latestDates.includes(getDateStamp(v));
+        el.innerHTML+=`<option value="${String(v).replace(/"/g,"&quot;")}" ${recent?'class="recent-date-cell"':''}>${formatDateValue(v)}</option>`
+      })
+    }else{
+      uniq(COURSES.map(c=>key==="__CourseType"?getCourseType(c):c[key])).forEach(v=>{
+        el.innerHTML+=`<option value="${String(v).replace(/"/g,"&quot;")}">${v}</option>`
+      })
     }
-  });
+  })
 }
+(async function loadCourses(){
+  COURSES=(await db.collection("Courses").get()).docs.map(d=>({id:d.id,...d.data()}));
+  latestDates=[...new Set(COURSES.map(c=>getDateStamp(c.StartingDate)).filter(Boolean).sort((a,b)=>b-a))].slice(0,5);
+  fillFilters()
+})();
 
-document.querySelectorAll(".filters select").forEach(s=>{
-  s.addEventListener("change", applyFilters);
-});
-fStudent.addEventListener("input", applyFilters);
-
-/* ================= RESET ================= */
-function resetFilters(){
-  fTrainer.value = "";
-  fBranch.value = "";
-  fCourse.value = "";
-  fPeriod.value = "";
-  fStart.value = "";
-  fSection.value = "";
-  fCourseType.value = "";
-
-  VIEW = "ALL";
-  PERIOD_DIR = 1;
-  TOTAL_DIR = 1;
-  START_DIR = -1;
-  ACTIVE_SORT = {key:"period", dir:1};
-
-  FILTERED = [];
-  VISIBLE = [];
-
-  updateSummaries();
-  tbody.innerHTML = `<tr><td colspan="19" class="notice">Apply at least one filter to load data</td></tr>`;
-
-  document.getElementById("chkAll").checked = false;
-  document.getElementById("chkAll").indeterminate = false;
-}
-
-/* ================= GRADING HELPERS ================= */
-function hwScore(s){
-  return Math.min(Number(s.hwScore || 0), 10);
-}
-
-function attScore(s){
-  const r = s.records || [];
-  return r.length ? Math.floor((r.filter(x=>x.status==="present").length / r.length) * 10) : 0;
-}
-
-function complete(s){
-  return ["midterm","finalExam","listening","speaking"].every(k=>s[k] != null);
-}
-
-function total(s){
-  if(!complete(s)) return null;
-
-  return Math.min(
-    Number(s.midterm || 0) +
-    Number(s.finalExam || 0) +
-    Number(s.listening || 0) +
-    Number(s.speaking || 0) +
-    hwScore(s) +
-    attScore(s),
-    100
-  );
-}
-
-function statusOf(t){
-  if(t == null) return "Not Completed";
-  return t >= 65 ? "Passed" : "Failed";
-}
-
-function gradeOf(t){
-  if(t == null) return {text:"Not Completed", cls:"g-nc"};
-  if(t >= 90) return {text:"Excellent", cls:"g-ex"};
-  if(t >= 80) return {text:"Very Good", cls:"g-vg"};
-  if(t >= 70) return {text:"Good", cls:"g-gd"};
-  if(t >= 65) return {text:"Pass", cls:"g-ps"};
-  return {text:"Fail", cls:"g-fl"};
-}
-
-function cleanStudentName(value){
-  return String(value||"")
-    .replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g,"")
-    .replace(/\s+/g," ")
-    .trim();
-}
-
-function getArabicName(s){
-  const explicit=
-    s.name_ar||s.nameAr||s.nameAR||s.arabicName||s.arabic_name||
-    s.nameArabic||s.NameArabic||s.ArabicName||s.studentNameAr||s.fullNameAr||"";
-  const base=s.name||s.fullName||s.studentName||"";
-  return cleanStudentName(explicit || (/[؀-ۿ]/.test(base)?base:""));
-}
-
-function getEnglishName(s){
-  const explicit=
-    s.name_en||s.nameEn||s.nameEN||s.englishName||s.english_name||
-    s.nameEnglish||s.NameEnglish||s.EnglishName||s.studentNameEn||s.fullNameEn||"";
-  const base=s.name||s.fullName||s.studentName||"";
-  return cleanStudentName(explicit || (!/[؀-ۿ]/.test(base)?base:""));
-}
-
-function getStudentIdentity(s){
-  return String(
-    s.studentID||s.studentId||s.StudentID||s.iqama||s.Iqama||
-    s.identity||s.identityNumber||s.nationalId||s.NationalID||
-    s.idNumber||s.username||""
-  ).trim();
-}
-
-/* ================= APPLY FILTERS ================= */
-function hasAnyFilter(){
-
-  return !!(
-    fStudent.value ||
-    fTrainer.value ||
-    fBranch.value ||
-    fCourse.value ||
-    fPeriod.value ||
-    fStart.value ||
-    fSection.value ||
-    fCourseType.value
-  );
-}
+function hasAnyFilter(){return !!(fStudent.value||fTrainer.value||fBranch.value||fCourse.value||fPeriod.value||fStart.value||fSection.value||fCourseType.value)}
 async function applyFilters(){
-  if(!hasAnyFilter()){
-    resetFilters();
-    return;
-  }
-
-  tbody.innerHTML = `<tr><td colspan="19" class="notice">Loading...</td></tr>`;
-
-  STUDENTS = (await db.collection("students").get()).docs.map(d=>({id:d.id, ...d.data()}));
-  FILTERED = [];
-
+  if(!hasAnyFilter()){resetFilters();return}
+  tbody.innerHTML=`<tr><td colspan="19" class="notice">Loading...</td></tr>`;
+  STUDENTS=(await db.collection("students").get()).docs.map(d=>({id:d.id,...d.data()}));FILTERED=[];
   STUDENTS.forEach(s=>{
-    const c = COURSES.find(x=>x.id === s.courseId);
-const studentSearchText = [
-  getArabicName(s),
-  getEnglishName(s),
-  getStudentIdentity(s),
-  s.name||"",
-  s.name_ar||""
-].join(" ").toLowerCase();
-
-if(
-  fStudent.value &&
-  !studentSearchText.includes(
-    fStudent.value.trim().toLowerCase()
-  )
-){
-  return;
-}
-    if(!c) return;
-
-    if(fTrainer.value && String(c.Trainer || "") !== fTrainer.value) return;
-    if(fBranch.value && String(c.Branch || "") !== fBranch.value) return;
-    if(fCourse.value && String(c.TrainingCourse || "") !== fCourse.value) return;
-    if(fPeriod.value && String(c.Period || "") !== fPeriod.value) return;
-    if(fSection.value && String(c.Section || "") !== fSection.value) return;
-    if(fCourseType.value && getCourseType(c) !== fCourseType.value) return;
-
-    if(fStart.value){
-      if(!sameDateValue(c.StartingDate, fStart.value)) return;
-    }
-
-    FILTERED.push({...s, course:c});
+    const c=COURSES.find(x=>x.id===s.courseId);if(!c)return;
+    const search=[getArabicName(s),getEnglishName(s),getStudentIdentity(s),s.name||"",s.name_ar||""].join(" ").toLowerCase();
+    if(fStudent.value&&!search.includes(fStudent.value.trim().toLowerCase()))return;
+    if(fTrainer.value&&String(c.Trainer||"")!==fTrainer.value)return;
+    if(fBranch.value&&String(c.Branch||"")!==fBranch.value)return;
+    if(fCourse.value&&String(c.TrainingCourse||"")!==fCourse.value)return;
+    if(fPeriod.value&&String(c.Period||"")!==fPeriod.value)return;
+    if(fSection.value&&String(c.Section||"")!==fSection.value)return;
+    if(fCourseType.value&&getCourseType(c)!==fCourseType.value)return;
+    if(fStart.value&&!sameDateValue(c.StartingDate,fStart.value))return;
+    FILTERED.push({...s,course:c})
   });
-
-  /* الفرز التلقائي الدائم: الفترة أولاً ثم الدورة */
-  FILTERED.sort((a,b)=>comparePeriod(a,b,1));
-  PERIOD_DIR = 1;
-  ACTIVE_SORT = {key:"period", dir:1};
-  updateSortArrows();
-
-  render();
+  FILTERED.sort((a,b)=>comparePeriod(a,b,1));PERIOD_DIR=1;ACTIVE_SORT={key:"period",dir:1};updateSortArrows();render()
 }
+document.querySelectorAll(".filters select").forEach(s=>s.addEventListener("change",applyFilters));
+fStudent.addEventListener("input",applyFilters);
 
-/* ================= SORT ================= */
-function sortByPeriod(){
-  PERIOD_DIR *= -1;
-  ACTIVE_SORT = {key:"period", dir:PERIOD_DIR};
-
-  FILTERED.sort((a,b)=>{
-    return comparePeriod(a,b,PERIOD_DIR);
-  });
-
-  updateSortArrows();
-  render();
+function resetFilters(){
+  ["fTrainer","fBranch","fCourse","fPeriod","fStart","fSection","fCourseType"].forEach(id=>document.getElementById(id).value="");
+  fStudent.value="";VIEW="ALL";PERIOD_DIR=1;TOTAL_DIR=1;START_DIR=-1;COURSE_DIR=1;ACTIVE_SORT={key:"period",dir:1};
+  FILTERED=[];VISIBLE=[];SELECTED_IDS.clear();updateSummaries();
+  tbody.innerHTML=`<tr><td colspan="19" class="notice">Apply at least one filter to load data</td></tr>`;
+  chkAll.checked=false;chkAll.indeterminate=false;buildPdfCourseOptions()
 }
+function sortByPeriod(){PERIOD_DIR*=-1;ACTIVE_SORT={key:"period",dir:PERIOD_DIR};FILTERED.sort((a,b)=>comparePeriod(a,b,PERIOD_DIR));updateSortArrows();render()}
+function sortByTotal(){TOTAL_DIR*=-1;ACTIVE_SORT={key:"total",dir:TOTAL_DIR};FILTERED.sort((a,b)=>((total(a)==null?-1:total(a))-(total(b)==null?-1:total(b)))*TOTAL_DIR);updateSortArrows();render()}
+function sortByCourse(){COURSE_DIR*=-1;ACTIVE_SORT={key:"course",dir:COURSE_DIR};FILTERED.sort((a,b)=>compareCourse(a,b,COURSE_DIR));updateSortArrows();render()}
+function sortByStartDate(){START_DIR*=-1;ACTIVE_SORT={key:"start",dir:START_DIR};FILTERED.sort((a,b)=>(START_DIR*((getDateStamp(a.course?.StartingDate)||0)-(getDateStamp(b.course?.StartingDate)||0))));updateSortArrows();render()}
+function setView(v){VIEW=v;render()}
 
-function sortByTotal(){
-  TOTAL_DIR *= -1;
-
-  FILTERED.sort((a,b)=>{
-    const x = total(a);
-    const y = total(b);
-    const xx = (x == null ? -1 : x);
-    const yy = (y == null ? -1 : y);
-    return xx > yy ? TOTAL_DIR : xx < yy ? -TOTAL_DIR : 0;
-  });
-
-  render();
-}
-
-function sortByStartDate(){
-  START_DIR *= -1;
-
-  FILTERED.sort((a,b)=>{
-    const x = getDateStamp(a.course?.StartingDate) || 0;
-    const y = getDateStamp(b.course?.StartingDate) || 0;
-    return START_DIR * (x - y);
-  });
-
-  render();
-}
-
-/* ================= VIEW ================= */
-function setView(v){
-  VIEW = v;
-  render();
-}
-
-/* ================= SELECTION ================= */
-function toggleHeaderSelect(chk){
-  selectAllVisible(chk.checked);
-}
-
-function selectAllVisible(on){
-  VISIBLE.forEach(s=>{
-    if(on) SELECTED_IDS.add(s.id);
-    else SELECTED_IDS.delete(s.id);
-  });
-  render();
-}
-
-function clearSelection(){
-  SELECTED_IDS.clear();
-  render();
-}
-/* =========================
-   SELECT NOT EXAMINED
-========================= */
-
-function selectNotExamined(){
-
-  SELECTED_IDS.clear();
-
-  const type =
-    document.getElementById("notExamType").value;
-
-  VISIBLE.forEach(s=>{
-
-    const noMid =
-      s.midterm == null ||
-      s.midterm === "-" ||
-      Number(s.midterm) === 0;
-
-    const noFinal =
-      s.finalExam == null ||
-      s.finalExam === "-" ||
-      Number(s.finalExam) === 0;
-
-    let ok = false;
-
-    if(type === "ALL"){
-
-      ok = noMid || noFinal;
-
-    }else if(type === "MID"){
-
-      ok = noMid;
-
-    }else if(type === "FINAL"){
-
-      ok = noFinal;
-    }
-
-    if(ok){
-
-      SELECTED_IDS.add(s.id);
-    }
-
-  });
-
-  render();
-
-  alert("تم تحديد الطلاب");
-}
-/* =========================
-   PDF NOT EXAMINED
-========================= */
-
-function exportNotExaminedPDF(){
-
-  const oldSelected =
-    new Set(SELECTED_IDS);
-
-  SELECTED_IDS.clear();
-
-  const type =
-    document.getElementById("notExamType").value;
-
-  VISIBLE.forEach(s=>{
-
-    const noMid =
-      s.midterm == null ||
-      s.midterm === "-" ||
-      Number(s.midterm) === 0;
-
-    const noFinal =
-      s.finalExam == null ||
-      s.finalExam === "-" ||
-      Number(s.finalExam) === 0;
-
-    let ok = false;
-
-    if(type === "ALL"){
-
-      ok = noMid || noFinal;
-
-    }else if(type === "MID"){
-
-      ok = noMid;
-
-    }else if(type === "FINAL"){
-
-      ok = noFinal;
-    }
-
-    if(ok){
-
-      SELECTED_IDS.add(s.id);
-    }
-
-  });
-
-  exportPDF("SELECTED");
-
-  SELECTED_IDS.clear();
-
-  oldSelected.forEach(id=>{
-    SELECTED_IDS.add(id);
-  });
-
-  render();
-}
-function toggleRowSelection(id, on){
-  if(on) SELECTED_IDS.add(id);
-  else SELECTED_IDS.delete(id);
-
-  updateSummaries();
-  syncHeaderCheckbox();
-}
-
+function selectAllVisible(on){VISIBLE.forEach(s=>on?SELECTED_IDS.add(s.id):SELECTED_IDS.delete(s.id));render()}
+function toggleHeaderSelect(chk){selectAllVisible(chk.checked)}
+function clearSelection(){SELECTED_IDS.clear();render()}
+function toggleRowSelection(id,on){on?SELECTED_IDS.add(id):SELECTED_IDS.delete(id);updateSummaries();syncHeaderCheckbox()}
 function syncHeaderCheckbox(){
-  const chk = document.getElementById("chkAll");
-
-  if(!VISIBLE.length){
-    chk.checked = false;
-    chk.indeterminate = false;
-    return;
-  }
-
-  const all = VISIBLE.every(s=>SELECTED_IDS.has(s.id));
-  const any = VISIBLE.some(s=>SELECTED_IDS.has(s.id));
-
-  chk.indeterminate = (!all && any);
-  chk.checked = all;
+  if(!VISIBLE.length){chkAll.checked=false;chkAll.indeterminate=false;return}
+  const all=VISIBLE.every(s=>SELECTED_IDS.has(s.id)),any=VISIBLE.some(s=>SELECTED_IDS.has(s.id));
+  chkAll.indeterminate=!all&&any;chkAll.checked=all
 }
-
-/* ================= SUMMARY ================= */
 function updateSummaries(){
-  topSummary.innerHTML = `Visible: <strong>${VISIBLE.length}</strong>`;
-  selSummary.innerHTML = `Selected: <strong>${[...SELECTED_IDS].length}</strong>`;
-
-  let p = 0, f = 0, nc = 0;
-
+  topSummary.innerHTML=`Visible: <strong>${VISIBLE.length}</strong>`;
+  selSummary.innerHTML=`Selected: <strong>${SELECTED_IDS.size}</strong>`;
+  let p=0,f=0,nc=0;VISIBLE.forEach(s=>{const t=total(s);if(t==null)nc++;else if(t>=65)p++;else f++});
+  pfSummary.innerHTML=`P: <strong>${p}</strong> | F: <strong>${f}</strong> | NC: <strong>${nc}</strong>`
+}
+function selectNotExamined(){
+  SELECTED_IDS.clear();const type=notExamType.value;
   VISIBLE.forEach(s=>{
-    const t = total(s);
-    if(t == null) nc++;
-    else if(t >= 65) p++;
-    else f++;
+    const noMid=s.midterm==null||s.midterm==="-"||Number(s.midterm)===0;
+    const noFinal=s.finalExam==null||s.finalExam==="-"||Number(s.finalExam)===0;
+    const ok=type==="ALL"?(noMid||noFinal):type==="MID"?noMid:noFinal;if(ok)SELECTED_IDS.add(s.id)
+  });render();alert("تم تحديد الطلاب")
+}
+function exportNotExaminedPDF(){
+  const old=new Set(SELECTED_IDS);SELECTED_IDS.clear();const type=notExamType.value;
+  VISIBLE.forEach(s=>{
+    const noMid=s.midterm==null||s.midterm==="-"||Number(s.midterm)===0;
+    const noFinal=s.finalExam==null||s.finalExam==="-"||Number(s.finalExam)===0;
+    const ok=type==="ALL"?(noMid||noFinal):type==="MID"?noMid:noFinal;if(ok)SELECTED_IDS.add(s.id)
   });
-
-  pfSummary.innerHTML = `P: <strong>${p}</strong> | F: <strong>${f}</strong> | NC: <strong>${nc}</strong>`;
-}
-
-/* ================= WHATSAPP ================= */
-function getStudentPhone(s){
-  return (
-    s.phone ||
-    s.Phone ||
-    s.mobile ||
-    s.Mobile ||
-    s.whatsapp ||
-    s.WhatsApp ||
-    ""
-  );
-}
-
-function normalizeWhatsAppPhone(phone){
-  let p = String(phone || "").replace(/\D/g,"");
-
-  if(!p) return "";
-
-  // 009665xxxxxxxx → 9665xxxxxxxx
-  if(p.startsWith("00")){
-    p = p.slice(2);
-  }
-
-  // 05xxxxxxxx → 9665xxxxxxxx
-  if(p.startsWith("05") && p.length === 10){
-    p = "966" + p.slice(1);
-  }
-  // 5xxxxxxxx → 9665xxxxxxxx
-  else if(p.startsWith("5") && p.length === 9){
-    p = "966" + p;
-  }
-
-  return p;
+  exportPDF("SELECTED").finally(()=>{SELECTED_IDS.clear();old.forEach(id=>SELECTED_IDS.add(id));render()})
 }
 
 function sendGradeWhatsApp(studentId){
-  const s =
-    FILTERED.find(x=>x.id === studentId) ||
-    STUDENTS.find(x=>x.id === studentId);
+  const s=FILTERED.find(x=>x.id===studentId)||STUDENTS.find(x=>x.id===studentId);if(!s)return alert("Student record not found");
+  const phone=normalizeWhatsAppPhone(getStudentPhone(s));if(!phone)return alert("لا يوجد رقم جوال مسجل لهذا الطالب");
+  const c=s.course||{},t=total(s),gr=gradeOf(t).text;
+  const message=`السلام عليكم ورحمة الله وبركاته،
+عزيزي الطالب/ ${getArabicName(s)||getEnglishName(s)||"-"}
 
-  if(!s){
-    alert("Student record not found");
-    return;
-  }
+نود إشعارك بنتيجتك في دورة ${c.TrainingCourse||"-"}:
 
-  const phone = normalizeWhatsAppPhone(getStudentPhone(s));
-
-  if(!phone){
-    alert("لا يوجد رقم جوال مسجل لهذا الطالب");
-    return;
-  }
-
-  const c = s.course || {};
-  const t = total(s);
-  const gr = gradeOf(t).text;
-
-  const message =
-`السلام عليكم ورحمة الله وبركاته،
-عزيزي الطالب/ ${s.name || "-"}
-
-نود إشعارك بنتيجتك في دورة ${c.TrainingCourse || "-"}:
-
-الاختبار النصفي: ${s.midterm ?? 0}
-الاختبار النهائي: ${s.finalExam ?? 0}
-الاستماع: ${s.listening ?? 0}
-التحدث: ${s.speaking ?? 0}
+الاختبار النصفي: ${s.midterm??0}
+الاختبار النهائي: ${s.finalExam??0}
+الاستماع: ${s.listening??0}
+التحدث: ${s.speaking??0}
 الواجبات: ${hwScore(s)}
 الحضور: ${attScore(s)}
-المجموع: ${t ?? 0} من 100
+المجموع: ${t??0} من 100
 التقدير: ${gr}
 
 مع تمنيات معهد برودل للغات لك بالتوفيق والنجاح.`;
-
-  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-  window.open(url, "_blank", "noopener,noreferrer");
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`,"_blank","noopener,noreferrer")
 }
 
-/* ================= RENDER ================= */
 function render(){
-  let list = [...FILTERED];
-
-  if(VIEW === "FAILED"){
-    list = list.filter(s=>{
-      const t = total(s);
-      return t != null && t < 65;
-    });
-  }
-
-  if(VIEW === "NOT"){
-    list = list.filter(s=> total(s) == null);
-  }
-
-  VISIBLE = list;
-  updateSummaries();
-
-  if(!list.length){
-    tbody.innerHTML = `<tr><td colspan="19" class="notice">No Data</td></tr>`;
-    syncHeaderCheckbox();
-    return;
-  }
-
-  tbody.innerHTML = list.map((s,i)=>{
-    const t = total(s);
-    const gr = gradeOf(t);
-    const c = s.course || {};
-    const checked = SELECTED_IDS.has(s.id) ? "checked" : "";
-    const startRaw = getDateStamp(c.StartingDate);
-    const isRecent = latestDates.includes(startRaw);
-
-    return `
-      <tr>
-        <td>
-          <input class="chk" type="checkbox" ${checked}
-            onchange="toggleRowSelection('${s.id}', this.checked)">
-        </td>
-        <td>${i+1}</td>
-        <td class="student-name-cell">
-          <b dir="rtl">${getArabicName(s)||"-"}</b>
-          <small dir="ltr">${getEnglishName(s)||"-"}</small>
-        </td>
-        <td class="student-id-cell">${getStudentIdentity(s)||"-"}</td>
-        <td>
-          <button class="whatsappBtn"
-                  onclick="sendGradeWhatsApp('${s.id}')"
-                  title="Send grades via WhatsApp">
-            <i class="fa-brands fa-whatsapp"></i>
-          </button>
-        </td>
-        <td>${c.Period || "-"}</td>
-        <td><b>${t ?? 0}</b></td>
-        <td><span class="grade ${gr.cls}">${gr.text}</span></td>
-
-        <td>${s.midterm ?? 0}</td>
-        <td>${s.finalExam ?? 0}</td>
-        <td>${s.listening ?? 0}</td>
-        <td>${s.speaking ?? 0}</td>
-        <td>${hwScore(s)}</td>
-        <td>${attScore(s)}</td>
-
-        <td>${c.TrainingCourse || "-"}</td>
-        <td>${c.Trainer || "-"}</td>
-        <td>${c.Branch || "-"}</td>
-        <td>${c.Section || "-"}</td>
-        <td class="${isRecent ? 'recent-date-cell' : ''}">${formatDateValue(c.StartingDate)}</td>
-      </tr>
-    `;
-  }).join("");
-
-  syncHeaderCheckbox();
+  let list=[...FILTERED];
+  if(VIEW==="FAILED")list=list.filter(s=>{const t=total(s);return t!=null&&t<65});
+  if(VIEW==="NOT")list=list.filter(s=>total(s)==null);
+  VISIBLE=list;updateSummaries();buildPdfCourseOptions();
+  if(!list.length){tbody.innerHTML=`<tr><td colspan="19" class="notice">No Data</td></tr>`;syncHeaderCheckbox();return}
+  tbody.innerHTML=list.map((s,i)=>{
+    const t=total(s),gr=gradeOf(t),c=s.course||{},checked=SELECTED_IDS.has(s.id)?"checked":"";
+    const recent=latestDates.includes(getDateStamp(c.StartingDate));
+    return `<tr>
+      <td><input class="chk" type="checkbox" ${checked} onchange="toggleRowSelection('${String(s.id).replace(/'/g,"\\'")}',this.checked)"></td>
+      <td>${i+1}</td>
+      <td class="student-name-cell"><b dir="rtl">${getArabicName(s)||"-"}</b><small dir="ltr">${getEnglishName(s)||"-"}</small></td>
+      <td class="student-id-cell">${getStudentIdentity(s)||"-"}</td>
+      <td><button class="whatsappBtn" onclick="sendGradeWhatsApp('${String(s.id).replace(/'/g,"\\'")}')" title="Send grades via WhatsApp"><i class="fa-brands fa-whatsapp"></i></button></td>
+      <td>${c.Period||"-"}</td><td><b>${t??0}</b></td><td><span class="grade ${gr.cls}">${gr.text}</span></td>
+      <td>${s.midterm??0}</td><td>${s.finalExam??0}</td><td>${s.listening??0}</td><td>${s.speaking??0}</td><td>${hwScore(s)}</td><td>${attScore(s)}</td>
+      <td>${c.TrainingCourse||"-"}</td><td>${c.Trainer||"-"}</td><td>${c.Branch||"-"}</td><td>${c.Section||"-"}</td>
+      <td class="${recent?"recent-date-cell":""}">${formatDateValue(c.StartingDate)}</td>
+    </tr>`
+  }).join("");syncHeaderCheckbox()
 }
 
-/* ================= PDF EXPORT ================= */
-function getExportList(mode){
-  if(mode === "SELECTED") return VISIBLE.filter(s=>SELECTED_IDS.has(s.id));
-  if(mode === "COURSES"){
-    if(PDF_ALL_COURSES) return [...VISIBLE];
-    return VISIBLE.filter(s=>s.course && PDF_SELECTED_COURSES.has(s.course.id));
-  }
-  return [...VISIBLE];
+/* ================= PDF COURSE SELECTOR ================= */
+function visiblePdfCourses(){
+  const map=new Map();VISIBLE.forEach(s=>{const c=s.course;if(c?.id&&!map.has(c.id))map.set(c.id,c)});return [...map.values()]
 }
+function pdfCourseText(c){return [c.TrainingCourse||"-",c.Trainer||"-",c.Period||"-",`Course Type: ${getCourseType(c)||"-"}`,formatDateValue(c.StartingDate)].join(" · ")}
+function buildPdfCourseOptions(){
+  const box=document.getElementById("pdfCourseChecks");if(!box)return;
+  const courses=visiblePdfCourses(),valid=new Set(courses.map(c=>c.id));
+  PDF_SELECTED_COURSES=new Set([...PDF_SELECTED_COURSES].filter(id=>valid.has(id)));
+  box.innerHTML=`<label class="pdf-course-row all"><input type="checkbox" ${PDF_ALL_COURSES?"checked":""} onchange="setPdfAllCourses(this.checked)"><span>كل الدورات حسب الفلترة الحالية (${courses.length})</span></label>`+
+    courses.map(c=>`<label class="pdf-course-row"><input type="checkbox" ${!PDF_ALL_COURSES&&PDF_SELECTED_COURSES.has(c.id)?"checked":""} onchange="togglePdfCourse('${String(c.id).replace(/'/g,"\\'")}',this.checked)"><span>${pdfCourseText(c)}</span></label>`).join("");
+  updatePdfCourseLabel()
+}
+function togglePdfCourseMenu(event){event?.stopPropagation();buildPdfCourseOptions();document.getElementById("pdfCourseMenu")?.classList.toggle("hidden")}
+function closePdfCourseMenu(){document.getElementById("pdfCourseMenu")?.classList.add("hidden")}
+function setPdfAllCourses(checked){
+  PDF_ALL_COURSES=checked===true;PDF_SELECTED_COURSES.clear();
+  VISIBLE.forEach(s=>PDF_ALL_COURSES?SELECTED_IDS.add(s.id):SELECTED_IDS.delete(s.id));
+  render();buildPdfCourseOptions()
+}
+function togglePdfCourse(id,checked){
+  const wasAll=PDF_ALL_COURSES;PDF_ALL_COURSES=false;
+  if(wasAll){SELECTED_IDS.clear();PDF_SELECTED_COURSES.clear()}
+  checked?PDF_SELECTED_COURSES.add(id):PDF_SELECTED_COURSES.delete(id);
+  VISIBLE.forEach(s=>{if(s.course?.id===id)(checked?SELECTED_IDS.add:SELECTED_IDS.delete).call(SELECTED_IDS,s.id)});
+  render();buildPdfCourseOptions()
+}
+function updatePdfCourseLabel(){
+  const el=document.getElementById("pdfCourseLabel");if(!el)return;
+  el.textContent=PDF_ALL_COURSES?`PDF حسب الفلترة (${visiblePdfCourses().length})`:`PDF للدورات المحددة (${PDF_SELECTED_COURSES.size})`
+}
+document.addEventListener("click",e=>{if(!document.getElementById("pdfCourseWrap")?.contains(e.target))closePdfCourseMenu()});
 
+/* ================= PROFESSIONAL PDF ================= */
 async function loadPdfArabicFont(pdf){
   try{
-    const fontUrl="https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/tajawal/Tajawal-Regular.ttf";
-    const response=await fetch(fontUrl);
-    if(!response.ok) throw new Error(`Arabic font HTTP ${response.status}`);
-    const buffer=await response.arrayBuffer();
-    const bytes=new Uint8Array(buffer);
-    let binary="";
-    const chunk=8192;
-    for(let i=0;i<bytes.length;i+=chunk){
-      binary+=String.fromCharCode(...bytes.subarray(i,i+chunk));
-    }
-    pdf.addFileToVFS("Tajawal-Regular.ttf",btoa(binary));
-    pdf.addFont("Tajawal-Regular.ttf","Tajawal","normal");
-    return "Tajawal";
-  }catch(error){
-    console.warn("Arabic PDF font could not be loaded",error);
-    return "helvetica";
-  }
+    const url="https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/tajawal/Tajawal-Regular.ttf";
+    const r=await fetch(url);if(!r.ok)throw new Error("Font HTTP "+r.status);
+    const b=new Uint8Array(await r.arrayBuffer());let bin="",chunk=8192;
+    for(let i=0;i<b.length;i+=chunk)bin+=String.fromCharCode(...b.subarray(i,i+chunk));
+    pdf.addFileToVFS("Tajawal-Regular.ttf",btoa(bin));pdf.addFont("Tajawal-Regular.ttf","Tajawal","normal");return "Tajawal"
+  }catch(e){console.warn("Arabic font unavailable",e);return "helvetica"}
 }
-
-function shapeArabicForPdf(pdf,value){
-  /*
-    لا نستخدم pdf.processArabic هنا لأن jsPDF يعالج العربية تلقائيًا
-    عند وجود خط عربي. المعالجة اليدوية كانت تعالج النص مرتين وتتسبب
-    في سقوط بعض الحروف من الأسماء.
-  */
-  return String(value??"");
+function shapeArabicForPdf(pdf,value){return String(value??"")}
+function pdfStudentName(s){return `${getArabicName(s)||"-"}\n${getEnglishName(s)||"-"}`}
+function getExportList(mode){
+  if(mode==="SELECTED")return VISIBLE.filter(s=>SELECTED_IDS.has(s.id));
+  if(mode==="COURSES")return PDF_ALL_COURSES?[...VISIBLE]:VISIBLE.filter(s=>s.course?.id&&PDF_SELECTED_COURSES.has(s.course.id));
+  return [...VISIBLE]
 }
-
-function drawPdfField(pdf,label,value,x,y,arabicFont){
-  const raw=String(value||"-");
-  pdf.setFont("helvetica","normal");
-  pdf.text(label,x,y);
-  const valueX=x+pdf.getTextWidth(label)+1.2;
-  const hasArabic=/[\u0600-\u06FF]/.test(raw);
-  pdf.setFont(hasArabic?arabicFont:"helvetica","normal");
-  pdf.text(shapeArabicForPdf(pdf,raw),valueX,y);
+function pdfText(pdf,text,x,y,font="helvetica",size=8,align="left"){
+  const hasArabic=/[\u0600-\u06FF]/.test(String(text||""));
+  pdf.setFont(hasArabic?"Tajawal":font,"normal");pdf.setFontSize(size);pdf.text(String(text??"-"),x,y,{align})
 }
-
-function pdfStudentName(s,pdf){
-  const arabic=getArabicName(s)||"-";
-  const english=getEnglishName(s)||"-";
-  /* نفس النص الظاهر في الواجهة تمامًا، دون تشكيل أو اختصار إضافي */
-  return `${arabic}\n${english}`;
+function drawReportHeader(pdf,arabicFont,title,subtitle,mode,pageNo,totalPages){
+  const W=pdf.internal.pageSize.getWidth();
+  pdf.setFillColor(12,47,82);pdf.rect(0,0,W,29,"F");
+  try{pdf.addImage(LOGO,"PNG",12,6,17,17)}catch(e){}
+  pdf.setFont("helvetica","bold");pdf.setFontSize(14);pdf.setTextColor(255,255,255);pdf.text(title,34,14);
+  pdf.setFontSize(7.5);pdf.text(subtitle,34,21);
+  pdf.setFontSize(7);pdf.text(`PRUDLE • ${mode} • PAGE ${pageNo}${totalPages?` / ${totalPages}`:""}`,W-12,12,{align:"right"});
+  pdf.setDrawColor(30,111,168);pdf.setLineWidth(.8);pdf.line(10,31,W-10,31);
+}
+function drawInfoBox(pdf,c,arabicFont){
+  pdf.setFillColor(246,249,252);pdf.setDrawColor(211,225,236);pdf.roundedRect(12,38,186,27,3,3,"FD");
+  const rows=[
+    ["Course",c.TrainingCourse||"-","Trainer",c.Trainer||"-"],
+    ["Period",c.Period||"-","Branch",c.Branch||"-"],
+    ["Section",c.Section||"-","Course Type",getCourseType(c)||"-"],
+    ["Start",formatDateValue(c.StartingDate),"",""]
+  ];
+  let y=44;
+  rows.forEach(r=>{
+    pdf.setFont("helvetica","bold");pdf.setFontSize(7);pdf.setTextColor(85,108,127);
+    pdf.text(r[0]+":",17,y);pdf.text(r[2]?r[2]+":":"",108,y);
+    pdfText(pdf,r[1],38,y,arabicFont,7);if(r[2])pdfText(pdf,r[3],128,y,arabicFont,7);y+=5.2
+  })
+}
+function drawMetricCards(pdf,metrics,y){
+  const W=pdf.internal.pageSize.getWidth(),gap=3,cardW=(W-24-gap*4)/5;
+  metrics.forEach((m,i)=>{
+    const x=12+i*(cardW+gap);
+    pdf.setFillColor(249,251,253);pdf.setDrawColor(...m.color);pdf.setLineWidth(.6);pdf.roundedRect(x,y,cardW,18,2.5,2.5,"FD");
+    pdf.setFillColor(...m.color);pdf.rect(x,y,2.7,18,"F");
+    pdf.setFont("helvetica","bold");pdf.setFontSize(6.3);pdf.setTextColor(100,119,136);pdf.text(m.label,x+5,y+6);
+    pdf.setFontSize(13);pdf.setTextColor(...m.color);pdf.text(String(m.value),x+5,y+14)
+  })
+}
+function makeCourseGroups(list){
+  const map={};list.forEach(s=>{const c=s.course;if(!c?.id)return;if(!map[c.id])map[c.id]={course:c,students:[]};map[c.id].students.push(s)});return Object.values(map)
+}
+function courseStats(students){
+  const vals=students.map(total).filter(v=>v!=null);let p=0,f=0,n=0;
+  students.forEach(s=>{const t=total(s);if(t==null)n++;else if(t>=65)p++;else f++});
+  return {avg:vals.length?Number((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1)):0,max:vals.length?Math.max(...vals):0,min:vals.length?Math.min(...vals):0,passed:p,failed:f,nc:n,graded:p+f}
 }
 
 async function exportPDF(mode="VISIBLE"){
-  const listToExport = getExportList(mode);
+  const listToExport=getExportList(mode);
+  if(!listToExport.length){alert(mode==="SELECTED"?"No selected records to export":mode==="COURSES"?"حدد دورة واحدة على الأقل للطباعة":"No data to export");return}
+  if(mode==="COURSES")closePdfCourseMenu();
 
-  if(!listToExport.length){
-    alert(mode === "SELECTED" ? "No selected records to export" : mode === "COURSES" ? "حدد دورة واحدة على الأقل للطباعة" : "No data to export");
-    return;
-  }
+  const {jsPDF}=window.jspdf,pdf=new jsPDF("p","mm","a4");
+  const arabicFont=await loadPdfArabicFont(pdf),W=pdf.internal.pageSize.getWidth(),H=pdf.internal.pageSize.getHeight();
+  const groups=makeCourseGroups(listToExport);
+  const allStats=courseStats(listToExport);
+  const totalPages=groups.length+1;
 
-  if(mode === "COURSES") closePdfCourseMenu();
+  /* Executive summary page */
+  drawReportHeader(pdf,arabicFont,"Prudle – Academic Executive Analytics","PROFESSIONAL COURSE PERFORMANCE REPORT",mode,1,totalPages);
+  pdf.setTextColor(22,68,120);pdf.setFont("helvetica","bold");pdf.setFontSize(13);pdf.text("Executive Performance Summary",12,42);
+  pdf.setFont("helvetica","normal");pdf.setFontSize(7.5);pdf.setTextColor(100,119,136);
+  pdf.text(`Generated: ${new Date().toLocaleString("en-GB")}`,12,48);
+  pdf.text(`Records included: ${listToExport.length}`,W-12,48,{align:"right"});
 
-  const {jsPDF} = window.jspdf;
-  const pdf = new jsPDF("p","mm","a4");
-  const pdfArabicFont=await loadPdfArabicFont(pdf);
-  const pageW = pdf.internal.pageSize.getWidth();
-  const pageH = pdf.internal.pageSize.getHeight();
+  drawMetricCards(pdf,[
+    {label:"PASSED",value:allStats.passed,color:[32,164,103]},
+    {label:"FAILED",value:allStats.failed,color:[224,73,78]},
+    {label:"NOT COMPLETED",value:allStats.nc,color:[121,139,154]},
+    {label:"GRADED",value:allStats.graded,color:[30,111,168]},
+    {label:"TOTAL",value:listToExport.length,color:[22,68,120]}
+  ],55);
 
-  let passed = 0, failed = 0, notCompleted = 0;
-
-  listToExport.forEach(s=>{
-    const t = total(s);
-    if(t == null) notCompleted++;
-    else if(t >= 65) passed++;
-    else failed++;
-  });
-
-  const gradedTotal = passed + failed;
-  const overallTotal = listToExport.length;
-
-  const courseGroups = {};
-  listToExport.forEach(s=>{
-    const c = s.course;
-    if(!c || !c.id) return;
-    if(!courseGroups[c.id]) courseGroups[c.id] = {course:c, students:[]};
-    courseGroups[c.id].students.push(s);
-  });
-
-  const analytics = Object.values(courseGroups).map(g=>{
-    const totals = g.students.map(s=>total(s)).filter(v=>v != null);
-    const avg = totals.length ? (totals.reduce((a,b)=>a+b,0) / totals.length) : 0;
-
-    let p = 0, f = 0, n = 0;
-    g.students.forEach(s=>{
-      const t = total(s);
-      if(t == null) n++;
-      else if(t >= 65) p++;
-      else f++;
-    });
-
-    const max = totals.length ? Math.max(...totals) : 0;
-    const min = totals.length ? Math.min(...totals) : 0;
-
-    return {
-      courseName: g.course.TrainingCourse || "-",
-      trainer: g.course.Trainer || "-",
-      period: g.course.Period || "-",
-      students: g.students.length,
-      passed: p,
-      failed: f,
-      notCompleted: n,
-      avg: Number(avg.toFixed(1)),
-      max,
-      min,
-      start: formatDateValue(g.course.StartingDate),
-      branch: g.course.Branch || "-",
-      section: g.course.Section || "-"
-    };
-  }).sort((a,b)=>{
-    const periodDiff=periodStartMinutes(a.period)-periodStartMinutes(b.period);
-    if(periodDiff!==0)return periodDiff;
-    return String(a.courseName||"").localeCompare(
-      String(b.courseName||""),
-      "en",
-      {numeric:true,sensitivity:"base"}
-    );
-  });
-
-  pdf.setDrawColor(22,68,120);
-  pdf.setLineWidth(1.2);
-  pdf.rect(10,10,190,277);
-
-  pdf.setFillColor(22,68,120);
-  pdf.rect(10,10,190,24,"F");
-
-  try{ pdf.addImage(LOGO,"PNG",14,12,16,16); }catch(e){}
-
-  pdf.setFont("helvetica","bold");
-  pdf.setFontSize(14);
-  pdf.setTextColor(255,255,255);
-  pdf.text("Prudle – Executive Academic Analytics", 34, 26);
-
-  pdf.setFontSize(10);
-  pdf.text(mode==="SELECTED" ? "Mode: Selected Records" : "Mode: Visible Records", pageW-14, 26, {align:"right"});
-
-  pdf.setTextColor(22,68,120);
-  pdf.setFontSize(9);
-  drawPdfField(pdf,"Branch:",fBranch.value||"All",12,44,pdfArabicFont);
-  drawPdfField(pdf,"Section:",fSection.value||"All",108,44,pdfArabicFont);
-  drawPdfField(pdf,"Trainer:",fTrainer.value||"All",12,50,pdfArabicFont);
-  drawPdfField(pdf,"Period:",fPeriod.value||"All",108,50,pdfArabicFont);
-  drawPdfField(pdf,"Course:",fCourse.value||"All",12,56,pdfArabicFont);
-  drawPdfField(pdf,"Type:",fCourseType.value||"All",78,56,pdfArabicFont);
-  drawPdfField(pdf,"Start:",fStart.value||"All",145,56,pdfArabicFont);
-
-  const statCards=[
-    {label:"PASSED",value:passed,color:[32,164,103]},
-    {label:"FAILED",value:failed,color:[224,73,78]},
-    {label:"NOT COMPLETED",value:notCompleted,color:[121,139,154]},
-    {label:"GRADED",value:gradedTotal,color:[30,111,168]},
-    {label:"TOTAL",value:overallTotal,color:[22,68,120]}
+  /* Active filters */
+  pdf.setFillColor(247,250,253);pdf.setDrawColor(218,229,238);pdf.roundedRect(12,78,186,31,3,3,"FD");
+  pdf.setFont("helvetica","bold");pdf.setFontSize(7.5);pdf.setTextColor(22,68,120);pdf.text("ACTIVE FILTERS",17,85);
+  const filters=[
+    ["Trainer",fTrainer.value||"All"],["Branch",fBranch.value||"All"],["Course",fCourse.value||"All"],
+    ["Period",fPeriod.value||"All"],["Section",fSection.value||"All"],["Course Type",fCourseType.value||"All"],
+    ["Start",fStart.value?formatDateValue(fStart.value):"All"]
   ];
-  statCards.forEach((card,index)=>{
-    const x=12+(index*37.2);
-    pdf.setFillColor(248,250,252);
-    pdf.setDrawColor(...card.color);
-    pdf.setLineWidth(.6);
-    pdf.roundedRect(x,65,34.5,22,2.5,2.5,"FD");
-    pdf.setFillColor(...card.color);
-    pdf.rect(x,65,3,22,"F");
-    pdf.setTextColor(100,119,136);
-    pdf.setFont("helvetica","bold");
-    pdf.setFontSize(6.7);
-    pdf.text(card.label,x+5,72);
-    pdf.setTextColor(...card.color);
-    pdf.setFontSize(16);
-    pdf.text(String(card.value),x+5,82);
+  let fy=91,fx=17;filters.forEach((f,i)=>{
+    if(i===4){fx=17;fy=102}
+    pdf.setFont("helvetica","bold");pdf.setFontSize(6.5);pdf.setTextColor(100,119,136);pdf.text(f[0]+":",fx,fy);
+    pdfText(pdf,f[1],fx+23,fy,arabicFont,6.5);fx+=90
   });
 
-  const chartLabels = analytics.map(a=>{
-    const p = (a.period||"").toString().trim();
-    const t = (a.trainer||"").toString().trim();
-    return `${p} | ${t}`;
+  const summaryRows=groups.sort((a,b)=>{
+    const pd=periodStartMinutes(a.course.Period)-periodStartMinutes(b.course.Period);
+    if(pd!==0)return pd;
+    return String(a.course.TrainingCourse||"").localeCompare(String(b.course.TrainingCourse||""),"en",{numeric:true,sensitivity:"base"})
+  }).map(g=>{
+    const st=courseStats(g.students),c=g.course;
+    return [c.TrainingCourse||"-",c.Trainer||"-",c.Period||"-",g.students.length,st.passed,st.failed,st.nc,st.avg]
   });
-
-  const chartData = analytics.map(a=>a.avg);
-
-  const canvas = document.createElement("canvas");
-  canvas.width = 850;
-  canvas.height = 380;
-
-  await new Promise(resolve=>{
-    new Chart(canvas.getContext("2d"),{
-      type:"bar",
-      data:{
-        labels:chartLabels,
-        datasets:[{
-          label:"Avg by Course (Period | Trainer)",
-          data:chartData,
-          backgroundColor:"#164478"
-        }]
-      },
-      options:{
-        responsive:false,
-        animation:false,
-        plugins:{
-          legend:{display:false},
-          tooltip:{enabled:true}
-        },
-        scales:{
-          y:{beginAtZero:true,max:100}
-        }
-      }
-    });
-    setTimeout(resolve,350);
-  });
-
-  try{
-    pdf.addImage(canvas.toDataURL("image/png"),"PNG", 12, 94, 186, 55);
-  }catch(e){}
-
-  const summaryRows = analytics.map(a=>[
-    a.courseName,
-    a.trainer,
-    a.period,
-    a.students,
-    a.passed,
-    a.failed,
-    a.notCompleted,
-    a.avg
-  ]);
-
   pdf.autoTable({
-    startY:155,
-    head:[["Course","Trainer","Period","Students","Passed","Failed","Not Comp.","Avg"]],
-    body:summaryRows,
-    theme:"grid",
-    styles:{fontSize:8.5,halign:"center",cellPadding:2},
-    headStyles:{fillColor:[22,68,120],textColor:255,fontStyle:"bold"},
+    startY:117,head:[["Course","Trainer","Period","Students","Passed","Failed","Not Comp.","Avg"]],
+    body:summaryRows,theme:"grid",margin:{left:12,right:12},
+    styles:{font:"helvetica",fontSize:7.3,cellPadding:2,halign:"center",valign:"middle"},
+    headStyles:{fillColor:[22,68,120],textColor:255,fontStyle:"bold",fontSize:7},
     alternateRowStyles:{fillColor:[245,248,252]},
-    didParseCell:function(d){
+    columnStyles:{0:{halign:"left",fontStyle:"bold"},1:{halign:"left"},3:{cellWidth:15},4:{cellWidth:14},5:{cellWidth:14},6:{cellWidth:18},7:{cellWidth:14}},
+    didParseCell:d=>{
       if(d.section==="body"){
-        if(d.column.index===0){
-          d.cell.styles.fillColor=[234,241,255];
-          d.cell.styles.textColor=[15,48,87];
-          d.cell.styles.fontStyle="bold";
-        }
-        if(d.column.index===1){
-          d.cell.styles.fillColor=[240,246,255];
-          d.cell.styles.textColor=[22,68,120];
-          d.cell.styles.fontStyle="bold";
-        }
-        if(d.column.index===4){ d.cell.styles.fillColor=[220,255,230]; }
-        if(d.column.index===5){ d.cell.styles.fillColor=[255,230,230]; }
-        if(d.column.index===6){ d.cell.styles.fillColor=[240,240,240]; }
+        if(d.column.index===4)d.cell.styles.fillColor=[220,255,230];
+        if(d.column.index===5)d.cell.styles.fillColor=[255,230,230];
+        if(d.column.index===6)d.cell.styles.fillColor=[240,240,240];
       }
-    },
-    margin:{left:12,right:12}
+    }
   });
+  pdf.setFont("helvetica","normal");pdf.setFontSize(7);pdf.setTextColor(140);pdf.text("Prudle Education © "+new Date().getFullYear(),W/2,H-7,{align:"center"});
 
-  try{
-    pdf.setGState(new pdf.GState({opacity:0.05}));
-    pdf.addImage(LOGO,"PNG", pageW/2-55, pageH/2-55, 110,110);
-    pdf.setGState(new pdf.GState({opacity:1}));
-  }catch(e){}
-
-  pdf.setFontSize(8);
-  pdf.setTextColor(150);
-  pdf.text("Prudle Education © "+new Date().getFullYear(), pageW/2, pageH-6, {align:"center"});
-
-  Object.values(courseGroups).forEach(g=>{
+  /* One professional page per course. */
+  groups.forEach((g,index)=>{
     pdf.addPage();
+    const c=g.course,st=courseStats(g.students);
+    drawReportHeader(pdf,arabicFont,"Course Performance Report","PRUDLE ACADEMIC ANALYTICS",mode,index+2,totalPages);
+    drawInfoBox(pdf,c,arabicFont);
 
-    pdf.setDrawColor(22,68,120);
-    pdf.setLineWidth(1.2);
-    pdf.rect(10,10,190,277);
+    drawMetricCards(pdf,[
+      {label:"COURSE AVERAGE",value:st.avg,color:[22,68,120]},
+      {label:"PASSED",value:st.passed,color:[32,164,103]},
+      {label:"FAILED",value:st.failed,color:[224,73,78]},
+      {label:"NOT COMPLETED",value:st.nc,color:[121,139,154]},
+      {label:"HIGHEST",value:st.max,color:[30,111,168]}
+    ],70);
 
-    pdf.setFillColor(22,68,120);
-    pdf.rect(10,10,190,27,"F");
-
-    try{ pdf.addImage(LOGO,"PNG",15,13,20,20); }catch(e){}
-
-    pdf.setFont("helvetica","bold");
-    pdf.setFontSize(14);
-    pdf.setTextColor(255,255,255);
-    pdf.text("Course Performance Report", 42, 22);
-    pdf.setFontSize(8);
-    pdf.text("PRUDLE ACADEMIC ANALYTICS", 42, 29);
-
-    const c = g.course;
-    let y = 46;
-
-    pdf.setFillColor(244,248,252);
-    pdf.setDrawColor(207,222,233);
-    pdf.roundedRect(15,40,180,28,3,3,"FD");
-
-    pdf.setFont("helvetica","normal");
-    pdf.setFontSize(9);
-    pdf.setTextColor(35,67,93);
-    drawPdfField(pdf,"Course:",c.TrainingCourse||"-",20,y,pdfArabicFont);
-    drawPdfField(pdf,"Trainer:",c.Trainer||"-",120,y,pdfArabicFont); y += 5;
-    drawPdfField(pdf,"Period:",c.Period||"-",20,y,pdfArabicFont);
-    drawPdfField(pdf,"Branch:",c.Branch||"-",120,y,pdfArabicFont); y += 5;
-    drawPdfField(pdf,"Section:",c.Section||"-",20,y,pdfArabicFont);
-    drawPdfField(pdf,"Type:",getCourseType(c)||"-",75,y,pdfArabicFont);
-    drawPdfField(pdf,"Start:",formatDateValue(c.StartingDate),135,y,pdfArabicFont); y += 13;
-
-    const totals = g.students.map(s=>total(s)).filter(v=>v != null);
-    const avg = totals.length ? (totals.reduce((a,b)=>a+b,0) / totals.length).toFixed(1) : "-";
-
-    pdf.setFont("helvetica","bold");
-    pdf.setTextColor(22,68,120);
-    pdf.setFillColor(22,68,120);
-    pdf.roundedRect(15,y-5,42,10,2,2,"F");
-    pdf.setTextColor(255,255,255);
-    pdf.text(`Course Average: ${avg}`, 19, y+1);
-    y += 5;
+    const rows=g.students.map((s,i)=>{
+      const t=total(s),gr=gradeOf(t).text;
+      return [i+1,pdfStudentName(s),getStudentIdentity(s)||"-",c.Period||"-",s.midterm??0,s.finalExam??0,s.listening??0,s.speaking??0,hwScore(s),attScore(s),t??0,gr]
+    });
 
     pdf.autoTable({
-      startY:y+5,
-      theme:"grid",
-      head:[["#","Arabic / English Name","Student ID","Period","Mid","Final","Listen","Speak","HW","Attend","Total","Grade"]],
-      body:g.students.map((s,i)=>{
-        const t = total(s);
-        const gr = gradeOf(t).text;
-        return [
-          i+1,
-          pdfStudentName(s,pdf),
-          getStudentIdentity(s)||"-",
-          c.Period||"-",
-          s.midterm ?? 0,
-          s.finalExam ?? 0,
-          s.listening ?? 0,
-          s.speaking ?? 0,
-          hwScore(s),
-          attScore(s),
-          t ?? 0,
-          gr
-        ];
-      }),
-      headStyles:{font:"helvetica",fillColor:[22,68,120],textColor:255,fontStyle:"bold"},
-      styles:{font:pdfArabicFont,fontSize:7.2,halign:"center",valign:"middle",cellPadding:1.5,minCellHeight:8},
-      columnStyles:{
-        0:{cellWidth:6},
-        1:{cellWidth:42,fontSize:7.5},
-        2:{cellWidth:20},
-        3:{cellWidth:22},
-        4:{cellWidth:10.5},5:{cellWidth:10.5},6:{cellWidth:10.5},7:{cellWidth:10.5},
-        8:{cellWidth:9.5},9:{cellWidth:10.5},10:{cellWidth:11.5,fontSize:7.7},11:{cellWidth:21,fontSize:7.2}
-      },
+      startY:94,head:[["#","Arabic / English Name","Student ID","Period","Mid","Final","Listen","Speak","HW","Attend","Total","Grade"]],
+      body:rows,theme:"grid",margin:{left:12,right:12,bottom:15},tableWidth:186,
+      styles:{font:"Tajawal",fontSize:6.8,halign:"center",valign:"middle",cellPadding:1.6,minCellHeight:9},
+      headStyles:{font:"helvetica",fillColor:[22,68,120],textColor:255,fontStyle:"bold",fontSize:6.7},
       alternateRowStyles:{fillColor:[245,248,252]},
-      didParseCell:function(d){
-        if(d.section==="body" && d.column.index===11){
-          const v = d.cell.raw;
-          if(v==="Excellent"){ d.cell.styles.fillColor=[22,68,120]; d.cell.styles.textColor=[255,255,255]; }
-          else if(v==="Very Good"){ d.cell.styles.fillColor=[39,174,96]; d.cell.styles.textColor=[255,255,255]; }
-          else if(v==="Good"){ d.cell.styles.fillColor=[241,196,15]; d.cell.styles.textColor=[27,27,27]; }
-          else if(v==="Pass"){ d.cell.styles.fillColor=[255,140,0]; d.cell.styles.textColor=[255,255,255]; }
-          else if(v==="Fail"){ d.cell.styles.fillColor=[231,76,60]; d.cell.styles.textColor=[255,255,255]; }
-          else { d.cell.styles.fillColor=[127,140,141]; d.cell.styles.textColor=[255,255,255]; }
-          d.cell.styles.fontStyle="bold";
-        }
-
-        if(d.section==="body" && d.column.index===10){
-          d.cell.styles.fontStyle="bold";
+      columnStyles:{
+        0:{cellWidth:6},1:{cellWidth:40,fontSize:6.9},2:{cellWidth:19},3:{cellWidth:21},
+        4:{cellWidth:10},5:{cellWidth:10},6:{cellWidth:10},7:{cellWidth:10},8:{cellWidth:9},9:{cellWidth:10},
+        10:{cellWidth:11,fontSize:7.2,fontStyle:"bold"},11:{cellWidth:20,fontSize:6.8,fontStyle:"bold"}
+      },
+      didParseCell:d=>{
+        if(d.section==="body"&&d.column.index===11){
+          const v=d.cell.raw;
+          if(v==="Excellent"){d.cell.styles.fillColor=[22,68,120];d.cell.styles.textColor=[255,255,255]}
+          else if(v==="Very Good"){d.cell.styles.fillColor=[39,174,96];d.cell.styles.textColor=[255,255,255]}
+          else if(v==="Good"){d.cell.styles.fillColor=[241,196,15];d.cell.styles.textColor=[27,27,27]}
+          else if(v==="Pass"){d.cell.styles.fillColor=[255,140,0];d.cell.styles.textColor=[255,255,255]}
+          else if(v==="Fail"){d.cell.styles.fillColor=[231,76,60];d.cell.styles.textColor=[255,255,255]}
+          else{d.cell.styles.fillColor=[127,140,141];d.cell.styles.textColor=[255,255,255]}
         }
       },
-      /* يبدأ الجدول داخل إطار الصفحة (الإطار من 10 إلى 200 مم) */
-      margin:{left:12,right:12},
-      tableWidth:184.5
+      willDrawCell:d=>{
+        if(d.section==="body"&&d.column.index===1)d.cell.styles.font="Tajawal"
+      }
     });
 
-    pdf.setFontSize(8);
-    pdf.setTextColor(150);
-    pdf.text("Prudle Education © "+new Date().getFullYear(), pageW/2, pageH-6, {align:"center"});
+    const finalY=(pdf.lastAutoTable?.finalY||H-30)+8;
+    pdf.setFillColor(247,250,253);pdf.setDrawColor(218,229,238);
+    pdf.roundedRect(12,Math.min(finalY,H-28),186,12,2.5,2.5,"FD");
+    pdf.setFont("helvetica","bold");pdf.setFontSize(6.8);pdf.setTextColor(100,119,136);
+    pdf.text(`COURSE STATUS • GRADED ${st.graded} / ${g.students.length} • MIN ${st.min} • MAX ${st.max}`,17,Math.min(finalY+7,H-21));
+    pdf.setFont("helvetica","normal");pdf.setFontSize(7);pdf.setTextColor(140);
+    pdf.text("Prudle Education © "+new Date().getFullYear(),W/2,H-7,{align:"center"});
   });
 
-  const fileName = (mode==="SELECTED"
-    ? "Prudle_Executive_Analytics_SELECTED.pdf"
-    : "Prudle_Executive_Analytics_VISIBLE.pdf");
-
-  pdf.save(fileName);
+  const suffix=mode==="SELECTED"?"SELECTED":mode==="COURSES"?"COURSES":"VISIBLE";
+  pdf.save(`Prudle_Executive_Analytics_${suffix}.pdf`);
 }
 </script>
-
 </body>
 </html>
