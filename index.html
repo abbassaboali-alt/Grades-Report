@@ -1328,9 +1328,12 @@ async function loadPdfArabicFont(pdf){
 }
 
 function shapeArabicForPdf(pdf,value){
-  const text=String(value??"");
-  if(!/[\u0600-\u06FF]/.test(text)) return text;
-  return typeof pdf.processArabic==="function" ? pdf.processArabic(text) : text;
+  /*
+    لا نستخدم pdf.processArabic هنا لأن jsPDF يعالج العربية تلقائيًا
+    عند وجود خط عربي. المعالجة اليدوية كانت تعالج النص مرتين وتتسبب
+    في سقوط بعض الحروف من الأسماء.
+  */
+  return String(value??"");
 }
 
 function drawPdfField(pdf,label,value,x,y,arabicFont){
@@ -1346,7 +1349,8 @@ function drawPdfField(pdf,label,value,x,y,arabicFont){
 function pdfStudentName(s,pdf){
   const arabic=getArabicName(s)||"-";
   const english=getEnglishName(s)||"-";
-  return `${shapeArabicForPdf(pdf,arabic)}\n${english}`;
+  /* نفس النص الظاهر في الواجهة تمامًا، دون تشكيل أو اختصار إضافي */
+  return `${arabic}\n${english}`;
 }
 
 async function exportPDF(mode="VISIBLE"){
@@ -1664,7 +1668,9 @@ async function exportPDF(mode="VISIBLE"){
           d.cell.styles.fontStyle="bold";
         }
       },
-      margin:{left:8,right:8}
+      /* يبدأ الجدول داخل إطار الصفحة (الإطار من 10 إلى 200 مم) */
+      margin:{left:12,right:12},
+      tableWidth:184.5
     });
 
     pdf.setFontSize(8);
