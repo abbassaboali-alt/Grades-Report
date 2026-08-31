@@ -1,695 +1,258 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Prudle – Academic Executive Analytics</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة الإشراف الأكاديمي – برودل</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-
 <style>
-:root{
-  --navy:#0c2f52;--blue:#164478;--blue2:#1e6fa8;--surface:#fff;
-  --soft:#f4f8fc;--ink:#193b59;--muted:#73869a;
-  --border:#d5e2ec;--shadow:0 14px 38px rgba(12,47,82,.10);
-}
-*{box-sizing:border-box}
-html,body{margin:0!important;padding:0!important;width:100%!important;max-width:100%!important;overflow-x:hidden}
-body{
-  font-family:Poppins,sans-serif;color:var(--ink);
-  background:radial-gradient(circle at 10% 0,#e8f3fb 0,transparent 30%),
-             linear-gradient(180deg,#f7fafd 0,#edf3f8 100%);
-  min-height:100vh;
-}
-header{
-  position:sticky;top:0;z-index:1500;padding:15px 22px;
-  color:#fff;background:linear-gradient(120deg,#0b2d4e 0,#164478 52%,#1f6fa8 100%);
-  border-bottom:1px solid rgba(255,255,255,.18);
-  box-shadow:0 10px 30px rgba(7,37,64,.20);
-  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
-}
-header>div:first-child{font-size:17px;font-weight:900;letter-spacing:.2px;display:flex;align-items:center;gap:10px}
-header>div:first-child:before{
-  content:"P";display:grid;place-items:center;width:37px;height:37px;border-radius:11px;
-  background:#fff;color:#164478;font:900 22px Georgia;box-shadow:0 6px 18px rgba(0,0,0,.18)
-}
-header .actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-header button,header select{
-  min-height:38px;border:1px solid rgba(255,255,255,.55)!important;border-radius:11px!important;
-  box-shadow:0 3px 10px rgba(0,0,0,.08);transition:.2s ease;font-weight:900;cursor:pointer;
-}
-header button{background:#fff;color:var(--blue);padding:7px 11px;font-size:12px}
-header button.primary{background:#eaf1fb;color:var(--blue)}
-header button.danger{background:#ffecec;color:#b11;border-color:#b11!important}
-header button:hover{transform:translateY(-2px);box-shadow:0 7px 16px rgba(0,0,0,.15)}
-
-.filters{
-  display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:11px;
-  margin:18px 14px 12px;padding:17px;background:rgba(255,255,255,.94);
-  border:1px solid #d6e3ed;border-radius:18px;box-shadow:var(--shadow)
-}
-.filters select,.filters input{
-  height:44px;width:100%;padding:0 13px;border:1px solid #c9d9e6;border-radius:12px;
-  background:#fbfdff;color:#173d5e;font-size:12px;font-weight:800;outline:none;transition:.2s
-}
-.filters select:focus,.filters input:focus{border-color:#2c7db4;box-shadow:0 0 0 4px rgba(30,111,168,.12);background:#fff}
-
-.card{
-  background:#fff;margin:14px;padding:18px;border:1px solid var(--border);
-  border-radius:20px;box-shadow:var(--shadow);overflow:hidden
-}
-.topLine{
-  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
-  padding:2px 2px 13px;border-bottom:1px solid #e4ebf1;font-size:15px;font-weight:900
-}
-.badges{display:flex;gap:8px;flex-wrap:wrap}
-.badge{
-  border:0;background:#edf5fb;padding:8px 13px;border-radius:999px;
-  box-shadow:inset 0 0 0 1px #d6e6f2;color:var(--blue);font-weight:900;font-size:12px
-}
-.smallBtn{
-  min-height:38px;border:1px solid #cfdeea;background:#f8fbfd;border-radius:11px;
-  padding:8px 13px;color:var(--blue);font-weight:900;cursor:pointer;transition:.2s
-}
-.smallBtn:hover{background:#eaf4fb;border-color:#8bb8d7;transform:translateY(-1px)}
-.tableWrap{width:100%;overflow:auto;border:1px solid #d4e0e9;border-radius:15px;box-shadow:0 5px 18px rgba(12,47,82,.06)}
-table{width:100%;min-width:1450px;border-collapse:collapse;font-size:11px;background:#fff}
-th{
-  position:sticky;top:0;z-index:5;padding:11px 8px;color:#fff;white-space:nowrap;
-  border:0;border-left:1px solid rgba(255,255,255,.12);
-  background:linear-gradient(180deg,#174d7c,#103b64);letter-spacing:.15px;cursor:pointer
-}
-td{height:47px;padding:6px;text-align:center;white-space:nowrap;border:0;border-bottom:1px solid #dfe8ef;border-left:1px solid #e7eef4}
-tr:nth-child(even){background:#f4f8fc}tr:hover{background:#e9f3fa}
-.notice{text-align:center;padding:18px;font-weight:900;color:#888}
-.grade{font-weight:900;border-radius:999px;padding:6px 10px;display:inline-block;min-width:110px;border:0;box-shadow:0 3px 8px rgba(0,0,0,.10)}
-.g-ex{background:#164478;color:#fff}.g-vg{background:#27ae60;color:#fff}.g-gd{background:#f1c40f;color:#1b1b1b}
-.g-ps{background:#ff8c00;color:#fff}.g-fl{background:#e74c3c;color:#fff}.g-nc{background:#7f8c8d;color:#fff}
-.chk{width:18px;height:18px;cursor:pointer;accent-color:var(--blue)}
-.whatsappBtn{
-  width:36px;height:36px;border:0;border-radius:50%;background:#25D366;color:#fff;font-size:19px;
-  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
-  box-shadow:0 3px 8px rgba(0,0,0,.18);transition:.2s
-}
-.whatsappBtn:hover{transform:translateY(-2px) scale(1.05);background:#1ebe5d}
-.recent-date-cell{background:linear-gradient(135deg,#169b61,#2fbe7a)!important;color:#fff!important;font-weight:900!important}
-.student-name-cell{min-width:210px;white-space:normal!important}.student-name-cell b,.student-name-cell small{display:block;line-height:1.45}
-.student-name-cell b{color:#143e61;font-size:11px}.student-name-cell small{color:#71869a;font-size:9px;margin-top:2px}
-.student-id-cell{font-family:Arial,sans-serif;font-weight:800;color:#315a7a;direction:ltr}
-.pdf-course-wrap{position:relative;display:inline-block}
-.pdf-course-trigger{min-width:220px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.pdf-course-menu{
-  position:absolute;top:calc(100% + 8px);right:0;width:min(495px,92vw);max-height:72vh;overflow:auto;
-  background:#fff;border:1px solid #cddde9;border-radius:22px;box-shadow:0 28px 75px rgba(8,38,64,.28);
-  padding:14px;z-index:2000;text-align:right
-}
-.pdf-course-menu.hidden{display:none!important}
-.pdf-course-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px 6px 13px;border-bottom:1px solid #e5ebf1;margin-bottom:10px;color:#164478;font-weight:900}
-.pdf-course-close{border:0!important;background:#edf4f9!important;color:#164478!important;border-radius:11px!important;padding:9px 13px!important}
-.pdf-course-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 14px;margin:8px 0;border-radius:14px;cursor:pointer;color:#24445f;font-size:12px;font-weight:900;background:#fff;border:1px solid transparent}
-.pdf-course-row:hover{border-color:#d5e4ef;background:#f3f8fc}
-.pdf-course-row.all{background:#eef5fa;color:#164478}.pdf-course-row input{width:23px;height:23px;accent-color:#164478;flex:0 0 auto;order:2}
-.pdf-course-row span{flex:1;text-align:center;direction:ltr}
-
-@media(max-width:1050px){
-  .filters{grid-template-columns:repeat(2,minmax(160px,1fr))}
-  header{align-items:flex-start}
-  header .actions{width:100%;overflow-x:auto;flex-wrap:nowrap;padding:2px 0 7px;scrollbar-width:thin}
-  header .actions>*{flex:0 0 auto}
-}
-@media(max-width:600px){
-  body{font-size:13px}header{padding:10px 11px;gap:8px}header>div:first-child{font-size:14px}
-  header>div:first-child:before{width:32px;height:32px;font-size:18px}
-  header button,header select{min-height:36px;font-size:10px!important;padding:6px 9px!important}
-  .filters{grid-template-columns:1fr;margin:9px;padding:11px;gap:8px;border-radius:14px}
-  .filters select,.filters input{height:42px;font-size:11px}.card{margin:9px;padding:10px;border-radius:15px}
-  .topLine{align-items:flex-start;font-size:12px}.badges{display:grid;grid-template-columns:repeat(2,1fr);width:100%}
-  .badge{padding:7px 8px;text-align:center;font-size:10px}
-  .smallBtn{flex:0 0 auto;font-size:10px;padding:7px 10px}
-  .tableWrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  table{min-width:1320px;font-size:10px}th{padding:9px 6px}td{height:43px;padding:5px}
-  .grade{min-width:96px;font-size:9px}.whatsappBtn{width:31px;height:31px;font-size:16px}
-  .pdf-course-menu{position:fixed;top:50%;right:50%;transform:translate(50%,-50%);width:calc(100vw - 18px);max-height:82vh;padding:11px;border-radius:17px}
-  .pdf-course-row{padding:12px 9px;font-size:10px}
+:root{--navy:#0b2d4f;--blue:#164478;--blue2:#2b78b2;--ink:#16344f;--muted:#71839a;--line:#e4eaf1;--bg:#f3f6fa;--white:#fff;--green:#149b70;--amber:#dc9413;--red:#dc4d57;--violet:#7357c5;--shadow:0 12px 35px rgba(15,51,82,.08)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Tajawal,"Segoe UI",Arial,sans-serif}button,select,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.sidebar{position:fixed;right:0;top:0;bottom:0;width:246px;padding:24px 16px;background:linear-gradient(165deg,#164b7b,#082842);color:#fff;z-index:30;display:flex;flex-direction:column;box-shadow:-12px 0 28px rgba(6,30,51,.1)}
+.brand{display:flex;align-items:center;gap:12px;padding:0 8px 21px;border-bottom:1px solid rgba(255,255,255,.13)}.brand-mark{width:48px;height:48px;border-radius:15px;background:#fff;color:var(--blue);display:grid;place-items:center;font:900 28px Georgia;box-shadow:0 8px 20px rgba(0,0,0,.16)}.brand strong{display:block;font-size:22px;letter-spacing:2px}.brand small{display:block;color:#b8cee0;font-size:10px}.side-label{padding:20px 12px 9px;color:#91b2cd;font-size:11px;font-weight:800}.side-nav{display:flex;flex-direction:column;gap:7px}.side-nav button{height:48px;border:0;border-radius:13px;background:transparent;color:#c5d6e5;display:flex;align-items:center;gap:11px;padding:0 13px;text-align:right;transition:.2s}.side-nav button:hover{background:rgba(255,255,255,.07);color:#fff}.side-nav button.active{background:linear-gradient(90deg,#2874ae,#3b8bc4);color:#fff;box-shadow:0 10px 22px rgba(0,0,0,.18)}.side-nav i{width:25px;font-style:normal;font-size:18px;text-align:center}.side-nav b{font-size:12px;flex:1}.side-nav em{min-width:22px;height:22px;border-radius:20px;background:var(--red);display:grid;place-items:center;font-size:9px;font-style:normal}.connection{margin-top:auto;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.06);border-radius:14px;padding:11px;display:flex;align-items:center;gap:10px}.connection>i{width:9px;height:9px;border-radius:50%;background:#46d7a3;box-shadow:0 0 0 5px rgba(70,215,163,.12)}.connection.error>i{background:var(--red);box-shadow:0 0 0 5px rgba(220,77,87,.12)}.connection b,.connection small{display:block}.connection b{font-size:10px}.connection small{font-size:8px;color:#9eb9cf;margin-top:2px;line-height:1.5}
+.workspace{margin-right:246px}.topbar{height:80px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;padding:0 28px;display:flex;align-items:center;justify-content:space-between}.page-title p{margin:0 0 3px;color:var(--muted);font-size:10px}.page-title h1{margin:0;color:var(--navy);font-size:20px}.top-actions{display:flex;align-items:center;gap:8px}.top-actions button{border:0;border-radius:11px;padding:10px 13px;font-size:10px;font-weight:900}.pdf-btn{background:#e7f7f1;color:#107a58}.refresh-btn{background:#edf4f9;color:var(--blue);font-size:17px!important;width:39px;padding:8px!important}.logout-btn{background:#fff0f1;color:#c83f49}.user-chip{display:flex;align-items:center;gap:8px;padding:0 8px}.avatar{width:38px;height:38px;border-radius:12px;background:linear-gradient(140deg,#164478,#3987be);color:#fff;display:grid;place-items:center;font-weight:900}.user-chip b,.user-chip small{display:block}.user-chip b{font-size:10px}.user-chip small{font-size:8px;color:var(--muted)}
+.content{max-width:1600px;margin:auto;padding:20px 26px 40px}.notice{padding:10px 13px;border-radius:12px;margin-bottom:12px;font-size:10px;font-weight:800}.notice.loading{background:#eaf3fa;color:var(--blue)}.notice.error{background:#fff0f1;color:#bd3d47}.filters-card,.panel{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.filters-card{padding:17px;margin-bottom:15px}.panel-head,.filter-head,.filter-head>div{display:flex;align-items:center;justify-content:space-between}.filter-head>div:first-child{gap:10px}.head-icon{width:36px;height:36px;border-radius:11px;background:#eaf3fa;color:var(--blue);display:grid;place-items:center;font-size:18px;font-weight:900}.filter-head h2,.panel-head h2{margin:0;font-size:14px;color:var(--navy)}.filter-head p,.panel-head p{margin:3px 0 0;font-size:9px;color:var(--muted)}.reset-btn{border:0;background:#edf4f9;color:var(--blue);padding:8px 11px;border-radius:9px;font-size:9px;font-weight:900}.filters{display:grid;grid-template-columns:repeat(7,minmax(110px,1fr));gap:8px;margin-top:14px}.field label{display:block;font-size:8.5px;font-weight:900;color:#697d91;margin:0 4px 5px}.field select{width:100%;height:39px;border:1px solid #dbe4ec;border-radius:10px;background:#fff;color:var(--ink);padding:0 9px;font-size:9px;font-weight:800;outline:0}.field select:focus{border-color:#3d82b7;box-shadow:0 0 0 3px rgba(38,114,172,.1)}.latest{display:flex;align-items:center;gap:6px;margin-top:10px;overflow:auto}.latest>span{font-size:8px;color:var(--muted);font-weight:900;white-space:nowrap}.latest button{border:1px solid #dce6ef;background:#f8fafc;color:#557087;border-radius:18px;padding:5px 8px;font-size:8px;white-space:nowrap}.latest button i{font-style:normal;background:var(--amber);color:#fff;padding:1px 4px;border-radius:8px}.latest button.selected{background:var(--blue);color:#fff;border-color:var(--blue)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:15px}.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 22px rgba(15,51,82,.055);position:relative;overflow:hidden}.stat:after{content:"";position:absolute;width:70px;height:70px;border-radius:50%;left:-30px;bottom:-42px;background:currentColor;opacity:.07}.stat-icon{width:42px;height:42px;border-radius:13px;background:#edf4fa;display:grid;place-items:center;font-size:19px;font-weight:900}.stat span,.stat small{display:block}.stat span{font-size:9px;color:var(--muted);font-weight:800}.stat strong{display:block;font-size:24px;line-height:1.25;color:var(--navy)}.stat small{font-size:8px;color:#91a1b2}.stat.blue{color:var(--blue)}.stat.violet{color:var(--violet)}.stat.violet .stat-icon{background:#f1edfb}.stat.amber{color:var(--amber)}.stat.amber .stat-icon{background:#fff6e4}.stat.green{color:var(--green)}.stat.green .stat-icon{background:#e8f8f2}
+.grid-main{display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,.9fr);gap:15px;margin-bottom:15px}.panel{padding:17px}.panel-head{margin-bottom:12px}.panel-head button,.count-chip{border:0;background:#edf4f9;color:var(--blue);border-radius:18px;padding:6px 10px;font-size:8px;font-weight:900}.table-wrap{overflow:auto}.data-table{width:100%;border-collapse:collapse;min-width:720px}.data-table th{padding:10px;background:#f7f9fc;color:#708397;text-align:right;border-bottom:1px solid var(--line);font-size:8px}.data-table td{padding:10px;border-bottom:1px solid #edf1f5;font-size:9px;vertical-align:middle}.data-table tr:last-child td{border-bottom:0}.course-cell{display:flex;align-items:center;gap:8px}.level-icon{width:33px;height:33px;border-radius:10px;background:#e9f3fa;color:var(--blue);display:grid;place-items:center;font-weight:900}.course-cell b,.course-cell small,.td-sub{display:block}.course-cell b{font-size:10px}.course-cell small,.td-sub{color:var(--muted);font-size:7.5px;margin-top:3px}.progress-label{min-width:92px}.progress-label>b{display:block;font-size:8px;margin-bottom:5px}.progress{height:5px;background:#e9eef3;border-radius:10px;overflow:hidden}.progress i{display:block;height:100%;border-radius:10px;background:var(--blue2)}.progress i.green{background:var(--green)}.progress i.amber{background:var(--amber)}.progress i.red{background:var(--red)}.badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 8px;border-radius:15px;font-size:7.5px;font-weight:900;white-space:nowrap}.badge.good{background:#e8f8f2;color:#11805b}.badge.bad{background:#fff0f1;color:#cf444e}.badge.warn{background:#fff6e4;color:#b8720a}.link-metric{border:0;background:transparent;text-align:right;color:inherit;min-width:88px;padding:0}.link-metric b{display:block;font-size:8px;margin-bottom:5px}
+.alerts-list{display:flex;flex-direction:column;gap:7px}.alert-item{border:1px solid #edf1f5;background:#fbfcfd;border-radius:11px;padding:8px;display:grid;grid-template-columns:29px 1fr auto;align-items:center;gap:8px;text-align:right}.alert-item>i{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;font-style:normal;font-weight:900}.alert-item.danger>i{background:#fff0f1;color:var(--red)}.alert-item.warning>i{background:#fff6e4;color:var(--amber)}.alert-item b,.alert-item small{display:block}.alert-item b{font-size:8.5px}.alert-item small{font-size:7px;color:var(--muted);margin-top:2px}.alert-item time{font-size:6.5px;color:#98a5b3}.empty{grid-column:1/-1;text-align:center;padding:26px;color:var(--muted);font-size:10px;font-weight:800}
+.tasks{display:grid;grid-template-columns:repeat(5,minmax(180px,1fr));gap:9px}.task{border:1px solid var(--line);background:#fff;border-radius:13px;padding:12px;text-align:right;transition:.2s;min-width:0}.task:hover{transform:translateY(-2px);box-shadow:0 11px 23px rgba(15,51,82,.09);border-color:#bed2e3}.task-top,.task-num,.task-foot{display:flex;align-items:center;justify-content:space-between}.kind{padding:4px 7px;border-radius:7px;font-size:7px;font-weight:900}.kind.homework{background:#e9f3fa;color:#21669b}.kind.quiz{background:#f0edfb;color:#6f50bd}.kind.activity{background:#e8f8f2;color:#14815d}.kind.comment{background:#fff3e2;color:#bf750b}.kind.grade{background:#fff0f1;color:#c9404a}.task-status{font-size:6.5px;font-weight:900}.task-status.danger{color:var(--red)}.task-status.warning{color:var(--amber)}.task-status.success{color:var(--green)}.task h3{margin:9px 0 4px;font-size:9.5px;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.task p{margin:0 0 11px;font-size:7px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.task-num{font-size:8px;margin-bottom:5px}.task-foot{border-top:1px solid #edf1f5;margin-top:9px;padding-top:7px;color:var(--muted);font-size:7px}.task-foot b{color:var(--blue);font-size:15px}.full-panel{min-height:410px}.search{width:min(290px,45vw);border:1px solid #dbe4ec;border-radius:10px;padding:8px 10px;font-size:8px;outline:0}.red{color:var(--red)}.green{color:var(--green)}.active-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-left:4px}
+.modal-bg{position:fixed;inset:0;background:rgba(5,27,46,.56);backdrop-filter:blur(3px);z-index:100;display:grid;place-items:center;padding:15px}.modal{width:min(650px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:19px;box-shadow:0 30px 80px rgba(0,0,0,.25)}.modal-head{padding:18px 20px;background:linear-gradient(120deg,#10395f,#1c5b8c);color:#fff;display:flex;justify-content:space-between;border-radius:19px 19px 0 0}.modal-head h2{font-size:15px;margin:7px 0 3px}.modal-head p{margin:0;color:#bed2e2;font-size:8px}.close{width:33px;height:33px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;border-radius:10px;font-size:19px}.modal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:13px 17px}.modal-stats article{padding:9px 11px;border-radius:10px;background:#f4f7fa}.modal-stats article:nth-child(2){background:#e8f8f2}.modal-stats article:nth-child(3){background:#fff0f1}.modal-stats span,.modal-stats b{display:block}.modal-stats span{font-size:7px;color:var(--muted)}.modal-stats b{font-size:18px;margin-top:2px}.modal-tabs{display:flex;gap:5px;padding:0 17px;border-bottom:1px solid var(--line)}.modal-tabs button{border:0;background:transparent;padding:10px;font-size:8px;font-weight:900;color:var(--muted);border-bottom:2px solid transparent}.modal-tabs button.active{color:var(--blue);border-bottom-color:var(--blue)}.student-list{padding:8px 17px 17px}.student-row{display:flex;align-items:center;padding:8px;border-bottom:1px solid #edf1f5}.student-row>i{width:33px;height:33px;border-radius:10px;background:#e9f3fa;color:var(--blue);display:grid;place-items:center;font-style:normal;font-weight:900;margin-left:8px}.student-row>div{flex:1}.student-row b,.student-row small{display:block}.student-row b{font-size:9px}.student-row small{font-size:7px;color:var(--muted)}.student-state{padding:5px 8px;border-radius:14px;font-size:7px;font-weight:900}.student-state.done{background:#e8f8f2;color:#12815d}.student-state.pending{background:#fff0f1;color:#cd434d}
+.mobile-nav,.print-report{display:none}
+@media(max-width:1250px){.filters{grid-template-columns:repeat(4,1fr)}.tasks{grid-template-columns:repeat(3,1fr)}.grid-main{grid-template-columns:1fr}}
+@media(max-width:850px){.sidebar{display:none}.workspace{margin:0}.topbar{height:70px;padding:0 13px}.page-title p,.user-chip,.logout-btn{display:none}.page-title h1{font-size:14px}.content{padding:13px 11px 82px}.filters{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(2,1fr);gap:8px}.tasks{display:flex;overflow:auto}.task{min-width:225px}.mobile-nav{display:flex;position:fixed;z-index:50;bottom:0;left:0;right:0;height:67px;background:#fff;border-top:1px solid var(--line);justify-content:space-around;padding:5px}.mobile-nav button{border:0;background:transparent;color:#7d8fa1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:9px;min-width:55px}.mobile-nav button.active{background:#edf5fb;color:var(--blue)}.mobile-nav i{font-style:normal;font-size:15px}.mobile-nav b{font-size:7px}}
+@media(max-width:520px){.filters{grid-template-columns:1fr}.filter-head p,.latest>span{display:none}.stat{padding:11px 9px;gap:8px}.stat-icon{width:36px;height:36px}.stat strong{font-size:19px}.stat small{display:none}.panel{padding:12px}.pdf-btn{font-size:0!important;width:39px;padding:0!important}.pdf-btn:after{content:"PDF";font-size:8px}.panel-head{align-items:flex-start}.search{width:170px}.modal-stats{padding:10px;gap:5px}}
+@page{size:A4 landscape;margin:8mm}
+@media print{
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}.sidebar,.workspace,.mobile-nav,.modal-bg{display:none!important}html,body{background:#fff!important}.print-report{display:block!important;color:#16344f;font-family:Tajawal,Arial,sans-serif;padding-bottom:8mm}.print-top{display:flex;align-items:center;gap:10px;padding:0 0 9px;border-bottom:3px solid #164478}.print-logo{width:44px;height:44px;border-radius:11px;background:#164478;color:#fff;display:grid;place-items:center;font:900 24px Georgia}.print-title{flex:1}.print-title h1{font-size:16px;margin:0;color:#0b2d4f}.print-title p{font-size:8px;margin:2px 0 0;color:#71839a}.print-meta{text-align:left;font-size:7px;line-height:1.8}.print-filters{margin:8px 0;padding:7px 9px;background:#eef4f8;border:1px solid #d6e2eb;border-radius:8px;font-size:7px}.print-filters b{color:#164478}.print-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}.print-stat{padding:7px;border:1px solid #dbe4ec;border-right:4px solid #164478;border-radius:7px;background:#fff}.print-stat span{display:block;font-size:6.5px;color:#71839a}.print-stat b{font-size:15px;color:#0b2d4f}.print-section{margin-top:8px}.print-section+.print-section{break-before:page;page-break-before:always}.print-section h2{font-size:9px;margin:0 0 5px;padding:5px 8px;background:#164478;color:#fff;border-radius:5px}.print-table{width:100%;border-collapse:collapse;table-layout:fixed}.print-table thead{display:table-header-group}.print-table tr{break-inside:avoid;page-break-inside:avoid}.print-table th{padding:5px;background:#dfeaf2;color:#123a5e;border:1px solid #c7d5e0;font-size:6.5px}.print-table td{padding:4px;border:1px solid #d6e0e8;font-size:6.3px;text-align:center;word-break:break-word}.print-table tbody tr:nth-child(even){background:#f7f9fb}.print-table .danger-row{background:#fff0f1!important}.print-badge{display:inline-block;padding:2px 5px;border-radius:10px;font-size:5.8px;font-weight:900}.print-badge.good{background:#e3f5ee;color:#107653}.print-badge.bad{background:#ffe8ea;color:#b73741}.print-footer{position:fixed;bottom:0;left:0;right:0;border-top:1px solid #d6e0e8;padding-top:3px;font-size:6px;color:#8190a0;text-align:center}
 }
 </style>
 </head>
-
 <body>
-<header>
-  <div>Prudle – Academic Executive Analytics</div>
-  <div class="actions">
-    <button class="primary" onclick="setView('ALL')">All</button>
-    <button class="danger" onclick="setView('FAILED')">Failed</button>
-    <button onclick="setView('NOT')">Not Completed</button>
-    <select id="notExamType">
-      <option value="ALL">All Missing</option>
-      <option value="MID">Missing Mid</option>
-      <option value="FINAL">Missing Final</option>
-    </select>
-    <button onclick="selectNotExamined()">Select Not Examined</button>
-    <button onclick="exportNotExaminedPDF()">PDF Not Examined</button>
-    <button onclick="resetFilters()">Reset</button>
-    <div class="pdf-course-wrap" id="pdfCourseWrap">
-      <button class="pdf-course-trigger" type="button" onclick="togglePdfCourseMenu(event)">
-        <span id="pdfCourseLabel">PDF حسب الفلترة</span><span>▼</span>
-      </button>
-      <div class="pdf-course-menu hidden" id="pdfCourseMenu">
-        <div class="pdf-course-head"><b>حدد الدورات المراد طباعتها</b><button class="pdf-course-close" type="button" onclick="closePdfCourseMenu()">إغلاق</button></div>
-        <div id="pdfCourseChecks"></div>
-        <button class="primary" style="width:100%;margin-top:10px" type="button" onclick="exportPDF('COURSES')">
-          <i class="fa-solid fa-file-pdf"></i> طباعة الدورات المحددة PDF
-        </button>
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">P</div><div><strong>PRUDLE</strong><small>Academic Control</small></div></div>
+  <div class="side-label">لوحة الجهة الإشرافية</div>
+  <nav class="side-nav" id="sideNav">
+    <button class="active" data-view="overview"><i>▦</i><b>نظرة عامة</b><em id="navAlerts">0</em></button>
+    <button data-view="courses"><i>▤</i><b>متابعة الدورات</b></button>
+    <button data-view="attendance"><i>✓</i><b>الحضور</b></button>
+    <button data-view="grades"><i>◎</i><b>رصد الدرجات</b></button>
+    <button data-view="comments"><i>✎</i><b>تعليقات المدربين</b></button>
+    <button data-view="sessions"><i>⇄</i><b>الدخول والخروج</b></button>
+  </nav>
+  <div class="connection" id="connection"><i></i><div><b id="connectionTitle">جاري الاتصال</b><small id="connectionText">يتم تحميل بيانات برودل...</small></div></div>
+</aside>
+
+<section class="workspace">
+  <header class="topbar">
+    <div class="page-title"><p>مرحبًا بك في مركز المتابعة</p><h1 id="pageTitle">نظرة عامة</h1></div>
+    <div class="top-actions">
+      <button class="pdf-btn" onclick="exportPDF()">↓ تصدير PDF</button>
+      <button class="refresh-btn" onclick="loadAll()" title="تحديث">↻</button>
+      <div class="user-chip"><div class="avatar">ع</div><div><b>الجهة الإشرافية</b><small>صلاحية كاملة</small></div></div>
+      <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <div class="notice loading" id="notice">جاري تحميل بيانات النظام...</div>
+    <section class="filters-card">
+      <div class="filter-head"><div><span class="head-icon">⌁</span><div><h2>فلترة ومتابعة الدورات</h2><p>تُطبق الفلاتر على جميع الإحصاءات والجداول والتقرير</p></div></div><button class="reset-btn" onclick="resetFilters()">إعادة ضبط</button></div>
+      <div class="filters">
+        <div class="field"><label>الفرع</label><select id="fBranch" onchange="applyFilters()"><option value="">الكل</option></select></div>
+        <div class="field"><label>القسم</label><select id="fSection" onchange="applyFilters()"><option value="">الكل</option></select></div>
+        <div class="field"><label>الدورة</label><select id="fCourse" onchange="applyFilters()"><option value="">الكل</option></select></div>
+        <div class="field"><label>تاريخ البدء</label><select id="fStart" onchange="applyFilters()"><option value="">الكل</option></select></div>
+        <div class="field"><label>نوع الدورة</label><select id="fType" onchange="applyFilters()"><option value="">الكل</option></select></div>
+        <div class="field"><label>المدرب</label><select id="fTrainer" onchange="applyFilters()"><option value="">الكل</option></select></div>
+        <div class="field"><label>الفترة</label><select id="fPeriod" onchange="applyFilters()"><option value="">الكل</option></select></div>
       </div>
-    </div>
-    <button onclick="exportPDF('SELECTED')"><i class="fa-solid fa-file-pdf"></i> PDF (Selected)</button>
-  </div>
-</header>
+      <div class="latest" id="latestDates"><span>أحدث 5 تواريخ بدء</span></div>
+    </section>
 
-<div class="filters">
-  <input id="fStudent" placeholder="Search name AR/EN or Student ID">
-  <select id="fTrainer"><option value="">Trainer</option></select>
-  <select id="fBranch"><option value="">Branch</option></select>
-  <select id="fCourse"><option value="">Course</option></select>
-  <select id="fPeriod"><option value="">Period</option></select>
-  <select id="fStart"><option value="">Start Date</option></select>
-  <select id="fSection"><option value="">Section</option></select>
-  <select id="fCourseType"><option value="">Course Type</option></select>
+    <section class="stats">
+      <article class="stat blue"><div class="stat-icon">▤</div><div><span>الدورات المعروضة</span><strong id="statCourses">0</strong><small>حسب الفلاتر الحالية</small></div></article>
+      <article class="stat violet"><div class="stat-icon">♙</div><div><span>إجمالي الطلاب</span><strong id="statStudents">0</strong><small>في الدورات المعروضة</small></div></article>
+      <article class="stat amber"><div class="stat-icon">!</div><div><span>تنبيهات تحتاج متابعة</span><strong id="statAlerts">0</strong><small>حضور ودرجات وتعليقات</small></div></article>
+      <article class="stat green"><div class="stat-icon">✓</div><div><span>متوسط الإنجاز</span><strong id="statCompletion">0%</strong><small>واجبات وكويزات وأنشطة</small></div></article>
+    </section>
+
+    <div id="viewBox"></div>
+  </main>
+</section>
+
+<nav class="mobile-nav" id="mobileNav">
+  <button class="active" data-view="overview"><i>▦</i><b>الرئيسية</b></button>
+  <button data-view="courses"><i>▤</i><b>الدورات</b></button>
+  <button data-view="attendance"><i>✓</i><b>الحضور</b></button>
+  <button data-view="grades"><i>◎</i><b>الدرجات</b></button>
+  <button data-view="comments"><i>✎</i><b>التعليقات</b></button>
+</nav>
+
+<div class="modal-bg hidden" id="modalBg" onclick="closeModal(event)">
+  <section class="modal" onclick="event.stopPropagation()">
+    <div class="modal-head"><div><span class="kind" id="modalKind"></span><h2 id="modalTitle"></h2><p id="modalCourse"></p></div><button class="close" onclick="closeModal()">×</button></div>
+    <div class="modal-stats"><article><span>إجمالي الطلاب</span><b id="modalTotal">0</b></article><article><span>أكملوا</span><b id="modalDone">0</b></article><article><span>لم يكملوا</span><b id="modalPending">0</b></article></div>
+    <div class="modal-tabs"><button id="tabPending" onclick="renderStudentList('pending')">لم يكملوا</button><button id="tabDone" onclick="renderStudentList('done')">أكملوا</button></div>
+    <div class="student-list" id="studentList"></div>
+  </section>
 </div>
 
-<div class="card">
-  <div class="topLine">
-    <div>Results (Full Grades on Main Screen)</div>
-    <div class="badges">
-      <div class="badge" id="topSummary">Visible: <strong>0</strong></div>
-      <div class="badge" id="selSummary">Selected: <strong>0</strong></div>
-      <div class="badge" id="pfSummary">P: <strong>0</strong> | F: <strong>0</strong> | NC: <strong>0</strong></div>
-    </div>
-  </div>
-
-  <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px;">
-    <button class="smallBtn" onclick="selectAllVisible(true)"><i class="fa-solid fa-check-double"></i> Select Visible</button>
-    <button class="smallBtn" onclick="selectAllVisible(false)"><i class="fa-solid fa-xmark"></i> Unselect Visible</button>
-    <button class="smallBtn" onclick="clearSelection()"><i class="fa-regular fa-trash-can"></i> Clear Selection</button>
-  </div>
-
-  <div class="tableWrap">
-    <table>
-      <thead>
-        <tr>
-          <th style="width:52px"><input id="chkAll" class="chk" type="checkbox" onclick="toggleHeaderSelect(this)" title="Select all visible"></th>
-          <th>#</th><th>Name AR / EN</th><th>Student ID</th><th>WhatsApp</th>
-          <th onclick="sortByPeriod()">Period <span id="periodSortArrow">▲▼</span></th>
-          <th onclick="sortByTotal()">Total <span id="totalSortArrow">▲▼</span></th>
-          <th>Grade</th><th>Mid</th><th>Final</th><th>Listen</th><th>Speak</th><th>HW</th><th>Attend</th>
-          <th onclick="sortByCourse()">Course <span id="courseSortArrow">▲▼</span></th>
-          <th>Trainer</th><th>Branch</th><th>Section</th>
-          <th onclick="sortByStartDate()">Start <span id="startSortArrow">▲▼</span></th>
-        </tr>
-      </thead>
-      <tbody id="tbody"><tr><td colspan="19" class="notice">Apply at least one filter to load data</td></tr></tbody>
-    </table>
-  </div>
-</div>
+<section class="print-report" id="printReport">
+  <div class="print-top"><div class="print-logo">P</div><div class="print-title"><h1>تقرير الإشراف الأكاديمي – PRUDLE</h1><p>متابعة الدورات والإنجاز والحضور والدرجات وتعليقات المدربين</p></div><div class="print-meta" id="printMeta"></div></div>
+  <div class="print-filters" id="printFilters"></div>
+  <div class="print-stats" id="printStats"></div>
+  <div id="printTables"></div>
+  <div class="print-footer">Prudle Education · Academic Supervision Dashboard</div>
+</section>
 
 <script>
-firebase.initializeApp({
-  apiKey:"AIzaSyCCFBvZosI8dwShZjxvZzI-SU5igEbcOKk",
-  authDomain:"prudle-system.firebaseapp.com",
-  projectId:"prudle-system"
-});
+/* =========================================================
+   PRUDLE SUPERVISION DASHBOARD — SINGLE FILE
+   Firebase collections used:
+   Courses, students, exams, results, FunActivities,
+   FunActivityResults, StudyPlans, DeviceLoginLogs
+========================================================= */
+
+const LOGIN_URL="https://www.prudle-education.com/log-in-out";
+const ALLOWED_ROLES=["admin","supervisor","assistant","supervision"];
+
+function goLogin(){localStorage.clear();sessionStorage.clear();location.replace(LOGIN_URL)}
+function logout(){localStorage.clear();sessionStorage.clear();if(window.parent&&window.parent!==window)window.parent.postMessage("PRUDLE_LOGOUT","*");location.replace(LOGIN_URL)}
+function checkAccess(){
+  const user=localStorage.getItem("username");
+  const role=String(localStorage.getItem("role")||"").trim().toLowerCase();
+  const last=localStorage.getItem("loginDate");
+  const today=new Date().toDateString();
+  if(!user||!ALLOWED_ROLES.includes(role)||last!==today){goLogin();return false}
+  return true;
+}
+window.addEventListener("message",e=>{const d=e.data||{};if(d.type==="PRUDLE_AUTH"){localStorage.setItem("username",d.username||"");localStorage.setItem("role",d.role||"");localStorage.setItem("loginDate",d.loginDate||"")}});
+
+firebase.initializeApp({apiKey:"AIzaSyCCFBvZosI8dwShZjxvZzI-SU5igEbcOKk",authDomain:"prudle-system.firebaseapp.com",projectId:"prudle-system"});
 const db=firebase.firestore();
-const LOGO="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlEGHcXcelOlihtrBLFCmjumIyuBxqyoWEZM8DgDpBVg&s";
 
-let COURSES=[],STUDENTS=[],FILTERED=[],VIEW="ALL",VISIBLE=[];
-let PERIOD_DIR=1,TOTAL_DIR=1,START_DIR=-1,COURSE_DIR=1;
-let ACTIVE_SORT={key:"period",dir:1};
-let latestDates=[];
-const SELECTED_IDS=new Set();
-let PDF_SELECTED_COURSES=new Set(),PDF_ALL_COURSES=true;
+let DATA={courses:[],students:[],tasks:[],alerts:[],sessions:[]};
+let FILTERED=[];
+let ACTIVE_VIEW="overview";
+let ACTIVE_TASK=null;
+let ACTIVE_LIST="pending";
 
-function uniq(arr){return [...new Set((arr||[]).filter(v=>v!==null&&v!==undefined&&String(v).trim()!==""))]}
-function getCourseType(c){return String(c?.CourseType||c?.TrainingType||c?.Type||c?.Program||c?.CourseDuration||"").trim()}
-function getDateStamp(val){
-  if(!val)return null;
-  if(typeof val==="object" && val.seconds!=null)return Number(val.seconds);
-  const t=new Date(val).getTime();return isNaN(t)?null:Math.floor(t/1000)
-}
-function formatDateValue(val){
-  if(!val)return "-";
-  if(typeof val==="object" && val.seconds!=null)return new Date(val.seconds*1000).toLocaleDateString("en-GB");
-  const d=new Date(val);return isNaN(d.getTime())?String(val):d.toLocaleDateString("en-GB")
-}
-function sameDateValue(a,b){
-  const sa=getDateStamp(a),sb=getDateStamp(b);
-  if(sa&&sb)return sa===sb;
-  return String(a)===String(b)
-}
-function periodStartMinutes(value){
-  const text=String(value||"").toLowerCase().replace(/\s+/g," ").trim();
-  const match=text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
-  if(!match)return Number.MAX_SAFE_INTEGER;
-  let hour=Number(match[1]),minute=Number(match[2]||0),meridiem=(match[3]||"").toLowerCase();
-  if(meridiem==="pm"&&hour<12)hour+=12;if(meridiem==="am"&&hour===12)hour=0;
-  return hour*60+minute
-}
-function compareCourse(a,b,dir){
-  const x=String(a.course?.TrainingCourse||""),y=String(b.course?.TrainingCourse||"");
-  const r=x.localeCompare(y,"en",{numeric:true,sensitivity:"base"});
-  if(r!==0)return dir*r;
-  const pd=periodStartMinutes(a.course?.Period)-periodStartMinutes(b.course?.Period);
-  if(pd!==0)return pd;
-  return (total(b)==null?-1:total(b))-(total(a)==null?-1:total(a))
-}
-function comparePeriod(a,b,dir){
-  const x=periodStartMinutes(a.course?.Period),y=periodStartMinutes(b.course?.Period);
-  if(x!==y)return dir*(x-y);return compareCourse(a,b,1)
-}
-function updateSortArrows(){
-  const p=document.getElementById("periodSortArrow"),t=document.getElementById("totalSortArrow"),c=document.getElementById("courseSortArrow"),s=document.getElementById("startSortArrow");
-  if(p)p.textContent=ACTIVE_SORT.key==="period"?(ACTIVE_SORT.dir===1?"▲":"▼"):"▲▼";
-  if(t)t.textContent=ACTIVE_SORT.key==="total"?(ACTIVE_SORT.dir===1?"▲":"▼"):"▲▼";
-  if(c)c.textContent=ACTIVE_SORT.key==="course"?(ACTIVE_SORT.dir===1?"▲":"▼"):"▲▼";
-  if(s)s.textContent=ACTIVE_SORT.key==="start"?(ACTIVE_SORT.dir===1?"▲":"▼"):"▲▼";
-}
+const $=id=>document.getElementById(id);
+const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const clean=value=>String(value??"").trim();
+const first=(object,fields,fallback="")=>{for(const field of fields){const value=object?.[field];if(value!==undefined&&value!==null&&String(value).trim()!=="")return value}return fallback};
+const hasValue=value=>value!==undefined&&value!==null&&String(value).trim()!=="";
+const pct=(done,total)=>total?Math.round(done/total*100):0;
+function isoDate(value){if(!value)return"";const d=value?.toDate?value.toDate():value?.seconds?new Date(value.seconds*1000):new Date(value);if(!Number.isNaN(d?.getTime?.()))return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;return clean(value).slice(0,10)}
+function todayIso(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function formatDateTime(value){if(!value)return"—";const d=value?.toDate?value.toDate():value?.seconds?new Date(value.seconds*1000):new Date(value);return Number.isNaN(d.getTime())?clean(value):d.toLocaleString("ar-SA")}
+function planDate(start,week,day){const map={"الأحد":0,"الاحد":0,"Sunday":0,"الاثنين":1,"Monday":1,"الثلاثاء":2,"Tuesday":2,"الأربعاء":3,"الاربعاء":3,"Wednesday":3,"الخميس":4,"Thursday":4};const base=new Date(`${start}T12:00:00`);if(Number.isNaN(base.getTime())||map[clean(day)]===undefined)return"";base.setDate(base.getDate()+(Number(week||1)-1)*7+((map[clean(day)]-base.getDay()+7)%7));return isoDate(base)}
+function defaultStudyDates(start,end){const out=[];if(!start)return out;let d=new Date(`${start}T12:00:00`);const stop=new Date(`${end&&end<todayIso()?end:todayIso()}T12:00:00`);while(d<stop){const iso=isoDate(d);if(d.getDay()>=0&&d.getDay()<=3)out.push(iso);d.setDate(d.getDate()+1)}return out}
+function sameStudent(result,student){return[result.studentId,result.studentDocId,result.participantId].map(clean).includes(student.id)||[result.studentIqama,result.rankingStudentIqama,result.iqama].map(clean).filter(Boolean).includes(student.iqama)}
+function kindClass(kind){return kind==="واجب"?"homework":kind==="كويز"?"quiz":kind==="نشاط"?"activity":kind==="درجات"?"grade":"comment"}
+function progress(value,tone=""){return`<div class="progress"><i class="${tone}" style="width:${Math.max(0,Math.min(100,value))}%"></i></div>`}
 
-function hwScore(s){return Math.min(Number(s.hwScore||0),10)}
-function attScore(s){
-  const r=s.records||[];return r.length?Math.floor((r.filter(x=>x.status==="present").length/r.length)*10):0
-}
-function complete(s){return ["midterm","finalExam","listening","speaking"].every(k=>s[k]!=null)}
-function total(s){
-  if(!complete(s))return null;
-  return Math.min(Number(s.midterm||0)+Number(s.finalExam||0)+Number(s.listening||0)+Number(s.speaking||0)+hwScore(s)+attScore(s),100)
-}
-function gradeOf(t){
-  if(t==null)return{text:"Not Completed",cls:"g-nc"};
-  if(t>=90)return{text:"Excellent",cls:"g-ex"};
-  if(t>=80)return{text:"Very Good",cls:"g-vg"};
-  if(t>=70)return{text:"Good",cls:"g-gd"};
-  if(t>=65)return{text:"Pass",cls:"g-ps"};
-  return{text:"Fail",cls:"g-fl"}
-}
-function cleanStudentName(v){return String(v||"").replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g,"").replace(/\s+/g," ").trim()}
-function getArabicName(s){
-  const e=s.name_ar||s.nameAr||s.nameAR||s.arabicName||s.arabic_name||s.nameArabic||s.NameArabic||s.ArabicName||s.studentNameAr||s.fullNameAr||"";
-  const b=s.name||s.fullName||s.studentName||"";return cleanStudentName(e||(/[\u0600-\u06FF]/.test(b)?b:""))
-}
-function getEnglishName(s){
-  const e=s.name_en||s.nameEn||s.nameEN||s.englishName||s.english_name||s.nameEnglish||s.NameEnglish||s.EnglishName||s.studentNameEn||s.fullNameEn||"";
-  const b=s.name||s.fullName||s.studentName||"";return cleanStudentName(e||(!/[\u0600-\u06FF]/.test(b)?b:""))
-}
-function getStudentIdentity(s){return String(s.studentID||s.studentId||s.StudentID||s.iqama||s.Iqama||s.identity||s.identityNumber||s.nationalId||s.NationalID||s.idNumber||s.username||"").trim()}
-function getStudentPhone(s){return s.phone||s.Phone||s.mobile||s.Mobile||s.whatsapp||s.WhatsApp||""}
-function normalizeWhatsAppPhone(phone){
-  let p=String(phone||"").replace(/\D/g,"");if(!p)return "";
-  if(p.startsWith("00"))p=p.slice(2);
-  if(p.startsWith("05")&&p.length===10)p="966"+p.slice(1);
-  else if(p.startsWith("5")&&p.length===9)p="966"+p;
-  return p
-}
+async function readCollection(name,limit=5000){const snap=await db.collection(name).limit(limit).get();return snap.docs.map(doc=>({id:doc.id,...doc.data()}))}
 
-function fillFilters(){
-  const map=[["fTrainer","Trainer"],["fBranch","Branch"],["fCourse","TrainingCourse"],["fPeriod","Period"],["fStart","StartingDate"],["fSection","Section"],["fCourseType","__CourseType"]];
-  map.forEach(([id,key])=>{
-    const el=document.getElementById(id),first=el.options[0]?.text||"Select";el.innerHTML=`<option value="">${first}</option>`;
-    if(id==="fStart"){
-      uniq(COURSES.map(c=>c[key])).sort((a,b)=>(getDateStamp(b)||0)-(getDateStamp(a)||0)).forEach(v=>{
-        const recent=latestDates.includes(getDateStamp(v));
-        el.innerHTML+=`<option value="${String(v).replace(/"/g,"&quot;")}" ${recent?'class="recent-date-cell"':''}>${formatDateValue(v)}</option>`
-      })
-    }else{
-      uniq(COURSES.map(c=>key==="__CourseType"?getCourseType(c):c[key])).forEach(v=>{
-        el.innerHTML+=`<option value="${String(v).replace(/"/g,"&quot;")}">${v}</option>`
-      })
-    }
-  })
-}
-(async function loadCourses(){
-  COURSES=(await db.collection("Courses").get()).docs.map(d=>({id:d.id,...d.data()}));
-  latestDates=[...new Set(COURSES.map(c=>getDateStamp(c.StartingDate)).filter(Boolean).sort((a,b)=>b-a))].slice(0,5);
-  fillFilters()
-})();
-
-function hasAnyFilter(){return !!(fStudent.value||fTrainer.value||fBranch.value||fCourse.value||fPeriod.value||fStart.value||fSection.value||fCourseType.value)}
-async function applyFilters(){
-  if(!hasAnyFilter()){resetFilters();return}
-  tbody.innerHTML=`<tr><td colspan="19" class="notice">Loading...</td></tr>`;
-  STUDENTS=(await db.collection("students").get()).docs.map(d=>({id:d.id,...d.data()}));FILTERED=[];
-  STUDENTS.forEach(s=>{
-    const c=COURSES.find(x=>x.id===s.courseId);if(!c)return;
-    const search=[getArabicName(s),getEnglishName(s),getStudentIdentity(s),s.name||"",s.name_ar||""].join(" ").toLowerCase();
-    if(fStudent.value&&!search.includes(fStudent.value.trim().toLowerCase()))return;
-    if(fTrainer.value&&String(c.Trainer||"")!==fTrainer.value)return;
-    if(fBranch.value&&String(c.Branch||"")!==fBranch.value)return;
-    if(fCourse.value&&String(c.TrainingCourse||"")!==fCourse.value)return;
-    if(fPeriod.value&&String(c.Period||"")!==fPeriod.value)return;
-    if(fSection.value&&String(c.Section||"")!==fSection.value)return;
-    if(fCourseType.value&&getCourseType(c)!==fCourseType.value)return;
-    if(fStart.value&&!sameDateValue(c.StartingDate,fStart.value))return;
-    FILTERED.push({...s,course:c})
-  });
-  FILTERED.sort((a,b)=>comparePeriod(a,b,1));PERIOD_DIR=1;ACTIVE_SORT={key:"period",dir:1};updateSortArrows();render()
-}
-document.querySelectorAll(".filters select").forEach(s=>s.addEventListener("change",applyFilters));
-fStudent.addEventListener("input",applyFilters);
-
-function resetFilters(){
-  ["fTrainer","fBranch","fCourse","fPeriod","fStart","fSection","fCourseType"].forEach(id=>document.getElementById(id).value="");
-  fStudent.value="";VIEW="ALL";PERIOD_DIR=1;TOTAL_DIR=1;START_DIR=-1;COURSE_DIR=1;ACTIVE_SORT={key:"period",dir:1};
-  FILTERED=[];VISIBLE=[];SELECTED_IDS.clear();updateSummaries();
-  tbody.innerHTML=`<tr><td colspan="19" class="notice">Apply at least one filter to load data</td></tr>`;
-  chkAll.checked=false;chkAll.indeterminate=false;buildPdfCourseOptions()
-}
-function sortByPeriod(){PERIOD_DIR*=-1;ACTIVE_SORT={key:"period",dir:PERIOD_DIR};FILTERED.sort((a,b)=>comparePeriod(a,b,PERIOD_DIR));updateSortArrows();render()}
-function sortByTotal(){TOTAL_DIR*=-1;ACTIVE_SORT={key:"total",dir:TOTAL_DIR};FILTERED.sort((a,b)=>((total(a)==null?-1:total(a))-(total(b)==null?-1:total(b)))*TOTAL_DIR);updateSortArrows();render()}
-function sortByCourse(){COURSE_DIR*=-1;ACTIVE_SORT={key:"course",dir:COURSE_DIR};FILTERED.sort((a,b)=>compareCourse(a,b,COURSE_DIR));updateSortArrows();render()}
-function sortByStartDate(){START_DIR*=-1;ACTIVE_SORT={key:"start",dir:START_DIR};FILTERED.sort((a,b)=>(START_DIR*((getDateStamp(a.course?.StartingDate)||0)-(getDateStamp(b.course?.StartingDate)||0))));updateSortArrows();render()}
-function setView(v){VIEW=v;render()}
-
-function selectAllVisible(on){VISIBLE.forEach(s=>on?SELECTED_IDS.add(s.id):SELECTED_IDS.delete(s.id));render()}
-function toggleHeaderSelect(chk){selectAllVisible(chk.checked)}
-function clearSelection(){SELECTED_IDS.clear();render()}
-function toggleRowSelection(id,on){on?SELECTED_IDS.add(id):SELECTED_IDS.delete(id);updateSummaries();syncHeaderCheckbox()}
-function syncHeaderCheckbox(){
-  if(!VISIBLE.length){chkAll.checked=false;chkAll.indeterminate=false;return}
-  const all=VISIBLE.every(s=>SELECTED_IDS.has(s.id)),any=VISIBLE.some(s=>SELECTED_IDS.has(s.id));
-  chkAll.indeterminate=!all&&any;chkAll.checked=all
-}
-function updateSummaries(){
-  topSummary.innerHTML=`Visible: <strong>${VISIBLE.length}</strong>`;
-  selSummary.innerHTML=`Selected: <strong>${SELECTED_IDS.size}</strong>`;
-  let p=0,f=0,nc=0;VISIBLE.forEach(s=>{const t=total(s);if(t==null)nc++;else if(t>=65)p++;else f++});
-  pfSummary.innerHTML=`P: <strong>${p}</strong> | F: <strong>${f}</strong> | NC: <strong>${nc}</strong>`
-}
-function selectNotExamined(){
-  SELECTED_IDS.clear();const type=notExamType.value;
-  VISIBLE.forEach(s=>{
-    const noMid=s.midterm==null||s.midterm==="-"||Number(s.midterm)===0;
-    const noFinal=s.finalExam==null||s.finalExam==="-"||Number(s.finalExam)===0;
-    const ok=type==="ALL"?(noMid||noFinal):type==="MID"?noMid:noFinal;if(ok)SELECTED_IDS.add(s.id)
-  });render();alert("تم تحديد الطلاب")
-}
-function exportNotExaminedPDF(){
-  const old=new Set(SELECTED_IDS);SELECTED_IDS.clear();const type=notExamType.value;
-  VISIBLE.forEach(s=>{
-    const noMid=s.midterm==null||s.midterm==="-"||Number(s.midterm)===0;
-    const noFinal=s.finalExam==null||s.finalExam==="-"||Number(s.finalExam)===0;
-    const ok=type==="ALL"?(noMid||noFinal):type==="MID"?noMid:noFinal;if(ok)SELECTED_IDS.add(s.id)
-  });
-  exportPDF("SELECTED").finally(()=>{SELECTED_IDS.clear();old.forEach(id=>SELECTED_IDS.add(id));render()})
-}
-
-function sendGradeWhatsApp(studentId){
-  const s=FILTERED.find(x=>x.id===studentId)||STUDENTS.find(x=>x.id===studentId);if(!s)return alert("Student record not found");
-  const phone=normalizeWhatsAppPhone(getStudentPhone(s));if(!phone)return alert("لا يوجد رقم جوال مسجل لهذا الطالب");
-  const c=s.course||{},t=total(s),gr=gradeOf(t).text;
-  const message=`السلام عليكم ورحمة الله وبركاته،
-عزيزي الطالب/ ${getArabicName(s)||getEnglishName(s)||"-"}
-
-نود إشعارك بنتيجتك في دورة ${c.TrainingCourse||"-"}:
-
-الاختبار النصفي: ${s.midterm??0}
-الاختبار النهائي: ${s.finalExam??0}
-الاستماع: ${s.listening??0}
-التحدث: ${s.speaking??0}
-الواجبات: ${hwScore(s)}
-الحضور: ${attScore(s)}
-المجموع: ${t??0} من 100
-التقدير: ${gr}
-
-مع تمنيات معهد برودل للغات لك بالتوفيق والنجاح.`;
-  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`,"_blank","noopener,noreferrer")
-}
-
-function render(){
-  let list=[...FILTERED];
-  if(VIEW==="FAILED")list=list.filter(s=>{const t=total(s);return t!=null&&t<65});
-  if(VIEW==="NOT")list=list.filter(s=>total(s)==null);
-  VISIBLE=list;updateSummaries();buildPdfCourseOptions();
-  if(!list.length){tbody.innerHTML=`<tr><td colspan="19" class="notice">No Data</td></tr>`;syncHeaderCheckbox();return}
-  tbody.innerHTML=list.map((s,i)=>{
-    const t=total(s),gr=gradeOf(t),c=s.course||{},checked=SELECTED_IDS.has(s.id)?"checked":"";
-    const recent=latestDates.includes(getDateStamp(c.StartingDate));
-    return `<tr>
-      <td><input class="chk" type="checkbox" ${checked} onchange="toggleRowSelection('${String(s.id).replace(/'/g,"\\'")}',this.checked)"></td>
-      <td>${i+1}</td>
-      <td class="student-name-cell"><b dir="rtl">${getArabicName(s)||"-"}</b><small dir="ltr">${getEnglishName(s)||"-"}</small></td>
-      <td class="student-id-cell">${getStudentIdentity(s)||"-"}</td>
-      <td><button class="whatsappBtn" onclick="sendGradeWhatsApp('${String(s.id).replace(/'/g,"\\'")}')" title="Send grades via WhatsApp"><i class="fa-brands fa-whatsapp"></i></button></td>
-      <td>${c.Period||"-"}</td><td><b>${t??0}</b></td><td><span class="grade ${gr.cls}">${gr.text}</span></td>
-      <td>${s.midterm??0}</td><td>${s.finalExam??0}</td><td>${s.listening??0}</td><td>${s.speaking??0}</td><td>${hwScore(s)}</td><td>${attScore(s)}</td>
-      <td>${c.TrainingCourse||"-"}</td><td>${c.Trainer||"-"}</td><td>${c.Branch||"-"}</td><td>${c.Section||"-"}</td>
-      <td class="${recent?"recent-date-cell":""}">${formatDateValue(c.StartingDate)}</td>
-    </tr>`
-  }).join("");syncHeaderCheckbox()
-}
-
-/* ================= PDF COURSE SELECTOR ================= */
-function visiblePdfCourses(){
-  const map=new Map();VISIBLE.forEach(s=>{const c=s.course;if(c?.id&&!map.has(c.id))map.set(c.id,c)});return [...map.values()]
-}
-function pdfCourseText(c){return [c.TrainingCourse||"-",c.Trainer||"-",c.Period||"-",`Course Type: ${getCourseType(c)||"-"}`,formatDateValue(c.StartingDate)].join(" · ")}
-function buildPdfCourseOptions(){
-  const box=document.getElementById("pdfCourseChecks");if(!box)return;
-  const courses=visiblePdfCourses(),valid=new Set(courses.map(c=>c.id));
-  PDF_SELECTED_COURSES=new Set([...PDF_SELECTED_COURSES].filter(id=>valid.has(id)));
-  box.innerHTML=`<label class="pdf-course-row all"><input type="checkbox" ${PDF_ALL_COURSES?"checked":""} onchange="setPdfAllCourses(this.checked)"><span>كل الدورات حسب الفلترة الحالية (${courses.length})</span></label>`+
-    courses.map(c=>`<label class="pdf-course-row"><input type="checkbox" ${!PDF_ALL_COURSES&&PDF_SELECTED_COURSES.has(c.id)?"checked":""} onchange="togglePdfCourse('${String(c.id).replace(/'/g,"\\'")}',this.checked)"><span>${pdfCourseText(c)}</span></label>`).join("");
-  updatePdfCourseLabel()
-}
-function togglePdfCourseMenu(event){event?.stopPropagation();buildPdfCourseOptions();document.getElementById("pdfCourseMenu")?.classList.toggle("hidden")}
-function closePdfCourseMenu(){document.getElementById("pdfCourseMenu")?.classList.add("hidden")}
-function setPdfAllCourses(checked){
-  PDF_ALL_COURSES=checked===true;PDF_SELECTED_COURSES.clear();
-  VISIBLE.forEach(s=>PDF_ALL_COURSES?SELECTED_IDS.add(s.id):SELECTED_IDS.delete(s.id));
-  render();buildPdfCourseOptions()
-}
-function togglePdfCourse(id,checked){
-  const wasAll=PDF_ALL_COURSES;PDF_ALL_COURSES=false;
-  if(wasAll){SELECTED_IDS.clear();PDF_SELECTED_COURSES.clear()}
-  checked?PDF_SELECTED_COURSES.add(id):PDF_SELECTED_COURSES.delete(id);
-  VISIBLE.forEach(s=>{if(s.course?.id===id)(checked?SELECTED_IDS.add:SELECTED_IDS.delete).call(SELECTED_IDS,s.id)});
-  render();buildPdfCourseOptions()
-}
-function updatePdfCourseLabel(){
-  const el=document.getElementById("pdfCourseLabel");if(!el)return;
-  el.textContent=PDF_ALL_COURSES?`PDF حسب الفلترة (${visiblePdfCourses().length})`:`PDF للدورات المحددة (${PDF_SELECTED_COURSES.size})`
-}
-document.addEventListener("click",e=>{if(!document.getElementById("pdfCourseWrap")?.contains(e.target))closePdfCourseMenu()});
-
-/* ================= PROFESSIONAL PDF ================= */
-async function loadPdfArabicFont(pdf){
+async function loadAll(){
+  $("notice").className="notice loading";$("notice").textContent="جاري تحديث البيانات...";$("notice").classList.remove("hidden");
+  $("connection").classList.remove("error");$("connectionTitle").textContent="جاري الاتصال";$("connectionText").textContent="يتم تحميل بيانات برودل...";
   try{
-    const url="https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/tajawal/Tajawal-Regular.ttf";
-    const r=await fetch(url);if(!r.ok)throw new Error("Font HTTP "+r.status);
-    const b=new Uint8Array(await r.arrayBuffer());let bin="",chunk=8192;
-    for(let i=0;i<b.length;i+=chunk)bin+=String.fromCharCode(...b.subarray(i,i+chunk));
-    pdf.addFileToVFS("Tajawal-Regular.ttf",btoa(bin));pdf.addFont("Tajawal-Regular.ttf","Tajawal","normal");return "Tajawal"
-  }catch(e){console.warn("Arabic font unavailable",e);return "helvetica"}
-}
-function shapeArabicForPdf(pdf,value){
-  const text=String(value??"");
-  if(!text)return text;
-  // jsPDF needs Arabic shaping before drawing text. Without this,
-  // Arabic letters can appear disconnected or visually incorrect in the PDF.
-  if(typeof pdf.processArabic==="function" && /[\u0600-\u06FF]/.test(text)){
-    return text.split("\n").map(line=>{
-      try{return pdf.processArabic(line)}catch(e){return line}
-    }).join("\n");
-  }
-  return text;
-}
-function pdfStudentName(pdf,s){
-  const ar=getArabicName(s)||"-";
-  const en=getEnglishName(s)||"-";
-  return `${shapeArabicForPdf(pdf,ar)}\n${en}`;
-}
-function getExportList(mode){
-  if(mode==="SELECTED")return VISIBLE.filter(s=>SELECTED_IDS.has(s.id));
-  if(mode==="COURSES")return PDF_ALL_COURSES?[...VISIBLE]:VISIBLE.filter(s=>s.course?.id&&PDF_SELECTED_COURSES.has(s.course.id));
-  return [...VISIBLE]
-}
-function pdfText(pdf,text,x,y,font="helvetica",size=8,align="left"){
-  const hasArabic=/[\u0600-\u06FF]/.test(String(text||""));
-  pdf.setFont(hasArabic?"Tajawal":font,"normal");pdf.setFontSize(size);
-  const rendered=hasArabic?shapeArabicForPdf(pdf,text):String(text??"-");
-  pdf.text(rendered,x,y,{align})
-}
-function drawReportHeader(pdf,arabicFont,title,subtitle,mode,pageNo,totalPages){
-  const W=pdf.internal.pageSize.getWidth();
-  pdf.setFillColor(12,47,82);pdf.rect(0,0,W,29,"F");
-  try{pdf.addImage(LOGO,"PNG",12,6,17,17)}catch(e){}
-  pdf.setFont("helvetica","bold");pdf.setFontSize(14);pdf.setTextColor(255,255,255);pdf.text(title,34,14);
-  pdf.setFontSize(7.5);pdf.text(subtitle,34,21);
-  pdf.setFontSize(7);pdf.text(`PRUDLE • ${mode} • PAGE ${pageNo}${totalPages?` / ${totalPages}`:""}`,W-12,12,{align:"right"});
-  pdf.setDrawColor(30,111,168);pdf.setLineWidth(.8);pdf.line(10,31,W-10,31);
-}
-function drawInfoBox(pdf,c,arabicFont){
-  pdf.setFillColor(246,249,252);pdf.setDrawColor(211,225,236);pdf.roundedRect(12,38,186,27,3,3,"FD");
-  const rows=[
-    ["Course",c.TrainingCourse||"-","Trainer",c.Trainer||"-"],
-    ["Period",c.Period||"-","Branch",c.Branch||"-"],
-    ["Section",c.Section||"-","Course Type",getCourseType(c)||"-"],
-    ["Start",formatDateValue(c.StartingDate),"",""]
-  ];
-  let y=44;
-  rows.forEach(r=>{
-    pdf.setFont("helvetica","bold");pdf.setFontSize(7);pdf.setTextColor(85,108,127);
-    pdf.text(r[0]+":",17,y);pdf.text(r[2]?r[2]+":":"",108,y);
-    pdfText(pdf,r[1],38,y,arabicFont,7);if(r[2])pdfText(pdf,r[3],128,y,arabicFont,7);y+=5.2
-  })
-}
-function drawMetricCards(pdf,metrics,y){
-  const W=pdf.internal.pageSize.getWidth(),gap=3,cardW=(W-24-gap*4)/5;
-  metrics.forEach((m,i)=>{
-    const x=12+i*(cardW+gap);
-    pdf.setFillColor(249,251,253);pdf.setDrawColor(...m.color);pdf.setLineWidth(.6);pdf.roundedRect(x,y,cardW,18,2.5,2.5,"FD");
-    pdf.setFillColor(...m.color);pdf.rect(x,y,2.7,18,"F");
-    pdf.setFont("helvetica","bold");pdf.setFontSize(6.3);pdf.setTextColor(100,119,136);pdf.text(m.label,x+5,y+6);
-    pdf.setFontSize(13);pdf.setTextColor(...m.color);pdf.text(String(m.value),x+5,y+14)
-  })
-}
-function makeCourseGroups(list){
-  const map={};list.forEach(s=>{const c=s.course;if(!c?.id)return;if(!map[c.id])map[c.id]={course:c,students:[]};map[c.id].students.push(s)});return Object.values(map)
-}
-function courseStats(students){
-  const vals=students.map(total).filter(v=>v!=null);let p=0,f=0,n=0;
-  students.forEach(s=>{const t=total(s);if(t==null)n++;else if(t>=65)p++;else f++});
-  return {avg:vals.length?Number((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1)):0,max:vals.length?Math.max(...vals):0,min:vals.length?Math.min(...vals):0,passed:p,failed:f,nc:n,graded:p+f}
+    const [courses,students,exams,results,activities,activityResults,plans,logs]=await Promise.all([
+      readCollection("Courses"),readCollection("students"),readCollection("exams"),readCollection("results"),
+      readCollection("FunActivities"),readCollection("FunActivityResults"),readCollection("StudyPlans"),readCollection("DeviceLoginLogs",1000)
+    ]);
+    DATA=derive(courses,students,exams,results,activities,activityResults,plans,logs);
+    buildFilters();applyFilters();
+    $("notice").classList.add("hidden");$("connectionTitle").textContent="البيانات متصلة";$("connectionText").textContent="آخر تحديث: "+new Date().toLocaleTimeString("ar-SA",{hour:"2-digit",minute:"2-digit"});
+  }catch(error){console.error(error);$("notice").className="notice error";$("notice").textContent="تعذر تحميل البيانات. تحقق من صلاحيات القراءة في Firestore.";$("connection").classList.add("error");$("connectionTitle").textContent="تعذر الاتصال";$("connectionText").textContent="راجع صلاحيات Firestore ثم حدّث الصفحة"}
 }
 
-async function exportPDF(mode="VISIBLE"){
-  const listToExport=getExportList(mode);
-  if(!listToExport.length){alert(mode==="SELECTED"?"No selected records to export":mode==="COURSES"?"حدد دورة واحدة على الأقل للطباعة":"No data to export");return}
-  if(mode==="COURSES")closePdfCourseMenu();
-
-  const {jsPDF}=window.jspdf,pdf=new jsPDF("p","mm","a4");
-  const arabicFont=await loadPdfArabicFont(pdf),W=pdf.internal.pageSize.getWidth(),H=pdf.internal.pageSize.getHeight();
-  const groups=makeCourseGroups(listToExport);
-  const allStats=courseStats(listToExport);
-  const totalPages=groups.length+1;
-
-  /* Executive summary page */
-  drawReportHeader(pdf,arabicFont,"Prudle – Academic Executive Analytics","PROFESSIONAL COURSE PERFORMANCE REPORT",mode,1,totalPages);
-  pdf.setTextColor(22,68,120);pdf.setFont("helvetica","bold");pdf.setFontSize(13);pdf.text("Executive Performance Summary",12,42);
-  pdf.setFont("helvetica","normal");pdf.setFontSize(7.5);pdf.setTextColor(100,119,136);
-  pdf.text(`Generated: ${new Date().toLocaleString("en-GB")}`,12,48);
-  pdf.text(`Records included: ${listToExport.length}`,W-12,48,{align:"right"});
-
-  drawMetricCards(pdf,[
-    {label:"PASSED",value:allStats.passed,color:[32,164,103]},
-    {label:"FAILED",value:allStats.failed,color:[224,73,78]},
-    {label:"NOT COMPLETED",value:allStats.nc,color:[121,139,154]},
-    {label:"GRADED",value:allStats.graded,color:[30,111,168]},
-    {label:"TOTAL",value:listToExport.length,color:[22,68,120]}
-  ],55);
-
-  /* Active filters */
-  pdf.setFillColor(247,250,253);pdf.setDrawColor(218,229,238);pdf.roundedRect(12,78,186,31,3,3,"FD");
-  pdf.setFont("helvetica","bold");pdf.setFontSize(7.5);pdf.setTextColor(22,68,120);pdf.text("ACTIVE FILTERS",17,85);
-  const filters=[
-    ["Trainer",fTrainer.value||"All"],["Branch",fBranch.value||"All"],["Course",fCourse.value||"All"],
-    ["Period",fPeriod.value||"All"],["Section",fSection.value||"All"],["Course Type",fCourseType.value||"All"],
-    ["Start",fStart.value?formatDateValue(fStart.value):"All"]
-  ];
-  let fy=91,fx=17;filters.forEach((f,i)=>{
-    if(i===4){fx=17;fy=102}
-    pdf.setFont("helvetica","bold");pdf.setFontSize(6.5);pdf.setTextColor(100,119,136);pdf.text(f[0]+":",fx,fy);
-    pdfText(pdf,f[1],fx+23,fy,arabicFont,6.5);fx+=90
-  });
-
-  const summaryRows=groups.sort((a,b)=>{
-    const pd=periodStartMinutes(a.course.Period)-periodStartMinutes(b.course.Period);
-    if(pd!==0)return pd;
-    return String(a.course.TrainingCourse||"").localeCompare(String(b.course.TrainingCourse||""),"en",{numeric:true,sensitivity:"base"})
-  }).map(g=>{
-    const st=courseStats(g.students),c=g.course;
-    return [c.TrainingCourse||"-",c.Trainer||"-",c.Period||"-",g.students.length,st.passed,st.failed,st.nc,st.avg]
-  });
-  pdf.autoTable({
-    startY:117,head:[["Course","Trainer","Period","Students","Passed","Failed","Not Comp.","Avg"]],
-    body:summaryRows,theme:"grid",margin:{left:12,right:12},
-    styles:{font:"helvetica",fontSize:7.3,cellPadding:2,halign:"center",valign:"middle"},
-    headStyles:{fillColor:[22,68,120],textColor:255,fontStyle:"bold",fontSize:7},
-    alternateRowStyles:{fillColor:[245,248,252]},
-    columnStyles:{0:{halign:"left",fontStyle:"bold"},1:{halign:"left"},3:{cellWidth:15},4:{cellWidth:14},5:{cellWidth:14},6:{cellWidth:18},7:{cellWidth:14}},
-    didParseCell:d=>{
-      if(d.section==="body"){
-        if(d.column.index===4)d.cell.styles.fillColor=[220,255,230];
-        if(d.column.index===5)d.cell.styles.fillColor=[255,230,230];
-        if(d.column.index===6)d.cell.styles.fillColor=[240,240,240];
-      }
-    }
-  });
-  pdf.setFont("helvetica","normal");pdf.setFontSize(7);pdf.setTextColor(140);pdf.text("Prudle Education © "+new Date().getFullYear(),W/2,H-7,{align:"center"});
-
-  /* One professional page per course. */
-  groups.forEach((g,index)=>{
-    pdf.addPage();
-    const c=g.course,st=courseStats(g.students);
-    drawReportHeader(pdf,arabicFont,"Course Performance Report","PRUDLE ACADEMIC ANALYTICS",mode,index+2,totalPages);
-    drawInfoBox(pdf,c,arabicFont);
-
-    drawMetricCards(pdf,[
-      {label:"COURSE AVERAGE",value:st.avg,color:[22,68,120]},
-      {label:"PASSED",value:st.passed,color:[32,164,103]},
-      {label:"FAILED",value:st.failed,color:[224,73,78]},
-      {label:"NOT COMPLETED",value:st.nc,color:[121,139,154]},
-      {label:"HIGHEST",value:st.max,color:[30,111,168]}
-    ],70);
-
-    const rows=g.students.map((s,i)=>{
-      const t=total(s),gr=gradeOf(t).text;
-      return [i+1,pdfStudentName(pdf,s),getStudentIdentity(s)||"-",c.Period||"-",s.midterm??0,s.finalExam??0,s.listening??0,s.speaking??0,hwScore(s),attScore(s),t??0,gr]
+function derive(rawCourses,rawStudents,exams,results,activities,activityResults,plans,logs){
+  const students=rawStudents.map(s=>({id:s.id,name:clean(first(s,["name","StudentName","studentName","Name"],"طالب")),iqama:clean(first(s,["iqama","studentIqama","studentID","StudentID","ID"])),courseId:clean(first(s,["courseId","CourseId"])),records:Array.isArray(s.records)?s.records:[],trainerComment:clean(s.trainerComment),midterm:s.midterm,finalExam:s.finalExam}));
+  const tasks=[],alerts=[],today=todayIso();
+  const courses=rawCourses.map(c=>{
+    const id=c.id,courseStudents=students.filter(s=>s.courseId===id),start=isoDate(first(c,["StartingDate","startingDate","startDate"])),end=isoDate(first(c,["EndingDate","endingDate","endDate"]));
+    const name=clean(first(c,["TrainingCourse","courseName","CourseName","Level"],"دورة"));
+    const examTasks=exams.filter(e=>Array.isArray(e.visibleQuestionsByCourse?.[id])&&e.visibleQuestionsByCourse[id].length).map(e=>{
+      const title=clean(first(e,["title","examTitle"],"اختبار")),key=clean(first(e,["examCategory","examType","category","examSkill"])).toLowerCase();
+      const kind=e.isHomework===true||key.includes("homework")||title.toLowerCase().includes("homework")?"واجب":"كويز";
+      const done=courseStudents.filter(s=>results.some(r=>clean(r.courseId)===id&&clean(r.examId)===e.id&&sameStudent(r,s))),doneIds=done.map(s=>s.id),pendingIds=courseStudents.filter(s=>!doneIds.includes(s.id)).map(s=>s.id),p=pct(done.length,courseStudents.length);
+      return{id:`exam_${e.id}_${id}`,courseId:id,title,kind,due:p===100?"مكتمل":"متاح للطلاب",completed:done.length,total:courseStudents.length,status:p===100?"success":p<70?"danger":"warning",completedIds:doneIds,pendingIds};
     });
-
-    pdf.autoTable({
-      startY:94,head:[["#","Arabic / English Name","Student ID","Period","Mid","Final","Listen","Speak","HW","Attend","Total","Grade"]],
-      body:rows,theme:"grid",margin:{left:12,right:12,bottom:15},tableWidth:186,
-      styles:{font:"Tajawal",fontSize:6.8,halign:"center",valign:"middle",cellPadding:1.6,minCellHeight:9},
-      headStyles:{font:"helvetica",fillColor:[22,68,120],textColor:255,fontStyle:"bold",fontSize:6.7},
-      alternateRowStyles:{fillColor:[245,248,252]},
-      columnStyles:{
-        0:{cellWidth:6},1:{cellWidth:40,fontSize:6.9},2:{cellWidth:19},3:{cellWidth:21},
-        4:{cellWidth:10},5:{cellWidth:10},6:{cellWidth:10},7:{cellWidth:10},8:{cellWidth:9},9:{cellWidth:10},
-        10:{cellWidth:11,fontSize:7.2,fontStyle:"bold"},11:{cellWidth:20,fontSize:6.8,fontStyle:"bold"}
-      },
-      didParseCell:d=>{
-        if(d.section==="body"&&d.column.index===11){
-          const v=d.cell.raw;
-          if(v==="Excellent"){d.cell.styles.fillColor=[22,68,120];d.cell.styles.textColor=[255,255,255]}
-          else if(v==="Very Good"){d.cell.styles.fillColor=[39,174,96];d.cell.styles.textColor=[255,255,255]}
-          else if(v==="Good"){d.cell.styles.fillColor=[241,196,15];d.cell.styles.textColor=[27,27,27]}
-          else if(v==="Pass"){d.cell.styles.fillColor=[255,140,0];d.cell.styles.textColor=[255,255,255]}
-          else if(v==="Fail"){d.cell.styles.fillColor=[231,76,60];d.cell.styles.textColor=[255,255,255]}
-          else{d.cell.styles.fillColor=[127,140,141];d.cell.styles.textColor=[255,255,255]}
-        }
-      },
-      willDrawCell:d=>{
-        if(d.section==="body"&&d.column.index===1)d.cell.styles.font="Tajawal"
-      }
+    const activityTasks=activities.filter(a=>{const cid=clean(first(a,["courseId","CourseId","courseID"])),cname=clean(first(a,["courseName","TrainingCourse"]));return cid===id||(!cid&&cname===name)}).map(a=>{
+      const done=courseStudents.filter(s=>activityResults.some(r=>clean(first(r,["courseId","participantCourseId","rankingCourseId"]))===id&&clean(r.activityId)===a.id&&sameStudent(r,s))),doneIds=done.map(s=>s.id),pendingIds=courseStudents.filter(s=>!doneIds.includes(s.id)).map(s=>s.id),p=pct(done.length,courseStudents.length);
+      return{id:`activity_${a.id}_${id}`,courseId:id,title:clean(first(a,["title","activityTitle"],"نشاط تفاعلي")),kind:"نشاط",due:"نشاط فردي",completed:done.length,total:courseStudents.length,status:p===100?"success":p<60?"danger":"warning",completedIds:doneIds,pendingIds};
     });
-
-    const finalY=(pdf.lastAutoTable?.finalY||H-30)+8;
-    pdf.setFillColor(247,250,253);pdf.setDrawColor(218,229,238);
-    pdf.roundedRect(12,Math.min(finalY,H-28),186,12,2.5,2.5,"FD");
-    pdf.setFont("helvetica","bold");pdf.setFontSize(6.8);pdf.setTextColor(100,119,136);
-    pdf.text(`COURSE STATUS • GRADED ${st.graded} / ${g.students.length} • MIN ${st.min} • MAX ${st.max}`,17,Math.min(finalY+7,H-21));
-    pdf.setFont("helvetica","normal");pdf.setFontSize(7);pdf.setTextColor(140);
-    pdf.text("Prudle Education © "+new Date().getFullYear(),W/2,H-7,{align:"center"});
-  });
-
-  const suffix=mode==="SELECTED"?"SELECTED":mode==="COURSES"?"COURSES":"VISIBLE";
-  pdf.save(`Prudle_Executive_Analytics_${suffix}.pdf`);
+    const commentDone=courseStudents.filter(s=>s.trainerComment),commentIds=commentDone.map(s=>s.id);
+    const commentTask={id:`comments_${id}`,courseId:id,title:"تعليقات المدرب للطلاب",kind:"تعليقات",due:commentDone.length===courseStudents.length?"مكتمل":"مطلوب هذا الأسبوع",completed:commentDone.length,total:courseStudents.length,status:commentDone.length===courseStudents.length?"success":"warning",completedIds:commentIds,pendingIds:courseStudents.filter(s=>!commentIds.includes(s.id)).map(s=>s.id)};
+    const courseTasks=[...examTasks,...activityTasks,commentTask];tasks.push(...courseTasks);
+    const coursePlans=plans.filter(p=>clean(p.courseId)===id),planDates=[...new Set(coursePlans.filter(p=>clean(p.activity)).map(p=>planDate(start,p.week,p.day)).filter(date=>date&&date<today))],expected=planDates.length?planDates:defaultStudyDates(start,end);
+    const recordedDates=new Set(courseStudents.flatMap(s=>s.records.filter(r=>r.status).map(r=>r.date))),attendanceMissing=expected.filter(date=>!recordedDates.has(date)).length;
+    let present=0,recorded=0;courseStudents.forEach(s=>s.records.forEach(r=>{if(r.status){recorded++;if(r.status==="present")present++}}));
+    let midtermDue="",finalDue="";coursePlans.forEach(p=>{const text=clean(p.activity).toLowerCase(),date=planDate(start,p.week,p.day);if(text.includes("midterm")&&(!midtermDue||date<midtermDue))midtermDue=date;if(text.includes("final")&&(!finalDue||date<finalDue))finalDue=date});
+    const midtermMissing=midtermDue&&midtermDue<today?courseStudents.filter(s=>!hasValue(s.midterm)).length:0,finalMissing=finalDue&&finalDue<today?courseStudents.filter(s=>!hasValue(s.finalExam)).length:0;
+    if(attendanceMissing)alerts.push({id:`att_${id}`,courseId:id,status:"danger",title:"لم يُرصد حضور المدرب",text:`${attendanceMissing} يوم سابق دون تحضير · ${name}`,time:"متأخر"});
+    if(midtermMissing)alerts.push({id:`mid_${id}`,courseId:id,status:"danger",title:"درجات Midterm غير مكتملة",text:`${midtermMissing} من ${courseStudents.length} طالبًا دون درجة`,time:midtermDue});
+    if(finalMissing)alerts.push({id:`fin_${id}`,courseId:id,status:"danger",title:"درجات Final غير مكتملة",text:`${finalMissing} من ${courseStudents.length} طالبًا دون درجة`,time:finalDue});
+    if(commentDone.length<courseStudents.length)alerts.push({id:`com_${id}`,courseId:id,status:"warning",title:"تعليقات الطلاب ناقصة",text:`${courseStudents.length-commentDone.length} طلاب دون تعليق`,time:"هذا الأسبوع"});
+    return{id,branch:clean(first(c,["Branch","branch"],"غير محدد")),section:clean(first(c,["Section","section","Department","department"],"غير محدد")),name,start,end,type:clean(first(c,["courseType","CourseType","type","Type","Program","program"],"غير محدد")),trainer:clean(first(c,["Trainer","trainer","trainerName"],"غير محدد")),period:clean(first(c,["Period","period","Time","time"],"غير محدد")),students:courseStudents.length,completion:courseTasks.length?Math.round(courseTasks.reduce((sum,t)=>sum+pct(t.completed,t.total),0)/courseTasks.length):0,attendance:pct(present,recorded),comments:pct(commentDone.length,courseStudents.length),attendanceMissing,midtermMissing,finalMissing,midtermDue,finalDue,alerts:attendanceMissing+(midtermMissing?1:0)+(finalMissing?1:0)+(commentDone.length<courseStudents.length?1:0)};
+  }).sort((a,b)=>b.start.localeCompare(a.start));
+  const sessions=logs.map(log=>{const logout=first(log,["logoutAt","logoutClientTime"]),active=!logout&&clean(log.status)!=="closed";return{id:log.id,displayName:clean(first(log,["displayName","name"],"—")),userId:clean(first(log,["userId","username","studentId"],"—")),role:clean(log.userType)==="student"||clean(log.role).toLowerCase()==="student"?"طالب":clean(log.role).toLowerCase()==="admin"?"إدارة":clean(log.role)||"مدرب",device:[first(log,["deviceName","automaticDeviceName","deviceModel","deviceType"]),first(log,["platform"]),first(log,["browser"])].map(clean).filter(Boolean).join(" · ")||"—",login:formatDateTime(first(log,["loginAt","loginClientTime"])),logout:formatDateTime(logout),active}});
+  return{courses,students,tasks:tasks.sort((a,b)=>({danger:0,warning:1,success:2}[a.status]-{danger:0,warning:1,success:2}[b.status])),alerts,sessions};
 }
+
+function unique(key){return[...new Set(DATA.courses.map(c=>c[key]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b),"ar",{numeric:true}))}
+function fillSelect(id,key){const el=$(id),old=el.value;el.innerHTML='<option value="">الكل</option>'+unique(key).map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join("");if([...el.options].some(o=>o.value===old))el.value=old}
+function buildFilters(){fillSelect("fBranch","branch");fillSelect("fSection","section");fillSelect("fCourse","name");fillSelect("fType","type");fillSelect("fTrainer","trainer");fillSelect("fPeriod","period");const starts=[...new Set(DATA.courses.map(c=>c.start).filter(Boolean))].sort((a,b)=>b.localeCompare(a)),latest=starts.slice(0,5);$("fStart").innerHTML='<option value="">الكل</option>'+starts.map(d=>`<option value="${esc(d)}">${latest.includes(d)?"★ "+d+" · حديث":d}</option>`).join("");$("latestDates").innerHTML='<span>أحدث 5 تواريخ بدء</span>'+latest.map(d=>`<button data-date="${esc(d)}" onclick="quickDate('${esc(d)}')">★ ${esc(d)} <i>حديث</i></button>`).join("")}
+function quickDate(date){$("fStart").value=$("fStart").value===date?"":date;applyFilters()}
+function resetFilters(){["fBranch","fSection","fCourse","fStart","fType","fTrainer","fPeriod"].forEach(id=>$(id).value="");applyFilters()}
+function applyFilters(){FILTERED=DATA.courses.filter(c=>(!$("fBranch").value||c.branch===$("fBranch").value)&&(!$("fSection").value||c.section===$("fSection").value)&&(!$("fCourse").value||c.name===$("fCourse").value)&&(!$("fStart").value||c.start===$("fStart").value)&&(!$("fType").value||c.type===$("fType").value)&&(!$("fTrainer").value||c.trainer===$("fTrainer").value)&&(!$("fPeriod").value||c.period===$("fPeriod").value));document.querySelectorAll("#latestDates button").forEach(b=>b.classList.toggle("selected",b.dataset.date===$("fStart").value));render()}
+function visibleIds(){return new Set(FILTERED.map(c=>c.id))}
+function visibleTasks(){const ids=visibleIds();return DATA.tasks.filter(t=>ids.has(t.courseId))}
+function visibleAlerts(){const ids=visibleIds();return DATA.alerts.filter(a=>ids.has(a.courseId))}
+function renderStats(){const students=FILTERED.reduce((s,c)=>s+c.students,0),alerts=visibleAlerts().length,completion=FILTERED.length?Math.round(FILTERED.reduce((s,c)=>s+c.completion,0)/FILTERED.length):0;$("statCourses").textContent=FILTERED.length;$("statStudents").textContent=students;$("statAlerts").textContent=alerts;$("statCompletion").textContent=completion+"%";$("navAlerts").textContent=alerts}
+function courseRows(){return FILTERED.map(c=>`<tr><td><div class="course-cell"><span class="level-icon">${esc(c.name.match(/\d+/)?.[0]||"F")}</span><div><b>${esc(c.name)}</b><small>${esc(c.branch)} · ${esc(c.section)} · ${esc(c.start)}</small></div></div></td><td><b>${esc(c.trainer)}</b><small class="td-sub">${esc(c.period)}</small></td><td><div class="progress-label"><b>${c.completion}%</b>${progress(c.completion,c.completion<65?"red":"")}</div></td><td><span class="badge ${c.attendance<90?"bad":"good"}">${c.attendance}%</span></td><td><button class="link-metric" onclick="openTask('comments_${esc(c.id)}')"><b>${c.comments}%</b>${progress(c.comments,c.comments===100?"green":"amber")}</button></td><td>${c.alerts?`<span class="badge bad">! ${c.alerts}</span>`:'<span class="badge good">✓ مكتمل</span>'}</td></tr>`).join("")||'<tr><td colspan="6" class="empty">لا توجد دورات مطابقة</td></tr>'}
+function coursesTable(){return`<div class="table-wrap"><table class="data-table"><thead><tr><th>الدورة</th><th>المدرب والفترة</th><th>إنجاز الطلاب</th><th>الحضور</th><th>التعليقات</th><th>التنبيهات</th></tr></thead><tbody>${courseRows()}</tbody></table></div>`}
+function taskCards(items=visibleTasks()){return`<div class="tasks">${items.map(t=>{const c=DATA.courses.find(x=>x.id===t.courseId),p=pct(t.completed,t.total);return`<button class="task" onclick="openTask('${esc(t.id)}')"><div class="task-top"><span class="kind ${kindClass(t.kind)}">${esc(t.kind)}</span><span class="task-status ${t.status}">${esc(t.due||"متابعة")}</span></div><h3>${esc(t.title)}</h3><p>${esc(c?.name||"")} · ${esc(c?.branch||"")} · ${esc(c?.period||"")}</p><div class="task-num"><b>${t.completed} من ${t.total}</b><span>${p}%</span></div>${progress(p,t.status==="danger"?"red":t.status==="warning"?"amber":"green")}<div class="task-foot"><span>${t.total-t.completed?`${t.total-t.completed} لم يكملوا`:"اكتمل الجميع"}</span><b>‹</b></div></button>`}).join("")||'<div class="empty">لا توجد عناصر مرتبطة بالدورات المحددة</div>'}</div>`}
+function alertsBox(){const alerts=visibleAlerts();return`<div class="alerts-list">${alerts.slice(0,7).map(a=>`<button class="alert-item ${a.status}"><i>${a.status==="danger"?"!":"⌛"}</i><span><b>${esc(a.title)}</b><small>${esc(a.text)}</small></span><time>${esc(a.time)}</time></button>`).join("")||'<div class="empty">لا توجد تنبيهات</div>'}</div>`}
+function render(){renderStats();const titles={overview:"نظرة عامة",courses:"متابعة الدورات",attendance:"الحضور",grades:"رصد الدرجات",comments:"تعليقات المدربين",sessions:"الدخول والخروج"};$("pageTitle").textContent=titles[ACTIVE_VIEW];document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===ACTIVE_VIEW));
+  if(ACTIVE_VIEW==="overview")$("viewBox").innerHTML=`<section class="grid-main"><div class="panel"><div class="panel-head"><div><h2>متابعة الدورات</h2><p>ملخص مباشر لأداء كل دورة</p></div><button onclick="setView('courses')">عرض الكل</button></div>${coursesTable()}</div><aside class="panel"><div class="panel-head"><div><h2>التنبيهات العاجلة</h2><p>حسب الأولوية والاستحقاق</p></div><span class="count-chip">${visibleAlerts().length} تنبيه</span></div>${alertsBox()}</aside></section><section class="panel"><div class="panel-head"><div><h2>الواجبات والكويزات والأنشطة</h2><p>انقر على أي عنصر لعرض المكتملين وغير المكتملين</p></div></div>${taskCards()}</section>`;
+  if(ACTIVE_VIEW==="courses")$("viewBox").innerHTML=`<section class="panel full-panel"><div class="panel-head"><div><h2>جميع الدورات</h2><p>الإنجاز والحضور والتعليقات والتنبيهات</p></div><span class="count-chip">${FILTERED.length} دورة</span></div>${coursesTable()}</section>`;
+  if(ACTIVE_VIEW==="attendance")$("viewBox").innerHTML=`<section class="panel full-panel"><div class="panel-head"><div><h2>متابعة تحضير المدربين</h2><p>يظهر التنبيه إذا مضى يوم دراسي ولم يُرصد حضور أي طالب</p></div></div><div class="table-wrap"><table class="data-table"><thead><tr><th>الدورة</th><th>المدرب</th><th>الفترة</th><th>نسبة الحضور</th><th>أيام دون تحضير</th><th>الحالة</th></tr></thead><tbody>${FILTERED.map(c=>`<tr><td><b>${esc(c.name)}</b><small class="td-sub">${esc(c.branch)} · ${esc(c.section)}</small></td><td>${esc(c.trainer)}</td><td>${esc(c.period)}</td><td><div class="progress-label"><b>${c.attendance}%</b>${progress(c.attendance,c.attendance<90?"red":"green")}</div></td><td><b class="${c.attendanceMissing?"red":"green"}">${c.attendanceMissing}</b></td><td>${c.attendanceMissing?'<span class="badge bad">! يحتاج متابعة</span>':'<span class="badge good">✓ تم التحضير</span>'}</td></tr>`).join("")}</tbody></table></div></section>`;
+  if(ACTIVE_VIEW==="grades")$("viewBox").innerHTML=`<section class="panel full-panel"><div class="panel-head"><div><h2>رصد درجات الاختبارات</h2><p>المواعيد تُقرأ من StudyPlans حسب الأسبوع واليوم</p></div></div><div class="table-wrap"><table class="data-table"><thead><tr><th>الدورة</th><th>المدرب</th><th>موعد Midterm</th><th>الناقص</th><th>موعد Final</th><th>الناقص</th></tr></thead><tbody>${FILTERED.map(c=>`<tr><td><b>${esc(c.name)}</b><small class="td-sub">${esc(c.branch)} · ${esc(c.period)}</small></td><td>${esc(c.trainer)}</td><td>${esc(c.midtermDue||"غير محدد في الخطة")}</td><td><button class="badge ${c.midtermMissing?"bad":"good"}" onclick="openGrade('${esc(c.id)}','midterm')">${c.midtermMissing?c.midtermMissing+" لم تُرصد لهم":"مكتمل / غير مستحق"}</button></td><td>${esc(c.finalDue||"غير محدد في الخطة")}</td><td><button class="badge ${c.finalMissing?"bad":"good"}" onclick="openGrade('${esc(c.id)}','final')">${c.finalMissing?c.finalMissing+" لم تُرصد لهم":"مكتمل / غير مستحق"}</button></td></tr>`).join("")}</tbody></table></div></section>`;
+  if(ACTIVE_VIEW==="comments")$("viewBox").innerHTML=`<section class="panel full-panel"><div class="panel-head"><div><h2>اكتمال تعليقات المدربين</h2><p>يعتمد على trainerComment في سجل الطالب</p></div></div>${taskCards(visibleTasks().filter(t=>t.kind==="تعليقات"))}</section>`;
+  if(ACTIVE_VIEW==="sessions"){const ids=visibleIds(),students=DATA.students.filter(s=>ids.has(s.courseId)),keys=new Set(students.flatMap(s=>[s.id,s.iqama,s.name]).map(v=>v.toLowerCase())),trainers=new Set(FILTERED.map(c=>c.trainer.toLowerCase()));const sessions=DATA.sessions.filter(s=>!FILTERED.length||trainers.has(s.displayName.toLowerCase())||keys.has(s.displayName.toLowerCase())||keys.has(s.userId.toLowerCase()));$("viewBox").innerHTML=`<section class="panel full-panel"><div class="panel-head"><div><h2>سجل الدخول والخروج</h2><p>المدربون والطلاب والأجهزة ووقت الجلسة</p></div><input class="search" id="sessionSearch" oninput="filterSessions()" placeholder="بحث بالاسم أو الهوية أو الجهاز"></div><div class="table-wrap"><table class="data-table"><thead><tr><th>الاسم</th><th>المستخدم / الهوية</th><th>الصفة</th><th>الجهاز</th><th>الدخول</th><th>الخروج</th><th>الحالة</th></tr></thead><tbody id="sessionsBody">${sessionRows(sessions)}</tbody></table></div></section>`}
+}
+function sessionRows(list){return list.map(s=>`<tr data-search="${esc(`${s.displayName} ${s.userId} ${s.role} ${s.device}`.toLowerCase())}"><td><b>${esc(s.displayName)}</b></td><td>${esc(s.userId)}</td><td>${esc(s.role)}</td><td>${esc(s.device)}</td><td>${esc(s.login)}</td><td>${esc(s.logout)}</td><td>${s.active?'<span class="badge good"><i class="active-dot"></i>نشط</span>':'<span class="badge">تم الخروج</span>'}</td></tr>`).join("")||'<tr><td colspan="7" class="empty">لا توجد سجلات مطابقة</td></tr>'}
+function filterSessions(){const q=clean($("sessionSearch")?.value).toLowerCase();document.querySelectorAll("#sessionsBody tr[data-search]").forEach(tr=>tr.style.display=tr.dataset.search.includes(q)?"":"none")}
+function setView(view){ACTIVE_VIEW=view;render();window.scrollTo({top:0,behavior:"smooth"})}
+document.querySelectorAll("[data-view]").forEach(button=>button.addEventListener("click",()=>setView(button.dataset.view)));
+
+function openTask(id){const task=DATA.tasks.find(t=>t.id===id);if(!task)return;ACTIVE_TASK=task;ACTIVE_LIST=task.pendingIds.length?"pending":"done";openModal()}
+function openGrade(courseId,type){const c=DATA.courses.find(x=>x.id===courseId),students=DATA.students.filter(s=>s.courseId===courseId),done=students.filter(s=>hasValue(type==="midterm"?s.midterm:s.finalExam)),ids=done.map(s=>s.id);ACTIVE_TASK={id:`grade_${type}_${courseId}`,courseId,title:type==="midterm"?"رصد درجات Midterm":"رصد درجات Final",kind:"درجات",due:type==="midterm"?c.midtermDue:c.finalDue,completed:done.length,total:students.length,status:done.length===students.length?"success":"danger",completedIds:ids,pendingIds:students.filter(s=>!ids.includes(s.id)).map(s=>s.id)};ACTIVE_LIST=ACTIVE_TASK.pendingIds.length?"pending":"done";openModal()}
+function openModal(){const c=DATA.courses.find(x=>x.id===ACTIVE_TASK.courseId);$("modalKind").textContent=ACTIVE_TASK.kind;$("modalKind").className=`kind ${kindClass(ACTIVE_TASK.kind)}`;$("modalTitle").textContent=ACTIVE_TASK.title;$("modalCourse").textContent=`${c?.name||""} · ${c?.trainer||""} · ${c?.period||""}`;$("modalTotal").textContent=ACTIVE_TASK.total;$("modalDone").textContent=ACTIVE_TASK.completed;$("modalPending").textContent=ACTIVE_TASK.total-ACTIVE_TASK.completed;$("modalBg").classList.remove("hidden");renderStudentList(ACTIVE_LIST)}
+function renderStudentList(type){ACTIVE_LIST=type;$("tabPending").classList.toggle("active",type==="pending");$("tabDone").classList.toggle("active",type==="done");const ids=type==="done"?ACTIVE_TASK.completedIds:ACTIVE_TASK.pendingIds,students=ids.map(id=>DATA.students.find(s=>s.id===id)).filter(Boolean);$("studentList").innerHTML=students.map(s=>`<div class="student-row"><i>${esc(s.name.charAt(0)||"ط")}</i><div><b>${esc(s.name)}</b><small>الهوية · ${esc(s.iqama||s.id)}</small></div><span class="student-state ${type}">${type==="done"?"✓ مكتمل":"! لم يكمل"}</span></div>`).join("")||'<div class="empty">لا يوجد طلاب في هذه القائمة</div>'}
+function closeModal(event){if(event&&event.target!==$("modalBg"))return;$("modalBg").classList.add("hidden");ACTIVE_TASK=null}
+
+function exportPDF(){preparePrintReport();setTimeout(()=>window.print(),100)}
+function selectedFilterText(){const labels={fBranch:"الفرع",fSection:"القسم",fCourse:"الدورة",fStart:"تاريخ البدء",fType:"نوع الدورة",fTrainer:"المدرب",fPeriod:"الفترة"};const parts=Object.entries(labels).map(([id,label])=>$(id).value?`<b>${label}:</b> ${esc($(id).value)}`:"").filter(Boolean);return parts.length?parts.join(" &nbsp; | &nbsp; "):"<b>نطاق التقرير:</b> جميع الدورات"}
+function preparePrintReport(){
+  const tasks=visibleTasks(),alerts=visibleAlerts(),students=FILTERED.reduce((s,c)=>s+c.students,0),completion=FILTERED.length?Math.round(FILTERED.reduce((s,c)=>s+c.completion,0)/FILTERED.length):0;
+  $("printMeta").innerHTML=`تاريخ التقرير: ${new Date().toLocaleString("ar-SA")}<br>أُصدر بواسطة: ${esc(localStorage.getItem("username")||"الجهة الإشرافية")}`;
+  $("printFilters").innerHTML=selectedFilterText();
+  $("printStats").innerHTML=`<article class="print-stat"><span>الدورات</span><b>${FILTERED.length}</b></article><article class="print-stat"><span>الطلاب</span><b>${students}</b></article><article class="print-stat"><span>التنبيهات</span><b>${alerts.length}</b></article><article class="print-stat"><span>متوسط الإنجاز</span><b>${completion}%</b></article>`;
+  const courseTable=`<div class="print-section"><h2>أولًا: ملخص الدورات</h2><table class="print-table"><thead><tr><th>الفرع</th><th>القسم</th><th>الدورة</th><th>تاريخ البدء</th><th>نوع الدورة</th><th>المدرب</th><th>الفترة</th><th>الطلاب</th><th>الإنجاز</th><th>الحضور</th><th>التعليقات</th><th>التنبيهات</th></tr></thead><tbody>${FILTERED.map(c=>`<tr class="${c.alerts?"danger-row":""}"><td>${esc(c.branch)}</td><td>${esc(c.section)}</td><td>${esc(c.name)}</td><td>${esc(c.start)}</td><td>${esc(c.type)}</td><td>${esc(c.trainer)}</td><td>${esc(c.period)}</td><td>${c.students}</td><td>${c.completion}%</td><td>${c.attendance}%</td><td>${c.comments}%</td><td><span class="print-badge ${c.alerts?"bad":"good"}">${c.alerts||"مكتمل"}</span></td></tr>`).join("")}</tbody></table></div>`;
+  const alertsTable=`<div class="print-section"><h2>ثانيًا: التنبيهات والمتابعة</h2><table class="print-table"><thead><tr><th style="width:13%">الأولوية</th><th style="width:22%">التنبيه</th><th>التفاصيل</th><th style="width:16%">التاريخ / الحالة</th></tr></thead><tbody>${alerts.map(a=>`<tr class="danger-row"><td><span class="print-badge bad">${a.status==="danger"?"عاجل":"متابعة"}</span></td><td>${esc(a.title)}</td><td>${esc(a.text)}</td><td>${esc(a.time)}</td></tr>`).join("")||'<tr><td colspan="4">لا توجد تنبيهات</td></tr>'}</tbody></table></div>`;
+  const taskTable=`<div class="print-section"><h2>ثالثًا: إنجاز الواجبات والكويزات والأنشطة والتعليقات</h2><table class="print-table"><thead><tr><th>النوع</th><th style="width:25%">العنوان</th><th>الدورة</th><th>المدرب</th><th>أكملوا</th><th>لم يكملوا</th><th>نسبة الإنجاز</th><th>الحالة</th></tr></thead><tbody>${tasks.map(t=>{const c=DATA.courses.find(x=>x.id===t.courseId),p=pct(t.completed,t.total);return`<tr class="${t.status==="danger"?"danger-row":""}"><td>${esc(t.kind)}</td><td>${esc(t.title)}</td><td>${esc(c?.name||"")}</td><td>${esc(c?.trainer||"")}</td><td>${t.completed}</td><td>${t.total-t.completed}</td><td>${p}%</td><td><span class="print-badge ${p===100?"good":"bad"}">${p===100?"مكتمل":"يحتاج متابعة"}</span></td></tr>`}).join("")||'<tr><td colspan="8">لا توجد عناصر</td></tr>'}</tbody></table></div>`;
+  $("printTables").innerHTML=courseTable+alertsTable+taskTable;
+}
+
+if(checkAccess())loadAll();
 </script>
 </body>
 </html>
