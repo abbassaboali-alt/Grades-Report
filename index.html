@@ -495,8 +495,23 @@ async function loadPdfArabicFont(pdf){
     pdf.addFileToVFS("Tajawal-Regular.ttf",btoa(bin));pdf.addFont("Tajawal-Regular.ttf","Tajawal","normal");return "Tajawal"
   }catch(e){console.warn("Arabic font unavailable",e);return "helvetica"}
 }
-function shapeArabicForPdf(pdf,value){return String(value??"")}
-function pdfStudentName(s){return `${getArabicName(s)||"-"}\n${getEnglishName(s)||"-"}`}
+function shapeArabicForPdf(pdf,value){
+  const text=String(value??"");
+  if(!text)return text;
+  // jsPDF needs Arabic shaping before drawing text. Without this,
+  // Arabic letters can appear disconnected or visually incorrect in the PDF.
+  if(typeof pdf.processArabic==="function" && /[\u0600-\u06FF]/.test(text)){
+    return text.split("\n").map(line=>{
+      try{return pdf.processArabic(line)}catch(e){return line}
+    }).join("\n");
+  }
+  return text;
+}
+function pdfStudentName(pdf,s){
+  const ar=getArabicName(s)||"-";
+  const en=getEnglishName(s)||"-";
+  return `${shapeArabicForPdf(pdf,ar)}\n${en}`;
+}
 function getExportList(mode){
   if(mode==="SELECTED")return VISIBLE.filter(s=>SELECTED_IDS.has(s.id));
   if(mode==="COURSES")return PDF_ALL_COURSES?[...VISIBLE]:VISIBLE.filter(s=>s.course?.id&&PDF_SELECTED_COURSES.has(s.course.id));
@@ -504,7 +519,9 @@ function getExportList(mode){
 }
 function pdfText(pdf,text,x,y,font="helvetica",size=8,align="left"){
   const hasArabic=/[\u0600-\u06FF]/.test(String(text||""));
-  pdf.setFont(hasArabic?"Tajawal":font,"normal");pdf.setFontSize(size);pdf.text(String(text??"-"),x,y,{align})
+  pdf.setFont(hasArabic?"Tajawal":font,"normal");pdf.setFontSize(size);
+  const rendered=hasArabic?shapeArabicForPdf(pdf,text):String(text??"-");
+  pdf.text(rendered,x,y,{align})
 }
 function drawReportHeader(pdf,arabicFont,title,subtitle,mode,pageNo,totalPages){
   const W=pdf.internal.pageSize.getWidth();
@@ -631,7 +648,7 @@ async function exportPDF(mode="VISIBLE"){
 
     const rows=g.students.map((s,i)=>{
       const t=total(s),gr=gradeOf(t).text;
-      return [i+1,pdfStudentName(s),getStudentIdentity(s)||"-",c.Period||"-",s.midterm??0,s.finalExam??0,s.listening??0,s.speaking??0,hwScore(s),attScore(s),t??0,gr]
+      return [i+1,pdfStudentName(pdf,s),getStudentIdentity(s)||"-",c.Period||"-",s.midterm??0,s.finalExam??0,s.listening??0,s.speaking??0,hwScore(s),attScore(s),t??0,gr]
     });
 
     pdf.autoTable({
