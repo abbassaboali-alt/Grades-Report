@@ -4,7 +4,7 @@
    Weebly + Caspio Safe
 =============================== */
 
-/* 1ï¸âƒ£ Ø§Ù„ØµÙØ­Ø© Ø¨ÙƒØ§Ù…Ù„ Ø§Ù„Ø¹Ø±Ø¶ */
+/* 1️⃣ الصفحة بكامل العرض */
 html, body{
   margin:0 !important;
   padding:0 !important;
@@ -13,14 +13,14 @@ html, body{
   overflow-x:hidden !important;
 }
 
-/* 2ï¸âƒ£ Ù…Ù†Ø¹ Ø£ÙŠ Ø¹Ù†ØµØ± Ù…Ù† ÙƒØ³Ø± Ø§Ù„Ø¹Ø±Ø¶ */
+/* 2️⃣ منع أي عنصر من كسر العرض */
 *,
 *::before,
 *::after{
   box-sizing:border-box !important;
 }
 
-/* 3ï¸âƒ£ Ø£ÙŠ Ø­Ø§ÙˆÙŠØ© Ø£Ùˆ Ù‚Ø³Ù… ÙŠØªÙ…Ø¯Ø¯ Ø¨Ø¹Ø±Ø¶ Ø§Ù„Ø´Ø§Ø´Ø© */
+/* 3️⃣ أي حاوية أو قسم يتمدد بعرض الشاشة */
 .container,
 .section,
 .wrapper,
@@ -33,19 +33,19 @@ html, body{
   padding-right:16px;
 }
 
-/* 4ï¸âƒ£ Ø§Ù„Ø¬Ø¯Ø§ÙˆÙ„ Ø¨ÙƒØ§Ù…Ù„ Ø§Ù„Ø¹Ø±Ø¶ */
+/* 4️⃣ الجداول بكامل العرض */
 table{
   width:100% !important;
   max-width:100% !important;
   table-layout:auto;
 }
 
-/* 5ï¸âƒ£ Ù…Ù†Ø¹ Ø§Ù„Ø¹Ù†Ø§ØµØ± Ù…Ù† Ø§Ù„Ø®Ø±ÙˆØ¬ Ø®Ø§Ø±Ø¬ Ø§Ù„Ø´Ø§Ø´Ø© */
+/* 5️⃣ منع العناصر من الخروج خارج الشاشة */
 div, section, header, footer{
   max-width:100% !important;
 }
 
-/* 6ï¸âƒ£ ØªØ­Ø³ÙŠÙ† Ø§Ù„Ø¹Ø±Ø¶ Ù„Ù„Ø´Ø§Ø´Ø§Øª Ø§Ù„ÙƒØ¨ÙŠØ±Ø© */
+/* 6️⃣ تحسين العرض للشاشات الكبيرة */
 @media (min-width:1400px){
   body{
     font-size:14px;
@@ -56,9 +56,9 @@ div, section, header, footer{
 }
 </style>
 
-<!-- â–¡ Ø²Ø± Logout Ø¬Ø§Ù‡Ø² â€” ÙƒÙˆØ¯ ÙˆØ§Ø­Ø¯ ÙÙ‚Ø· -->
+<!-- □ زر Logout جاهز — كود واحد فقط -->
 
-<!-- Ø£ÙŠÙ‚ÙˆÙ†Ø§Øª FontAwesome -->
+<!-- أيقونات FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
@@ -86,7 +86,7 @@ div, section, header, footer{
 }
 </style>
 
-<!-- Ø²Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬ -->
+<!-- زر تسجيل الخروج -->
 <button class="logout-badge" onclick="logout()">
   <i class="fa-solid fa-right-from-bracket"></i>
   Logout
@@ -104,9 +104,9 @@ function logout(){
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>Prudle â€“ Academic Executive Analytics</title>
+<title>Prudle – Academic Executive Analytics</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 
 <!-- Firebase -->
@@ -372,7 +372,6 @@ header button:hover{background:#fff;color:var(--navy);transform:translateY(-1px)
 .filters{margin:14px;padding:16px;background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);grid-template-columns:repeat(4,minmax(150px,1fr));gap:11px}.filters select,.filters input{height:43px;padding:0 13px;border:1px solid #cfdae7;border-radius:11px;background:#f9fbfd;color:var(--ink);font-size:11px;transition:.2s}.filters select:focus,.filters input:focus{border-color:#2f80ed;background:#fff;box-shadow:0 0 0 3px rgba(47,128,237,.12)}
 .card{margin:14px;padding:0;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}.topLine{padding:18px 20px;margin:0;border-bottom:1px solid var(--line);background:#fbfcfe;color:var(--navy)}.badges .badge{border:1px solid var(--line);background:#fff;color:var(--navy);padding:7px 11px}.card>div[style*="display:flex"]{padding:12px 20px;margin:0!important;border-bottom:1px solid var(--line);background:#fff}.smallBtn{border:1px solid #cbd8e6;border-radius:9px;background:#f8fafc;padding:8px 12px}.tableWrap{border-radius:0;max-height:68vh}
 table{border-collapse:separate;border-spacing:0;font-size:11px;background:#fff}th{position:sticky;top:0;z-index:3;background:#102f53;color:#fff;border:0;border-right:1px solid rgba(255,255,255,.10);padding:12px 9px;text-transform:uppercase;font-size:10px;letter-spacing:.25px}td{border:0;border-bottom:1px solid #e5ebf2;padding:10px 8px;color:#26384c}tr:nth-child(even){background:#f7f9fc}tr:hover{background:#edf5ff}.grade{min-width:105px;border:0;padding:5px 9px;font-size:10px}.logout-badge{position:fixed;right:20px;bottom:20px;z-index:2500;background:#102f53;border:2px solid #fff;box-shadow:0 10px 30px rgba(11,37,69,.28)}
-.student-name-cell{min-width:210px;white-space:normal!important;line-height:1.35}.student-name-ar{display:block;direction:rtl;font-weight:900;color:#0b2545;font-family:Tajawal,Poppins,sans-serif;font-size:12px}.student-name-en{display:block;direction:ltr;margin-top:3px;color:#65758b;font-weight:700;font-size:10px;letter-spacing:.1px}
 @media(max-width:1100px){.executive-shell{grid-template-columns:1fr}.metric-grid{grid-template-columns:repeat(3,1fr)}.filters{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){header{margin:7px;border-radius:14px}.executive-shell,.filters,.card{margin:7px}.metric-grid{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.hero-panel h1{font-size:20px}.dashboard-chart-wrap{height:230px}}
 </style>
@@ -381,7 +380,7 @@ table{border-collapse:separate;border-spacing:0;font-size:11px;background:#fff}t
 <body>
 
 <header>
-  <div>Prudle â€“ Academic Executive Analytics</div>
+  <div>Prudle – Academic Executive Analytics</div>
   <div class="actions">
     <button class="primary" onclick="setView('ALL')">All</button>
     <button class="danger" onclick="setView('FAILED')">Failed</button>
@@ -417,12 +416,12 @@ table{border-collapse:separate;border-spacing:0;font-size:11px;background:#fff}t
     <button onclick="resetFilters()">Reset</button>
     <div class="pdf-course-wrap" id="pdfCourseWrap">
       <button class="pdf-course-trigger" type="button" onclick="togglePdfCourseMenu(event)">
-        <span id="pdfCourseLabel">PDF Ø­Ø³Ø¨ Ø§Ù„ÙÙ„ØªØ±Ø©</span><span>â–¼</span>
+        <span id="pdfCourseLabel">PDF حسب الفلترة</span><span>▼</span>
       </button>
       <div class="pdf-course-menu hidden" id="pdfCourseMenu">
-        <div class="pdf-course-head"><b>Ø­Ø¯Ø¯ Ø§Ù„Ø¯ÙˆØ±Ø§Øª Ø§Ù„Ù…Ø±Ø§Ø¯ Ø·Ø¨Ø§Ø¹ØªÙ‡Ø§</b><button class="pdf-course-close" type="button" onclick="closePdfCourseMenu()">Ø¥ØºÙ„Ø§Ù‚</button></div>
+        <div class="pdf-course-head"><b>حدد الدورات المراد طباعتها</b><button class="pdf-course-close" type="button" onclick="closePdfCourseMenu()">إغلاق</button></div>
         <div id="pdfCourseChecks"></div>
-        <button class="primary" style="width:100%;margin-top:10px" type="button" onclick="exportPDF('COURSES')"><i class="fa-solid fa-file-pdf"></i> Ø·Ø¨Ø§Ø¹Ø© Ø§Ù„Ø¯ÙˆØ±Ø§Øª Ø§Ù„Ù…Ø­Ø¯Ø¯Ø© PDF</button>
+        <button class="primary" style="width:100%;margin-top:10px" type="button" onclick="exportPDF('COURSES')"><i class="fa-solid fa-file-pdf"></i> طباعة الدورات المحددة PDF</button>
       </div>
     </div>
     <button onclick="exportPDF('SELECTED')"><i class="fa-solid fa-file-pdf"></i> PDF (Selected)</button>
@@ -443,7 +442,7 @@ table{border-collapse:separate;border-spacing:0;font-size:11px;background:#fff}t
     </div>
   </div>
   <div class="chart-panel">
-    <div class="panel-title"><div><strong>Course Performance</strong><br><span>Average score by course and trainer</span></div><span>0â€”100</span></div>
+    <div class="panel-title"><div><strong>Course Performance</strong><br><span>Average score by course and trainer</span></div><span>0—100</span></div>
     <div class="dashboard-chart-wrap"><canvas id="dashboardBarChart"></canvas></div>
   </div>
 </section>
@@ -486,8 +485,8 @@ table{border-collapse:separate;border-spacing:0;font-size:11px;background:#fff}t
           <th>#</th>
           <th>Name</th>
           <th>WhatsApp</th>
-          <th onclick="sortByPeriod()">Period <span id="periodSortArrow">â–²â–¼</span></th>
-          <th onclick="sortByTotal()">Total â–²â–¼</th>
+          <th onclick="sortByPeriod()">Period <span id="periodSortArrow">▲▼</span></th>
+          <th onclick="sortByTotal()">Total ▲▼</th>
           <th>Grade</th>
           <th>Student Status</th>
           <th>Mid</th>
@@ -496,11 +495,11 @@ table{border-collapse:separate;border-spacing:0;font-size:11px;background:#fff}t
           <th>Speak</th>
           <th>HW</th>
           <th>Attend</th>
-          <th onclick="sortByCourse()">Course <span id="courseSortArrow">â–²â–¼</span></th>
+          <th onclick="sortByCourse()">Course <span id="courseSortArrow">▲▼</span></th>
           <th>Trainer</th>
           <th>Branch</th>
           <th>Section</th>
-          <th onclick="sortByStartDate()">Start â–²â–¼</th>
+          <th onclick="sortByStartDate()">Start ▲▼</th>
         </tr>
       </thead>
       <tbody id="tbody">
@@ -530,7 +529,7 @@ let VIEW = "ALL";
 
 let PERIOD_DIR = 1;
 let TOTAL_DIR = 1;
-let START_DIR = -1; // Ø§Ù„Ø£Ø­Ø¯Ø« Ø£ÙˆÙ„Ø§Ù‹
+let START_DIR = -1; // الأحدث أولاً
 let ACTIVE_SORT = {key:"start", dir:-1};
 
 let VISIBLE = [];
@@ -554,7 +553,7 @@ function pdfCourseText(c){
     c.Period||"-",
     `Course Type: ${getCourseType(c)||"-"}`,
     formatDateValue(c.StartingDate)
-  ].join(" Â· ");
+  ].join(" · ");
 }
 
 function buildPdfCourseOptions(){
@@ -566,7 +565,7 @@ function buildPdfCourseOptions(){
   box.innerHTML=`
     <label class="pdf-course-row all">
       <input type="checkbox" ${PDF_ALL_COURSES?"checked":""} onchange="setPdfAllCourses(this.checked)">
-      <span>ÙƒÙ„ Ø§Ù„Ø¯ÙˆØ±Ø§Øª Ø­Ø³Ø¨ Ø§Ù„ÙÙ„ØªØ±Ø© Ø§Ù„Ø­Ø§Ù„ÙŠØ© (${courses.length})</span>
+      <span>كل الدورات حسب الفلترة الحالية (${courses.length})</span>
     </label>
     ${courses.map(c=>`
       <label class="pdf-course-row">
@@ -586,7 +585,7 @@ function setPdfAllCourses(checked){
   PDF_ALL_COURSES=checked===true;
   PDF_SELECTED_COURSES.clear();
 
-  /* Ø±Ø¨Ø· Ø§Ø®ØªÙŠØ§Ø± ÙƒÙ„ Ø§Ù„Ø¯ÙˆØ±Ø§Øª Ø¨Ù…Ø±Ø¨Ø¹Ø§Øª Ø§Ù„Ø·Ù„Ø§Ø¨ Ø§Ù„Ø¸Ø§Ù‡Ø±ÙŠÙ† */
+  /* ربط اختيار كل الدورات بمربعات الطلاب الظاهرين */
   VISIBLE.forEach(s=>{
     if(PDF_ALL_COURSES) SELECTED_IDS.add(s.id);
     else SELECTED_IDS.delete(s.id);
@@ -599,7 +598,7 @@ function togglePdfCourse(id,checked){
   const wasAllCourses=PDF_ALL_COURSES;
   PDF_ALL_COURSES=false;
 
-  /* Ø¹Ù†Ø¯ Ø§Ù„Ø§Ù†ØªÙ‚Ø§Ù„ Ù…Ù† "ÙƒÙ„ Ø§Ù„Ø¯ÙˆØ±Ø§Øª" Ø¥Ù„Ù‰ Ø¯ÙˆØ±Ø© Ù…Ø­Ø¯Ø¯Ø© Ù†Ø¨Ø¯Ø£ Ø¨ØªØ­Ø¯ÙŠØ¯ Ø¬Ø¯ÙŠØ¯ */
+  /* عند الانتقال من "كل الدورات" إلى دورة محددة نبدأ بتحديد جديد */
   if(wasAllCourses){
     SELECTED_IDS.clear();
     PDF_SELECTED_COURSES.clear();
@@ -607,7 +606,7 @@ function togglePdfCourse(id,checked){
 
   checked?PDF_SELECTED_COURSES.add(id):PDF_SELECTED_COURSES.delete(id);
 
-  /* ØªØ­Ø¯ÙŠØ¯/Ø¥Ù„ØºØ§Ø¡ ØªØ­Ø¯ÙŠØ¯ Ø¬Ù…ÙŠØ¹ Ø·Ù„Ø§Ø¨ Ø§Ù„Ø¯ÙˆØ±Ø© ØªÙ„Ù‚Ø§Ø¦ÙŠÙ‹Ø§ */
+  /* تحديد/إلغاء تحديد جميع طلاب الدورة تلقائيًا */
   VISIBLE.forEach(s=>{
     if(s.course?.id !== id) return;
     if(checked) SELECTED_IDS.add(s.id);
@@ -621,11 +620,11 @@ function updatePdfCourseLabel(){
   const el=document.getElementById("pdfCourseLabel");
   if(!el)return;
   const total=visiblePdfCourses().length;
-  el.textContent=PDF_ALL_COURSES?`PDF Ø­Ø³Ø¨ Ø§Ù„ÙÙ„ØªØ±Ø© (${total})`:`PDF Ù„Ù„Ø¯ÙˆØ±Ø§Øª Ø§Ù„Ù…Ø­Ø¯Ø¯Ø© (${PDF_SELECTED_COURSES.size})`;
+  el.textContent=PDF_ALL_COURSES?`PDF حسب الفلترة (${total})`:`PDF للدورات المحددة (${PDF_SELECTED_COURSES.size})`;
 }
 document.addEventListener("click",e=>{if(!document.getElementById("pdfCourseWrap")?.contains(e.target))closePdfCourseMenu()});
 
-/* ===== Ø£Ø­Ø¯Ø« 5 ØªÙˆØ§Ø±ÙŠØ® ===== */
+/* ===== أحدث 5 تواريخ ===== */
 let latestDates = [];
 let COURSE_DIR = 1;
 
@@ -668,7 +667,7 @@ function compareCourse(a,b,dir){
   const periodDiff=periodStartMinutes(a.course?.Period)-periodStartMinutes(b.course?.Period);
   if(periodDiff!==0)return periodDiff;
 
-  /* Ø¯Ø§Ø®Ù„ Ø§Ù„Ø¯ÙˆØ±Ø© ÙˆØ§Ù„ÙØªØ±Ø© Ù†ÙØ³Ù‡Ø§: Ø£Ø¹Ù„Ù‰ Ø¯Ø±Ø¬Ø© ØªØ¸Ù‡Ø± Ø£ÙˆÙ„Ø§Ù‹ */
+  /* داخل الدورة والفترة نفسها: أعلى درجة تظهر أولاً */
   const totalA=total(a);
   const totalB=total(b);
   const safeA=totalA==null?-1:totalA;
@@ -679,8 +678,8 @@ function compareCourse(a,b,dir){
 function updateSortArrows(){
   const p=document.getElementById("periodSortArrow");
   const c=document.getElementById("courseSortArrow");
-  if(p)p.textContent=ACTIVE_SORT.key==="period"?(ACTIVE_SORT.dir===1?"â–²":"â–¼"):"â–²â–¼";
-  if(c)c.textContent=ACTIVE_SORT.key==="course"?(ACTIVE_SORT.dir===1?"â–²":"â–¼"):"â–²â–¼";
+  if(p)p.textContent=ACTIVE_SORT.key==="period"?(ACTIVE_SORT.dir===1?"▲":"▼"):"▲▼";
+  if(c)c.textContent=ACTIVE_SORT.key==="course"?(ACTIVE_SORT.dir===1?"▲":"▼"):"▲▼";
 }
 
 /* ================= HELPERS ================= */
@@ -875,54 +874,34 @@ function bilingualStudentName(s){
   return ar || en || "-";
 }
 
-function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[ch]));
-}
-
-function bilingualStudentNameHTML(s){
-  const base = String(s?.name || "").trim();
-  const ar = String(s?.name_ar || s?.nameAr || s?.arabicName || s?.nameArabic || (hasArabicText(base) ? base : "")).trim();
-  const en = String(s?.name_en || s?.nameEn || s?.englishName || (!hasArabicText(base) ? base : "")).trim();
-  const rows=[];
-  if(ar) rows.push(`<span class="student-name-ar">${escapeHTML(ar)}</span>`);
-  if(en && en.toLowerCase()!==ar.toLowerCase()) rows.push(`<span class="student-name-en">${escapeHTML(en)}</span>`);
-  return rows.join("") || "-";
-}
-
-let ARABIC_PDF_FONTS = null;
+let ARABIC_PDF_FONT_BASE64 = null;
 async function loadArabicPdfFont(pdf){
-  async function fontToBase64(url){
-    const response = await fetch(url);
+  if(!ARABIC_PDF_FONT_BASE64){
+    const response = await fetch("https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/amiri/Amiri-Regular.ttf");
     if(!response.ok) throw new Error("Arabic PDF font could not be loaded");
     const bytes = new Uint8Array(await response.arrayBuffer());
-    let binary="";
-    for(let i=0;i<bytes.length;i+=0x8000) binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));
-    return btoa(binary);
+    let binary = "";
+    const chunk = 0x8000;
+    for(let i=0;i<bytes.length;i+=chunk){
+      binary += String.fromCharCode(...bytes.subarray(i,i+chunk));
+    }
+    ARABIC_PDF_FONT_BASE64 = btoa(binary);
   }
-  if(!ARABIC_PDF_FONTS){
-    const base="https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/";
-    const [regular,bold]=await Promise.all([
-      fontToBase64(base+"DejaVuSans.ttf"),
-      fontToBase64(base+"DejaVuSans-Bold.ttf")
-    ]);
-    ARABIC_PDF_FONTS={regular,bold};
-  }
-  pdf.addFileToVFS("DejaVuSans.ttf",ARABIC_PDF_FONTS.regular);
-  pdf.addFileToVFS("DejaVuSans-Bold.ttf",ARABIC_PDF_FONTS.bold);
-  pdf.addFont("DejaVuSans.ttf","ArialArabic","normal");
-  pdf.addFont("DejaVuSans-Bold.ttf","ArialArabic","bold");
-  pdf.setFont("ArialArabic","normal");
+  pdf.addFileToVFS("Amiri-Regular.ttf", ARABIC_PDF_FONT_BASE64);
+  pdf.addFont("Amiri-Regular.ttf", "Amiri", "normal");
+  pdf.addFont("Amiri-Regular.ttf", "Amiri", "bold");
+  pdf.setFont("Amiri", "normal");
   if(pdf.setLanguage) pdf.setLanguage("ar-SA");
 }
 
 function arabicGrade(s, t){
-  if(isWithdrawn(s)) return "Ù…Ù†Ø³Ø­Ø¨";
-  if(t == null) return "ØºÙŠØ± Ù…ÙƒØªÙ…Ù„";
-  if(t >= 90) return "Ù…Ù…ØªØ§Ø²";
-  if(t >= 80) return "Ø¬ÙŠØ¯ Ø¬Ø¯Ø§Ù‹";
-  if(t >= 70) return "Ø¬ÙŠØ¯";
-  if(t >= 65) return "Ù…Ù‚Ø¨ÙˆÙ„";
-  return "Ø±Ø§Ø³Ø¨";
+  if(isWithdrawn(s)) return "منسحب";
+  if(t == null) return "غير مكتمل";
+  if(t >= 90) return "ممتاز";
+  if(t >= 80) return "جيد جداً";
+  if(t >= 70) return "جيد";
+  if(t >= 65) return "مقبول";
+  return "راسب";
 }
 
 async function toggleWithdrawn(studentId){
@@ -1005,7 +984,7 @@ if(
     FILTERED.push({...s, course:c});
   });
 
-  /* Ø§Ù„ÙØ±Ø² Ø§Ù„ØªÙ„Ù‚Ø§Ø¦ÙŠ Ø§Ù„Ø¯Ø§Ø¦Ù…: Ø§Ù„ÙØªØ±Ø© Ø£ÙˆÙ„Ø§Ù‹ Ø«Ù… Ø§Ù„Ø¯ÙˆØ±Ø© */
+  /* الفرز التلقائي الدائم: الفترة أولاً ثم الدورة */
   FILTERED.sort((a,b)=>comparePeriod(a,b,1));
   PERIOD_DIR = 1;
   ACTIVE_SORT = {key:"period", dir:1};
@@ -1123,7 +1102,7 @@ function selectNotExamined(){
 
   render();
 
-  alert("ØªÙ… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø·Ù„Ø§Ø¨");
+  alert("تم تحديد الطلاب");
 }
 /* =========================
    PDF NOT EXAMINED
@@ -1222,7 +1201,7 @@ function renderDashboardBarChart(){
     if(!isWithdrawn(s) && t!=null) groups.get(key).totals.push(t);
   });
   const rows=[...groups.values()].map(g=>({
-    label:`${g.course.TrainingCourse||"Course"} Â· ${g.course.Trainer||"-"}`,
+    label:`${g.course.TrainingCourse||"Course"} · ${g.course.Trainer||"-"}`,
     value:g.totals.length?Number((g.totals.reduce((a,b)=>a+b,0)/g.totals.length).toFixed(1)):0
   })).sort((a,b)=>b.value-a.value);
 
@@ -1286,16 +1265,16 @@ function normalizeWhatsAppPhone(phone){
 
   if(!p) return "";
 
-  // 009665xxxxxxxx â†’ 9665xxxxxxxx
+  // 009665xxxxxxxx → 9665xxxxxxxx
   if(p.startsWith("00")){
     p = p.slice(2);
   }
 
-  // 05xxxxxxxx â†’ 9665xxxxxxxx
+  // 05xxxxxxxx → 9665xxxxxxxx
   if(p.startsWith("05") && p.length === 10){
     p = "966" + p.slice(1);
   }
-  // 5xxxxxxxx â†’ 9665xxxxxxxx
+  // 5xxxxxxxx → 9665xxxxxxxx
   else if(p.startsWith("5") && p.length === 9){
     p = "966" + p;
   }
@@ -1316,7 +1295,7 @@ function sendGradeWhatsApp(studentId){
   const phone = normalizeWhatsAppPhone(getStudentPhone(s));
 
   if(!phone){
-    alert("Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ø±Ù‚Ù… Ø¬ÙˆØ§Ù„ Ù…Ø³Ø¬Ù„ Ù„Ù‡Ø°Ø§ Ø§Ù„Ø·Ø§Ù„Ø¨");
+    alert("لا يوجد رقم جوال مسجل لهذا الطالب");
     return;
   }
 
@@ -1325,21 +1304,21 @@ function sendGradeWhatsApp(studentId){
   const gr = gradeOf(t).text;
 
   const message =
-`Ø§Ù„Ø³Ù„Ø§Ù… Ø¹Ù„ÙŠÙƒÙ… ÙˆØ±Ø­Ù…Ø© Ø§Ù„Ù„Ù‡ ÙˆØ¨Ø±ÙƒØ§ØªÙ‡ØŒ
-Ø¹Ø²ÙŠØ²ÙŠ Ø§Ù„Ø·Ø§Ù„Ø¨/ ${s.name || "-"}
+`السلام عليكم ورحمة الله وبركاته،
+عزيزي الطالب/ ${s.name || "-"}
 
-Ù†ÙˆØ¯ Ø¥Ø´Ø¹Ø§Ø±Ùƒ Ø¨Ù†ØªÙŠØ¬ØªÙƒ ÙÙŠ Ø¯ÙˆØ±Ø© ${c.TrainingCourse || "-"}:
+نود إشعارك بنتيجتك في دورة ${c.TrainingCourse || "-"}:
 
-Ø§Ù„Ø§Ø®ØªØ¨Ø§Ø± Ø§Ù„Ù†ØµÙÙŠ: ${s.midterm ?? 0}
-Ø§Ù„Ø§Ø®ØªØ¨Ø§Ø± Ø§Ù„Ù†Ù‡Ø§Ø¦ÙŠ: ${s.finalExam ?? 0}
-Ø§Ù„Ø§Ø³ØªÙ…Ø§Ø¹: ${s.listening ?? 0}
-Ø§Ù„ØªØ­Ø¯Ø«: ${s.speaking ?? 0}
-Ø§Ù„ÙˆØ§Ø¬Ø¨Ø§Øª: ${hwScore(s)}
-Ø§Ù„Ø­Ø¶ÙˆØ±: ${attScore(s)}
-Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹: ${t ?? 0} Ù…Ù† 100
-Ø§Ù„ØªÙ‚Ø¯ÙŠØ±: ${gr}
+الاختبار النصفي: ${s.midterm ?? 0}
+الاختبار النهائي: ${s.finalExam ?? 0}
+الاستماع: ${s.listening ?? 0}
+التحدث: ${s.speaking ?? 0}
+الواجبات: ${hwScore(s)}
+الحضور: ${attScore(s)}
+المجموع: ${t ?? 0} من 100
+التقدير: ${gr}
 
-Ù…Ø¹ ØªÙ…Ù†ÙŠØ§Øª Ù…Ø¹Ù‡Ø¯ Ø¨Ø±ÙˆØ¯Ù„ Ù„Ù„ØºØ§Øª Ù„Ùƒ Ø¨Ø§Ù„ØªÙˆÙÙŠÙ‚ ÙˆØ§Ù„Ù†Ø¬Ø§Ø­.`;
+مع تمنيات معهد برودل للغات لك بالتوفيق والنجاح.`;
 
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   window.open(url, "_blank", "noopener,noreferrer");
@@ -1385,7 +1364,7 @@ function render(){
             onchange="toggleRowSelection('${s.id}', this.checked)">
         </td>
         <td>${i+1}</td>
-        <td class="student-name-cell">${bilingualStudentNameHTML(s)}</td>
+        <td>${s.name || "-"}</td>
         <td>
           <button class="whatsappBtn"
                   onclick="sendGradeWhatsApp('${s.id}')"
@@ -1435,7 +1414,7 @@ async function exportPDF(mode="VISIBLE"){
   const listToExport = getExportList(mode);
 
   if(!listToExport.length){
-    alert(mode === "SELECTED" ? "No selected records to export" : mode === "COURSES" ? "Ø­Ø¯Ø¯ Ø¯ÙˆØ±Ø© ÙˆØ§Ø­Ø¯Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„ Ù„Ù„Ø·Ø¨Ø§Ø¹Ø©" : "No data to export");
+    alert(mode === "SELECTED" ? "No selected records to export" : mode === "COURSES" ? "حدد دورة واحدة على الأقل للطباعة" : "No data to export");
     return;
   }
 
@@ -1447,7 +1426,7 @@ async function exportPDF(mode="VISIBLE"){
     await loadArabicPdfFont(pdf);
   }catch(error){
     console.error(error);
-    alert("ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø§Ù„Ø®Ø· Ø§Ù„Ø¹Ø±Ø¨ÙŠ Ù„Ù„ØªÙ‚Ø±ÙŠØ±. ØªØ­Ù‚Ù‚ Ù…Ù† Ø§ØªØµØ§Ù„ Ø§Ù„Ø¥Ù†ØªØ±Ù†Øª Ø«Ù… Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.");
+    alert("تعذر تحميل الخط العربي للتقرير. تحقق من اتصال الإنترنت ثم حاول مرة أخرى.");
     return;
   }
   const pageW = pdf.internal.pageSize.getWidth();
@@ -1525,27 +1504,27 @@ async function exportPDF(mode="VISIBLE"){
 
   try{ pdf.addImage(LOGO,"PNG",14,12,16,16); }catch(e){}
 
-  pdf.setFont("ArialArabic","bold");
+  pdf.setFont("Amiri","bold");
   pdf.setFontSize(16);
   pdf.setTextColor(255,255,255);
-  pdf.text("Ø¨Ø±ÙˆØ¯Ù„ â€“ Ø§Ù„ØªÙ‚Ø±ÙŠØ± Ø§Ù„ØªÙ†ÙÙŠØ°ÙŠ Ù„Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£ÙƒØ§Ø¯ÙŠÙ…ÙŠ", pageW-14, 25, {align:"right"});
+  pdf.text("برودل – التقرير التنفيذي للتحليل الأكاديمي", pageW-14, 25, {align:"right"});
 
   pdf.setFontSize(9);
-  pdf.text(mode==="SELECTED" ? "Ø§Ù„Ø³Ø¬Ù„Ø§Øª Ø§Ù„Ù…Ø­Ø¯Ø¯Ø©" : "Ø§Ù„Ø³Ø¬Ù„Ø§Øª Ø§Ù„Ø¸Ø§Ù‡Ø±Ø© Ø­Ø³Ø¨ Ø§Ù„ÙÙ„ØªØ±Ø©", 14, 25, {align:"left"});
+  pdf.text(mode==="SELECTED" ? "السجلات المحددة" : "السجلات الظاهرة حسب الفلترة", 14, 25, {align:"left"});
 
   pdf.setTextColor(22,68,120);
   pdf.setFontSize(10);
-  pdf.setFont("ArialArabic","bold");
-  pdf.text(`Ø§Ù„ÙØ±Ø¹: ${fBranch.value||"Ø§Ù„ÙƒÙ„"}   |   Ø§Ù„Ù‚Ø³Ù…: ${fSection.value||"Ø§Ù„ÙƒÙ„"}`, pageW-14, 45, {align:"right"});
-  pdf.text(`Ø§Ù„Ù…Ø¯Ø±Ø¨: ${fTrainer.value||"Ø§Ù„ÙƒÙ„"}   |   Ø§Ù„ÙØªØ±Ø©: ${fPeriod.value||"Ø§Ù„ÙƒÙ„"}`, pageW-14, 52, {align:"right"});
-  pdf.text(`Ø§Ù„Ø¯ÙˆØ±Ø©: ${fCourse.value||"Ø§Ù„ÙƒÙ„"}   |   ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¨Ø¯Ø§ÙŠØ©: ${fStart.value||"Ø§Ù„ÙƒÙ„"}`, pageW-14, 59, {align:"right"});
+  pdf.setFont("Amiri","bold");
+  pdf.text(`الفرع: ${fBranch.value||"الكل"}   |   القسم: ${fSection.value||"الكل"}`, pageW-14, 45, {align:"right"});
+  pdf.text(`المدرب: ${fTrainer.value||"الكل"}   |   الفترة: ${fPeriod.value||"الكل"}`, pageW-14, 52, {align:"right"});
+  pdf.text(`الدورة: ${fCourse.value||"الكل"}   |   تاريخ البداية: ${fStart.value||"الكل"}`, pageW-14, 59, {align:"right"});
 
   const statCards = [
-    ["Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø·Ù„Ø§Ø¨", overallTotal, [22,68,120]],
-    ["Ù†Ø§Ø¬Ø­", passed, [39,174,96]],
-    ["Ø±Ø§Ø³Ø¨", failed, [231,76,60]],
-    ["ØºÙŠØ± Ù…ÙƒØªÙ…Ù„", notCompleted, [127,140,141]],
-    ["Ù…Ù†Ø³Ø­Ø¨", withdrawn, [142,27,27]]
+    ["إجمالي الطلاب", overallTotal, [22,68,120]],
+    ["ناجح", passed, [39,174,96]],
+    ["راسب", failed, [231,76,60]],
+    ["غير مكتمل", notCompleted, [127,140,141]],
+    ["منسحب", withdrawn, [142,27,27]]
   ];
   const cardW=35, cardGap=2.5, cardY=68;
   statCards.forEach((card,i)=>{
@@ -1553,7 +1532,7 @@ async function exportPDF(mode="VISIBLE"){
     pdf.setFillColor(...card[2]);
     pdf.roundedRect(x,cardY,cardW,22,2.5,2.5,"F");
     pdf.setTextColor(255,255,255);
-    pdf.setFont("ArialArabic","bold");
+    pdf.setFont("Amiri","bold");
     pdf.setFontSize(9);
     pdf.text(card[0],x+cardW/2,cardY+8,{align:"center"});
     pdf.setFontSize(15);
@@ -1563,7 +1542,7 @@ async function exportPDF(mode="VISIBLE"){
   const chartLabels = analytics.map(a=>{
     const c = (a.courseName||"").toString().trim();
     const t = (a.trainer||"").toString().trim();
-    return `${c} Â· ${t}`;
+    return `${c} · ${t}`;
   });
 
   const chartData = analytics.map(a=>a.avg);
@@ -1579,7 +1558,7 @@ async function exportPDF(mode="VISIBLE"){
       data:{
         labels:chartLabels,
         datasets:[{
-          label:"Ù…ØªÙˆØ³Ø· Ø§Ù„Ø¯ÙˆØ±Ø©",
+          label:"متوسط الدورة",
           data:chartData,
           backgroundColor:chartData.map(v=>v>=80?"#178a52":v>=65?"#2f80ed":v>0?"#d94b55":"#a5b1bf"),
           borderRadius:12,
@@ -1607,10 +1586,10 @@ async function exportPDF(mode="VISIBLE"){
   });
 
   try{
-    pdf.setFont("ArialArabic","bold");
+    pdf.setFont("Amiri","bold");
     pdf.setFontSize(11);
     pdf.setTextColor(22,68,120);
-    pdf.text("Ù…ØªÙˆØ³Ø· Ø£Ø¯Ø§Ø¡ Ø§Ù„Ø¯ÙˆØ±Ø§Øª",pageW-14,103,{align:"right"});
+    pdf.text("متوسط أداء الدورات",pageW-14,103,{align:"right"});
     pdf.addImage(canvas.toDataURL("image/png"),"PNG", 12, 106, 186, 65);
   }catch(e){}
 
@@ -1628,11 +1607,11 @@ async function exportPDF(mode="VISIBLE"){
 
   pdf.autoTable({
     startY:178,
-    head:[["Ø§Ù„Ø¯ÙˆØ±Ø©","Ø§Ù„Ù…Ø¯Ø±Ø¨","Ø§Ù„ÙØªØ±Ø©","Ø§Ù„Ø·Ù„Ø§Ø¨","Ù†Ø§Ø¬Ø­","Ø±Ø§Ø³Ø¨","ØºÙŠØ± Ù…ÙƒØªÙ…Ù„","Ù…Ù†Ø³Ø­Ø¨","Ø§Ù„Ù…ØªÙˆØ³Ø·"]],
+    head:[["الدورة","المدرب","الفترة","الطلاب","ناجح","راسب","غير مكتمل","منسحب","المتوسط"]],
     body:summaryRows,
     theme:"grid",
-    styles:{font:"ArialArabic",fontSize:8.2,halign:"center",valign:"middle",cellPadding:2.2,lineColor:[205,218,232],lineWidth:.25},
-    headStyles:{font:"ArialArabic",fillColor:[22,68,120],textColor:255,fontStyle:"bold",fontSize:8.8},
+    styles:{font:"Amiri",fontSize:8.5,halign:"center",valign:"middle",cellPadding:2,lineColor:[205,218,232],lineWidth:.25},
+    headStyles:{font:"Amiri",fillColor:[22,68,120],textColor:255,fontStyle:"bold",fontSize:9.2},
     alternateRowStyles:{fillColor:[245,248,252]},
     didParseCell:function(d){
       if(d.section==="body"){
@@ -1663,8 +1642,8 @@ async function exportPDF(mode="VISIBLE"){
 
   pdf.setFontSize(8);
   pdf.setTextColor(150);
-  pdf.setFont("ArialArabic","normal");
-  pdf.text("Ù…Ø¹Ù‡Ø¯ Ø¨Ø±ÙˆØ¯Ù„ Ù„Ù„ØºØ§Øª Â© "+new Date().getFullYear(), pageW/2, pageH-6, {align:"center"});
+  pdf.setFont("Amiri","normal");
+  pdf.text("معهد برودل للغات © "+new Date().getFullYear(), pageW/2, pageH-6, {align:"center"});
 
   Object.values(courseGroups).forEach(g=>{
     pdf.addPage();
@@ -1678,10 +1657,10 @@ async function exportPDF(mode="VISIBLE"){
 
     try{ pdf.addImage(LOGO,"PNG",15,14,18,18); }catch(e){}
 
-    pdf.setFont("ArialArabic","bold");
+    pdf.setFont("Amiri","bold");
     pdf.setFontSize(14);
     pdf.setTextColor(255,255,255);
-    pdf.text("ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø¯ÙˆØ±Ø© â€“ Ø§Ù„Ø¯Ø±Ø¬Ø§Øª Ø§Ù„ÙƒØ§Ù…Ù„Ø©", pageW-16, 23, {align:"right"});
+    pdf.text("تفاصيل الدورة – الدرجات الكاملة", pageW-16, 23, {align:"right"});
 
     const c = g.course;
     let y = 46;
@@ -1690,28 +1669,28 @@ async function exportPDF(mode="VISIBLE"){
     pdf.setDrawColor(205,218,232);
     pdf.roundedRect(14,39,182,27,2.5,2.5,"FD");
 
-    pdf.setFont("ArialArabic","normal");
+    pdf.setFont("Amiri","normal");
     pdf.setFontSize(9);
     pdf.setTextColor(20,35,55);
-    pdf.text(`Ø§Ù„Ø¯ÙˆØ±Ø©: ${c.TrainingCourse||"-"}`, pageW-16, y, {align:"right"});
-    pdf.text(`Ø§Ù„Ù…Ø¯Ø±Ø¨: ${c.Trainer||"-"}`, 105, y, {align:"right"}); y += 6;
-    pdf.text(`Ø§Ù„ÙØªØ±Ø©: ${c.Period||"-"}`, pageW-16, y, {align:"right"});
-    pdf.text(`Ø§Ù„ÙØ±Ø¹: ${c.Branch||"-"}`, 105, y, {align:"right"}); y += 6;
-    pdf.text(`Ø§Ù„Ù‚Ø³Ù…: ${c.Section||"-"}`, pageW-16, y, {align:"right"});
-    pdf.text(`ØªØ§Ø±ÙŠØ® Ø§Ù„Ø¨Ø¯Ø§ÙŠØ©: ${formatDateValue(c.StartingDate)}`, 105, y, {align:"right"}); y += 12;
+    pdf.text(`الدورة: ${c.TrainingCourse||"-"}`, pageW-16, y, {align:"right"});
+    pdf.text(`المدرب: ${c.Trainer||"-"}`, 105, y, {align:"right"}); y += 6;
+    pdf.text(`الفترة: ${c.Period||"-"}`, pageW-16, y, {align:"right"});
+    pdf.text(`الفرع: ${c.Branch||"-"}`, 105, y, {align:"right"}); y += 6;
+    pdf.text(`القسم: ${c.Section||"-"}`, pageW-16, y, {align:"right"});
+    pdf.text(`تاريخ البداية: ${formatDateValue(c.StartingDate)}`, 105, y, {align:"right"}); y += 12;
 
     const totals = g.students.filter(s=>!isWithdrawn(s)).map(s=>total(s)).filter(v=>v != null);
     const avg = totals.length ? (totals.reduce((a,b)=>a+b,0) / totals.length).toFixed(1) : "-";
 
-    pdf.setFont("ArialArabic","bold");
+    pdf.setFont("Amiri","bold");
     pdf.setTextColor(22,68,120);
-    pdf.text(`Ù…ØªÙˆØ³Ø· Ø§Ù„Ø¯ÙˆØ±Ø©: ${avg}`, pageW-16, y, {align:"right"});
+    pdf.text(`متوسط الدورة: ${avg}`, pageW-16, y, {align:"right"});
     y += 5;
 
     pdf.autoTable({
       startY:y+5,
       theme:"grid",
-      head:[["#","Ø§Ø³Ù… Ø§Ù„Ø·Ø§Ù„Ø¨ (Ø§Ù„Ø¹Ø±Ø¨ÙŠ / English)","Ø§Ù„ÙØªØ±Ø©","Ø§Ù„Ù†ØµÙÙŠ","Ø§Ù„Ù†Ù‡Ø§Ø¦ÙŠ","Ø§Ù„Ø§Ø³ØªÙ…Ø§Ø¹","Ø§Ù„ØªØ­Ø¯Ø«","Ø§Ù„ÙˆØ§Ø¬Ø¨Ø§Øª","Ø§Ù„Ø­Ø¶ÙˆØ±","Ø§Ù„Ù…Ø¬Ù…ÙˆØ¹","Ø§Ù„ØªÙ‚Ø¯ÙŠØ±"]],
+      head:[["#","اسم الطالب (العربي / English)","الفترة","النصفي","النهائي","الاستماع","التحدث","الواجبات","الحضور","المجموع","التقدير"]],
       body:g.students.map((s,i)=>{
         const t = total(s);
         const gr = arabicGrade(s,t);
@@ -1729,19 +1708,19 @@ async function exportPDF(mode="VISIBLE"){
           gr
         ];
       }),
-      headStyles:{font:"ArialArabic",fillColor:[22,68,120],textColor:255,fontStyle:"bold",fontSize:7.7},
-      styles:{font:"ArialArabic",fontSize:7.1,halign:"center",valign:"middle",cellPadding:{top:2.6,right:1.5,bottom:2.6,left:1.5},lineColor:[205,218,232],lineWidth:.25,overflow:"linebreak"},
-      columnStyles:{1:{cellWidth:48,halign:"right",fontSize:7.0,cellPadding:{top:3,right:2,bottom:3,left:2},overflow:"linebreak"}},
+      headStyles:{font:"Amiri",fillColor:[22,68,120],textColor:255,fontStyle:"bold",fontSize:8.4},
+      styles:{font:"Amiri",fontSize:7.7,halign:"center",valign:"middle",cellPadding:1.6,lineColor:[205,218,232],lineWidth:.25},
+      columnStyles:{1:{cellWidth:42,halign:"right",fontSize:7.4}},
       alternateRowStyles:{fillColor:[245,248,252]},
       didParseCell:function(d){
         if(d.section==="body" && d.column.index===10){
           const v = d.cell.raw;
-          if(v==="Ù…Ù…ØªØ§Ø²"){ d.cell.styles.fillColor=[22,68,120]; d.cell.styles.textColor=[255,255,255]; }
-          else if(v==="Ø¬ÙŠØ¯ Ø¬Ø¯Ø§Ù‹"){ d.cell.styles.fillColor=[39,174,96]; d.cell.styles.textColor=[255,255,255]; }
-          else if(v==="Ø¬ÙŠØ¯"){ d.cell.styles.fillColor=[241,196,15]; d.cell.styles.textColor=[27,27,27]; }
-          else if(v==="Ù…Ù‚Ø¨ÙˆÙ„"){ d.cell.styles.fillColor=[255,140,0]; d.cell.styles.textColor=[255,255,255]; }
-          else if(v==="Ø±Ø§Ø³Ø¨"){ d.cell.styles.fillColor=[231,76,60]; d.cell.styles.textColor=[255,255,255]; }
-          else if(v==="Ù…Ù†Ø³Ø­Ø¨"){ d.cell.styles.fillColor=[142,27,27]; d.cell.styles.textColor=[255,255,255]; }
+          if(v==="ممتاز"){ d.cell.styles.fillColor=[22,68,120]; d.cell.styles.textColor=[255,255,255]; }
+          else if(v==="جيد جداً"){ d.cell.styles.fillColor=[39,174,96]; d.cell.styles.textColor=[255,255,255]; }
+          else if(v==="جيد"){ d.cell.styles.fillColor=[241,196,15]; d.cell.styles.textColor=[27,27,27]; }
+          else if(v==="مقبول"){ d.cell.styles.fillColor=[255,140,0]; d.cell.styles.textColor=[255,255,255]; }
+          else if(v==="راسب"){ d.cell.styles.fillColor=[231,76,60]; d.cell.styles.textColor=[255,255,255]; }
+          else if(v==="منسحب"){ d.cell.styles.fillColor=[142,27,27]; d.cell.styles.textColor=[255,255,255]; }
           else { d.cell.styles.fillColor=[127,140,141]; d.cell.styles.textColor=[255,255,255]; }
           d.cell.styles.fontStyle="bold";
         }
@@ -1751,7 +1730,7 @@ async function exportPDF(mode="VISIBLE"){
         }
       },
       didDrawCell:function(d){
-        if(d.section!=="body" || d.column.index===10 || !d.row.raw || d.row.raw[10]!=="Ù…Ù†Ø³Ø­Ø¨") return;
+        if(d.section!=="body" || d.column.index===10 || !d.row.raw || d.row.raw[10]!=="منسحب") return;
         pdf.setDrawColor(198,40,40);
         pdf.setLineWidth(0.45);
         const lineY = d.cell.y + (d.cell.height / 2);
@@ -1762,13 +1741,13 @@ async function exportPDF(mode="VISIBLE"){
 
     pdf.setFontSize(8);
     pdf.setTextColor(150);
-    pdf.setFont("ArialArabic","normal");
-    pdf.text("Ù…Ø¹Ù‡Ø¯ Ø¨Ø±ÙˆØ¯Ù„ Ù„Ù„ØºØ§Øª Â© "+new Date().getFullYear(), pageW/2, pageH-6, {align:"center"});
+    pdf.setFont("Amiri","normal");
+    pdf.text("معهد برودل للغات © "+new Date().getFullYear(), pageW/2, pageH-6, {align:"center"});
   });
 
   const fileName = (mode==="SELECTED"
-    ? "ØªÙ‚Ø±ÙŠØ±_Ø¨Ø±ÙˆØ¯Ù„_Ø§Ù„Ø³Ø¬Ù„Ø§Øª_Ø§Ù„Ù…Ø­Ø¯Ø¯Ø©.pdf"
-    : "ØªÙ‚Ø±ÙŠØ±_Ø¨Ø±ÙˆØ¯Ù„_Ø§Ù„Ø£ÙƒØ§Ø¯ÙŠÙ…ÙŠ.pdf");
+    ? "تقرير_برودل_السجلات_المحددة.pdf"
+    : "تقرير_برودل_الأكاديمي.pdf");
 
   pdf.save(fileName);
 }
