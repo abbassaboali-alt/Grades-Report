@@ -374,6 +374,44 @@ header button:hover{background:#fff;color:var(--navy);transform:translateY(-1px)
 table{border-collapse:separate;border-spacing:0;font-size:11px;background:#fff}th{position:sticky;top:0;z-index:3;background:#102f53;color:#fff;border:0;border-right:1px solid rgba(255,255,255,.10);padding:12px 9px;text-transform:uppercase;font-size:10px;letter-spacing:.25px}td{border:0;border-bottom:1px solid #e5ebf2;padding:10px 8px;color:#26384c}tr:nth-child(even){background:#f7f9fc}tr:hover{background:#edf5ff}.grade{min-width:105px;border:0;padding:5px 9px;font-size:10px}.logout-badge{position:fixed;right:20px;bottom:20px;z-index:2500;background:#102f53;border:2px solid #fff;box-shadow:0 10px 30px rgba(11,37,69,.28)}
 @media(max-width:1100px){.executive-shell{grid-template-columns:1fr}.metric-grid{grid-template-columns:repeat(3,1fr)}.filters{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){header{margin:7px;border-radius:14px}.executive-shell,.filters,.card{margin:7px}.metric-grid{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.hero-panel h1{font-size:20px}.dashboard-chart-wrap{height:230px}}
+
+/* ===== Prudle Administrative Report – Final Visual System ===== */
+:root{
+  --admin-navy:#0a294a;
+  --admin-blue:#164478;
+  --admin-gold:#d5a53b;
+  --admin-bg:#edf2f7;
+  --admin-border:#d8e1eb;
+  --admin-text:#20364d;
+}
+body{background:var(--admin-bg);color:var(--admin-text)}
+header{border-radius:14px;background:linear-gradient(110deg,#071f39 0%,#0e365f 58%,#164f83 100%);border-top:4px solid var(--admin-gold);box-shadow:0 10px 28px rgba(10,41,74,.22)}
+header>div:first-child{display:flex;align-items:center;gap:10px;font-size:19px}
+header>div:first-child:before{content:"";width:6px;height:28px;border-radius:6px;background:var(--admin-gold);display:inline-block}
+.executive-shell{grid-template-columns:minmax(0,1.25fr) minmax(390px,.9fr)}
+.hero-panel,.chart-panel,.filters,.card{border-radius:14px;border:1px solid var(--admin-border);box-shadow:0 7px 22px rgba(10,41,74,.08)}
+.hero-panel{background:#fff;border-top:4px solid var(--admin-blue)}
+.eyebrow{color:#8a6720;letter-spacing:1.8px}.hero-panel h1{font-size:26px}.hero-panel p{font-size:12px}
+.metric-grid{gap:9px}.metric-card{border-radius:10px;border:1px solid #dde5ee;padding:14px 13px;background:linear-gradient(180deg,#fff,#f8fafc)}
+.metric-card:before{width:5px}.metric-label{font-size:9px;letter-spacing:.35px}.metric-value{font-size:25px}
+.chart-panel{border-top:4px solid var(--admin-gold);padding:18px 20px;background:#fff}
+.panel-title{border-bottom:1px solid #e5ebf1;padding-bottom:10px;margin-bottom:10px}.panel-title strong{font-size:15px}.panel-title span{font-size:10px}
+.dashboard-chart-wrap{background:linear-gradient(180deg,#fbfcfe,#fff);border:1px solid #e4eaf1;border-radius:10px;padding:8px}
+.filters{border-top:4px solid var(--admin-blue);background:#fff}.filters select,.filters input{border-radius:8px;background:#fbfcfe;border-color:#cdd8e4;font-size:11px}
+.card{border-top:4px solid var(--admin-blue)}
+.topLine{background:linear-gradient(90deg,#f4f7fa,#fff);padding:17px 20px;font-size:14px;border-bottom:1px solid var(--admin-border)}
+.badges .badge{border-radius:7px;background:#f6f8fb;border-color:#d6e0ea;font-size:10px}
+.tableWrap{background:#fff;scrollbar-color:#7890a8 #e7edf3;scrollbar-width:thin}
+table{font-size:11px;border-collapse:separate;border-spacing:0}
+thead th{background:linear-gradient(180deg,#123d67,#0a294a);padding:13px 9px;border-right:1px solid rgba(255,255,255,.14);border-bottom:3px solid var(--admin-gold);font-size:9.5px;letter-spacing:.35px;box-shadow:0 2px 0 rgba(10,41,74,.08)}
+tbody td{padding:11px 8px;border-bottom:1px solid #dfe6ee;border-right:1px solid #eef2f6;color:#243b53;background:inherit}
+tbody tr:nth-child(even){background:#f5f8fb}tbody tr:nth-child(odd){background:#fff}tbody tr:hover{background:#e8f1fb!important}
+tbody td:nth-child(2){font-weight:800;color:#6b7f93}tbody td:nth-child(3){font-weight:800;color:#0a294a;text-align:left;min-width:190px}
+tbody td:nth-child(6){font-size:13px;font-weight:900;color:#0a294a;background:rgba(213,165,59,.08)}
+tbody td:nth-child(15),tbody td:nth-child(16){font-weight:700;color:#164478}
+.grade{border-radius:6px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);letter-spacing:.1px}
+.g-gd{background:#e2b744;color:#332600}.smallBtn{border-radius:7px;font-size:10px}.chk{accent-color:var(--admin-gold)}
+@media(max-width:1100px){.executive-shell{grid-template-columns:1fr}.chart-panel{min-height:280px}}
 </style>
 </head>
 
@@ -1209,12 +1247,36 @@ function renderDashboardBarChart(){
   wrap.style.height=`${Math.max(195,Math.min(430,rows.length*34+42))}px`;
   if(DASHBOARD_CHART) DASHBOARD_CHART.destroy();
 
+  const performanceZones={
+    id:"executivePerformanceZones",
+    beforeDatasetsDraw(chart){
+      const {ctx,chartArea,scales}=chart;
+      if(!chartArea) return;
+      const zones=[
+        {from:0,to:65,color:"rgba(203,58,68,.045)"},
+        {from:65,to:80,color:"rgba(213,165,59,.055)"},
+        {from:80,to:100,color:"rgba(24,138,82,.055)"}
+      ];
+      ctx.save();
+      zones.forEach(z=>{
+        const x1=scales.x.getPixelForValue(z.from),x2=scales.x.getPixelForValue(z.to);
+        ctx.fillStyle=z.color;ctx.fillRect(x1,chartArea.top,x2-x1,chartArea.bottom-chartArea.top);
+      });
+      ctx.restore();
+    }
+  };
   const valueLabels={
     id:"executiveValueLabels",
     afterDatasetsDraw(chart){
       const {ctx}=chart;
-      ctx.save();ctx.font="700 10px Poppins";ctx.textBaseline="middle";ctx.fillStyle="#0b2545";
-      chart.getDatasetMeta(0).data.forEach((bar,i)=>ctx.fillText(`${rows[i].value}%`,Math.min(bar.x+7,chart.chartArea.right-30),bar.y));
+      ctx.save();ctx.font="800 10px Poppins";ctx.textBaseline="middle";
+      chart.getDatasetMeta(0).data.forEach((bar,i)=>{
+        const label=`${rows[i].value}%`;
+        const inside=rows[i].value>=18;
+        ctx.fillStyle=inside?"#ffffff":"#0a294a";
+        ctx.textAlign=inside?"right":"left";
+        ctx.fillText(label,inside?bar.x-7:bar.x+7,bar.y);
+      });
       ctx.restore();
     }
   };
@@ -1222,8 +1284,8 @@ function renderDashboardBarChart(){
   DASHBOARD_CHART=new Chart(canvas.getContext("2d"),{
     type:"bar",
     data:{labels:rows.map(r=>r.label),datasets:[{data:rows.map(r=>r.value),backgroundColor:colors,borderRadius:8,borderSkipped:false,barThickness:15}]},
-    plugins:[valueLabels],
-    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,animation:{duration:450},layout:{padding:{right:38}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` Average: ${c.raw}%`}}},scales:{x:{beginAtZero:true,max:100,grid:{color:"#e6edf5"},border:{display:false},ticks:{font:{size:9},callback:v=>`${v}%`}},y:{grid:{display:false},border:{display:false},ticks:{color:"#34495e",font:{size:9,weight:"600"},autoSkip:false}}}}
+    plugins:[performanceZones,valueLabels],
+    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,animation:{duration:550,easing:"easeOutQuart"},layout:{padding:{right:12,left:3}},plugins:{legend:{display:false},tooltip:{backgroundColor:"#0a294a",titleFont:{family:"Poppins",weight:"700"},bodyFont:{family:"Poppins"},padding:11,displayColors:false,callbacks:{label:c=>` Course average: ${c.raw}%`}}},scales:{x:{beginAtZero:true,max:100,grid:{color:"rgba(160,178,197,.28)",drawTicks:false},border:{display:false},ticks:{padding:8,color:"#687d91",font:{size:9,weight:"600"},callback:v=>`${v}%`}},y:{grid:{display:false},border:{display:false},ticks:{color:"#20364d",padding:8,font:{size:9,weight:"700"},autoSkip:false}}}}
   });
 }
 
