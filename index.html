@@ -1510,7 +1510,7 @@ async function exportPDF(mode="VISIBLE"){
   pdf.text("برودل – التقرير التنفيذي للتحليل الأكاديمي", pageW-14, 25, {align:"right"});
 
   pdf.setFontSize(9);
-  pdf.text(mode==="SELECTED" ? "السجلات المحددة" : "", 14, 25, {align:"left"});
+  pdf.text(mode==="SELECTED" ? "" : "", 14, 25, {align:"left"});
 
   pdf.setTextColor(22,68,120);
   pdf.setFontSize(10);
